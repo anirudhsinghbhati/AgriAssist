@@ -1,3 +1,22 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "logo",
+      "description": "AgriAssist app logo",
+      "imageUrl": "https://picsum.photos/seed/agriassistlogo/100/100",
+      "imageHint": "leaf logo"
+    },
+    {
+      "id": "login-background",
+      "description": "Lush green farm field for login background",
+      "imageUrl": "https://picsum.photos/seed/farmbg/1920/1080",
+      "imageHint": "green field"
+    },
+    {
+      "id": "avatar",
+      "description": "Farmer user avatar",
+      "imageUrl": "https://picsum.photos/seed/farmeravatar/100/100",
+      "imageHint": "farmer portrait"
+    }
+  ]
 }
