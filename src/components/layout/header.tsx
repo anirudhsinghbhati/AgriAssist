@@ -95,24 +95,28 @@ export function Header() {
               <Link href="/dashboard">Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          {pathSegments.slice(1).map((segment, index) => (
+          {pathSegments.slice(0, pathSegments.length -1).map((segment, index) => (
              <Fragment key={segment}>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                    {index &lt; pathSegments.length - 2 ? (
-                        <BreadcrumbLink asChild>
-                            <Link href={`/${pathSegments.slice(0, index + 2).join('/')}`}>
-                                {segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ')}
-                            </Link>
-                        </BreadcrumbLink>
-                    ) : (
-                        <BreadcrumbPage>
+                    <BreadcrumbLink asChild>
+                        <Link href={`/${pathSegments.slice(0, index + 1).join('/')}`}>
                             {segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ')}
-                        </BreadcrumbPage>
-                    )}
+                        </Link>
+                    </BreadcrumbLink>
                 </BreadcrumbItem>
              </Fragment>
           ))}
+            {pathSegments.length > 0 && (
+                <Fragment>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbPage>
+                            {pathSegments[pathSegments.length - 1].charAt(0).toUpperCase() + pathSegments[pathSegments.length - 1].slice(1).replace(/-/g, ' ')}
+                        </BreadcrumbPage>
+                    </BreadcrumbItem>
+                </Fragment>
+            )}
         </BreadcrumbList>
       </Breadcrumb>
       <div className="relative ml-auto flex-1 md:grow-0">
