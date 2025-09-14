@@ -25,7 +25,7 @@ const resources = [
     title: "Organic Pest Control",
     description: "Explore a database of organic and sustainable methods to control common pests and diseases without synthetic chemicals.",
     icon: Shield,
-    link: "#",
+    link: "/resource-hub/organic-pest-control",
     imageId: "resource-organic-pest"
   },
   {
