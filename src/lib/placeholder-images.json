@@ -10,7 +10,7 @@
     {
       "id": "login-background",
       "description": "Lush green farm field for login background",
-      "imageUrl": "https://picsum.photos/seed/farmbg/1920/1080",
+      "imageUrl": "https://picsum.photos/seed/farmbg/1920/1000",
       "imageHint": "green field"
     },
     {
@@ -180,6 +180,30 @@
       "description": "Two farmers looking at a tablet in a greenhouse",
       "imageUrl": "https://picsum.photos/seed/helpcard/300/300",
       "imageHint": "farmers tablet"
+    },
+    {
+      "id": "resource-seed-guide",
+      "description": "Rows of different types of seeds in compartments.",
+      "imageUrl": "https://picsum.photos/seed/seedguide/600/400",
+      "imageHint": "seed varieties"
+    },
+    {
+      "id": "resource-crop-rotation",
+      "description": "A field divided into different sections showing crop rotation.",
+      "imageUrl": "https://picsum.photos/seed/croprotation/600/400",
+      "imageHint": "divided field"
+    },
+    {
+      "id": "resource-organic-pest",
+      "description": "A ladybug on a leaf, representing organic pest control.",
+      "imageUrl": "https://picsum.photos/seed/organicpest/600/400",
+      "imageHint": "ladybug leaf"
+    },
+    {
+      "id": "resource-post-harvest",
+      "description": "Crates of freshly harvested vegetables.",
+      "imageUrl": "https://picsum.photos/seed/postharvest/600/400",
+      "imageHint": "harvested vegetables"
     }
   ]
 }

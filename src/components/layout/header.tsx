@@ -17,6 +17,7 @@ import {
   MessageSquare,
   ClipboardList,
   Droplets,
+  BookOpen,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -47,6 +48,7 @@ const navItems = [
     { href: '/irrigation-planner', icon: Droplets, label: 'Irrigation Planner' },
     { href: '/market-prices', icon: LineChart, label: 'Market Prices' },
     { href: '/weather', icon: CloudSun, label: 'Weather Alerts' },
+    { href: '/resource-hub', icon: BookOpen, label: 'Resource Hub' },
     { href: '/community', icon: Users, label: 'Community Forum' },
     { href: '/consultation', icon: MessageSquare, label: 'Expert Consultation' },
     { href: '/reports', icon: ClipboardList, label: 'Reports' },

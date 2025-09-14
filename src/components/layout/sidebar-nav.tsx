@@ -22,6 +22,7 @@ import {
   MessageSquare,
   ClipboardList,
   Droplets,
+  BookOpen,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -32,6 +33,7 @@ const navItems = [
   { href: '/irrigation-planner', icon: Droplets, label: 'Irrigation Planner' },
   { href: '/market-prices', icon: LineChart, label: 'Market Prices' },
   { href: '/weather', icon: CloudSun, label: 'Weather Alerts' },
+  { href: '/resource-hub', icon: BookOpen, label: 'Resource Hub' },
   { href: '/community', icon: Users, label: 'Community Forum' },
   { href: '/consultation', icon: MessageSquare, label: 'Expert Consultation' },
   { href: '/reports', icon: ClipboardList, label: 'Reports' },
@@ -58,7 +60,7 @@ export function SidebarNav() {
                   href={item.href}
                   className={cn(
                     'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-                    pathname === item.href && 'bg-accent text-accent-foreground'
+                    pathname.startsWith(item.href) && item.href !== '/dashboard' ? 'bg-accent text-accent-foreground' : pathname === item.href ? 'bg-accent text-accent-foreground' : ''
                   )}
                 >
                   <item.icon className="h-5 w-5" />
