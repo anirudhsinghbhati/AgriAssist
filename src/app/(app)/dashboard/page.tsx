@@ -108,7 +108,7 @@ export default function Dashboard() {
                       </p>
                     </div>
                      <Button variant="ghost" size="icon">
-                        <ArrowUpRight className="h-5 w-5 transform -rotate-45 group-hover:rotate-0 transition-transform"/>
+                        <ArrowUpRight className="h-5 w-5"/>
                     </Button>
                   </div>
                   <div>
