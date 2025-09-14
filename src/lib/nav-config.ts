@@ -14,6 +14,7 @@ import {
   IndianRupee,
   Calendar,
   TrendingUp,
+  Newspaper,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -36,6 +37,7 @@ export const navConfig: NavItem[] = [
   { id: 'financial-tracker', href: '/financial-tracker', icon: IndianRupee, label: 'Financial Tracker' },
   { id: 'inventory', href: '/inventory', icon: Package, label: 'Inventory' },
   { id: 'weather', href: '/weather', icon: CloudSun, label: 'Weather Alerts' },
+  { id: 'news-schemes', href: '/news-schemes', icon: Newspaper, label: 'News & Schemes' },
   { id: 'resource-hub', href: '/resource-hub', icon: BookOpen, label: 'Resource Hub' },
   { id: 'community', href: '/community', icon: Users, label: 'Community Forum' },
   { id: 'consultation', href: '/consultation', icon: MessageSquare, label: 'Expert Consultation' },

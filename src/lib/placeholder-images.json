@@ -228,6 +228,36 @@
       "description": "A modern combine harvester in a field.",
       "imageUrl": "https://picsum.photos/seed/mechanisation/100/100",
       "imageHint": "combine harvester"
+    },
+    {
+      "id": "scheme-pm-kisan",
+      "description": "Illustration for PM-KISAN scheme",
+      "imageUrl": "https://picsum.photos/seed/pmkisan/600/400",
+      "imageHint": "farmer money"
+    },
+    {
+      "id": "scheme-fasal-bima",
+      "description": "Illustration for crop insurance",
+      "imageUrl": "https://picsum.photos/seed/fasalbima/600/400",
+      "imageHint": "crop insurance"
+    },
+    {
+      "id": "scheme-soil-health",
+      "description": "A farmer looking at a soil health card report",
+      "imageUrl": "https://picsum.photos/seed/soilhealth/600/400",
+      "imageHint": "soil report"
+    },
+    {
+      "id": "news-monsoon",
+      "description": "Rain clouds over a farm field",
+      "imageUrl": "https://picsum.photos/seed/monsoonnews/600/400",
+      "imageHint": "rain clouds"
+    },
+    {
+      "id": "news-msp-hike",
+      "description": "A graph showing an upward trend for MSP",
+      "imageUrl": "https://picsum.photos/seed/mspnews/600/400",
+      "imageHint": "price graph"
     }
   ]
 }
