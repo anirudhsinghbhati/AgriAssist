@@ -55,6 +55,25 @@ const stageData = {
           '• Laser land leveling is recommended for better water management and crop establishment.',
         ]
     }
+  },
+  'sowing': {
+    title: 'Sowing',
+    dateRange: '0 - 1 days',
+    description: 'Sowing of soybean should be done in lines with the help of seed drill or behind the country plough. The depth of sowing should not be more than 3-4 cm.',
+    imageIconId: 'practice-sowing',
+    content: {
+      sowing: [
+        '• Sowing Time: The best time for sowing soybean is from the last week of June to the first week of July.',
+        '• Seed Rate: A seed rate of 65-75 kg/ha is recommended for most varieties.',
+        '• Spacing: Row to row spacing of 45 cm and plant to plant spacing of 5-7 cm should be maintained.',
+        '• Method of Sowing: Sowing should be done in lines using a seed drill for better crop establishment.',
+      ],
+      seed: [
+        '• Seed Selection: Use certified seeds of recommended varieties for better yield.',
+        '• Seed Treatment: Treat the seeds with Thiram @ 2g/kg of seed or Carbendazim @ 2g/kg of seed to protect against seed-borne diseases.',
+        '• Rhizobium Inoculation: Inoculate the seeds with Rhizobium culture @ 5g/kg of seed for better nodulation and nitrogen fixation.',
+      ]
+    }
   }
 };
 
@@ -123,7 +142,6 @@ export default function CropStageDetailPage({ params }: { params: { cropName: st
                                 const practiceImage = PlaceHolderImages.find(p => p.id === practice.imageId);
                                 const content = data.content[practice.id as keyof typeof data.content] as string[] | undefined;
                                 
-                                // Don't render the accordion item if there's no content for it
                                 if (!content) return null;
 
                                 return (

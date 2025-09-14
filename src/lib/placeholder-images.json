@@ -174,8 +174,60 @@
       "description": "High-quality long-staple DCH-32 cotton fiber.",
       "imageUrl": "https://picsum.photos/seed/cottondch32/600/400",
       "imageHint": "cotton fiber"
+    },
+    {
+      "id": "practice-land-prep",
+      "description": "A tractor preparing a field for planting.",
+      "imageUrl": "https://picsum.photos/seed/landprep/100/100",
+      "imageHint": "tractor field"
+    },
+    {
+      "id": "practice-variety",
+      "description": "Different varieties of seeds in bowls.",
+      "imageUrl": "https://picsum.photos/seed/variety/100/100",
+      "imageHint": "seed varieties"
+    },
+    {
+      "id": "practice-seed-treatment",
+      "description": "Seeds being treated with a red coating.",
+      "imageUrl": "https://picsum.photos/seed/seedtreatment/100/100",
+      "imageHint": "seed treatment"
+    },
+    {
+      "id": "practice-weed-management",
+      "description": "A farmer removing weeds from a crop field.",
+      "imageUrl": "https://picsum.photos/seed/weedmanage/100/100",
+      "imageHint": "removing weeds"
+    },
+    {
+      "id": "practice-nutrition",
+      "description": "Fertilizer granules being applied to soil.",
+      "imageUrl": "https://picsum.photos/seed/nutrition/100/100",
+      "imageHint": "fertilizer granules"
+    },
+    {
+      "id": "practice-nutrient-deficiency",
+      "description": "A yellowed leaf showing signs of nutrient deficiency.",
+      "imageUrl": "https://picsum.photos/seed/nutrientdeficiency/100/100",
+      "imageHint": "yellow leaf"
+    },
+    {
+      "id": "practice-water-management",
+      "description": "Drip irrigation system watering plants.",
+      "imageUrl": "https://picsum.photos/seed/watermanage/100/100",
+      "imageHint": "drip irrigation"
+    },
+    {
+      "id": "practice-useful-tips",
+      "description": "A lightbulb icon representing a useful tip.",
+      "imageUrl": "https://picsum.photos/seed/usefultips/100/100",
+      "imageHint": "lightbulb icon"
+    },
+    {
+      "id": "practice-mechanisation",
+      "description": "A modern combine harvester in a field.",
+      "imageUrl": "https://picsum.photos/seed/mechanisation/100/100",
+      "imageHint": "combine harvester"
     }
   ]
 }
-
-    

@@ -243,7 +243,3 @@ export default function MyCropDetailPage({ params }: { params: { cropName: strin
         </div>
     );
 }
-
-    
-
-    
