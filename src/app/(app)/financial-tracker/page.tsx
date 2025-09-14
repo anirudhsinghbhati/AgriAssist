@@ -1,15 +1,18 @@
 
 'use client';
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { IndianRupee, PlusCircle, TrendingDown, TrendingUp } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import TransactionForm, { TransactionFormValues } from '@/components/transaction-form';
 
-const financialData = {
+const initialFinancialData = {
   summary: {
     revenue: 429500,
     expenses: 185200,
@@ -46,24 +49,80 @@ const chartConfig = {
 
 const formatCurrency = (value: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(value);
 
+type Transaction = {
+  id: string;
+  date: string;
+  description: string;
+  type: 'Income' | 'Expense';
+  amount: number;
+};
+
 export default function FinancialTrackerPage() {
+  const [transactions, setTransactions] = useState<Transaction[]>(initialFinancialData.transactions);
+  const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
+  const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+
+  const summary = transactions.reduce((acc, t) => {
+    if (t.type === 'Income') {
+      acc.revenue += t.amount;
+    } else {
+      acc.expenses += Math.abs(t.amount);
+    }
+    acc.profit = acc.revenue - acc.expenses;
+    return acc;
+  }, { revenue: 0, expenses: 0, profit: 0 });
+
+  const handleAddTransaction = (values: TransactionFormValues, type: 'Income' | 'Expense') => {
+    const newTransaction: Transaction = {
+      id: `T${String(transactions.length + 1).padStart(3, '0')}`,
+      date: new Date(values.date).toISOString().split('T')[0],
+      description: values.description,
+      type,
+      amount: type === 'Income' ? values.amount : -values.amount,
+    };
+    setTransactions(prev => [newTransaction, ...prev]);
+    if (type === 'Income') setIsIncomeModalOpen(false);
+    if (type === 'Expense') setIsExpenseModalOpen(false);
+  };
+  
+
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader className="flex flex-row justify-between items-start">
+        <CardHeader className="flex flex-col sm:flex-row justify-between items-start gap-4">
             <div>
                 <CardTitle>Financial Tracker</CardTitle>
                 <CardDescription>Monitor your farm's income, expenses, and overall profitability.</CardDescription>
             </div>
-            <div className="flex gap-2">
-                 <Button variant="outline">
-                    <TrendingUp className="mr-2 h-4 w-4" />
-                    Add Income
-                </Button>
-                <Button>
-                    <TrendingDown className="mr-2 h-4 w-4" />
-                    Add Expense
-                </Button>
+            <div className="flex gap-2 w-full sm:w-auto">
+                <Dialog open={isIncomeModalOpen} onOpenChange={setIsIncomeModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="flex-1">
+                        <TrendingUp className="mr-2 h-4 w-4" />
+                        Add Income
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Add New Income</DialogTitle>
+                    </DialogHeader>
+                    <TransactionForm type="Income" onSubmit={(values) => handleAddTransaction(values, 'Income')} />
+                  </DialogContent>
+                </Dialog>
+                <Dialog open={isExpenseModalOpen} onOpenChange={setIsExpenseModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="flex-1">
+                        <TrendingDown className="mr-2 h-4 w-4" />
+                        Add Expense
+                    </Button>
+                  </DialogTrigger>
+                   <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Add New Expense</DialogTitle>
+                    </DialogHeader>
+                    <TransactionForm type="Expense" onSubmit={(values) => handleAddTransaction(values, 'Expense')} />
+                  </DialogContent>
+                </Dialog>
             </div>
         </CardHeader>
       </Card>
@@ -75,8 +134,8 @@ export default function FinancialTrackerPage() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(financialData.summary.revenue)}</div>
-            <p className="text-xs text-muted-foreground">Last 6 months</p>
+            <div className="text-2xl font-bold">{formatCurrency(summary.revenue)}</div>
+            <p className="text-xs text-muted-foreground">All time</p>
           </CardContent>
         </Card>
         <Card>
@@ -85,8 +144,8 @@ export default function FinancialTrackerPage() {
             <TrendingDown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(financialData.summary.expenses)}</div>
-            <p className="text-xs text-muted-foreground">Last 6 months</p>
+            <div className="text-2xl font-bold">{formatCurrency(summary.expenses)}</div>
+            <p className="text-xs text-muted-foreground">All time</p>
           </CardContent>
         </Card>
         <Card>
@@ -95,8 +154,8 @@ export default function FinancialTrackerPage() {
             <IndianRupee className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{formatCurrency(financialData.summary.profit)}</div>
-            <p className="text-xs text-muted-foreground">Last 6 months</p>
+            <div className={`text-2xl font-bold ${summary.profit >= 0 ? 'text-primary' : 'text-destructive'}`}>{formatCurrency(summary.profit)}</div>
+            <p className="text-xs text-muted-foreground">All time</p>
           </CardContent>
         </Card>
       </div>
@@ -107,7 +166,7 @@ export default function FinancialTrackerPage() {
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-            <BarChart data={financialData.chartData}>
+            <BarChart data={initialFinancialData.chartData}>
               <CartesianGrid vertical={false} />
               <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
               <YAxis tickFormatter={(value) => `₹${Number(value) / 1000}k`} />
@@ -135,7 +194,7 @@ export default function FinancialTrackerPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {financialData.transactions.map((t) => (
+              {transactions.map((t) => (
                 <TableRow key={t.id}>
                   <TableCell>{t.date}</TableCell>
                   <TableCell className="font-medium">{t.description}</TableCell>
