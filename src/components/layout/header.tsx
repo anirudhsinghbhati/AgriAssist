@@ -43,7 +43,25 @@ export function Header() {
 
 
   const pathSegments = pathname.split('/').filter(Boolean);
-  const breadcrumbSegments = pathSegments.filter(segment => segment !== 'dashboard');
+
+  const breadcrumbs = pathSegments.reduce((acc, segment, index) => {
+    if (segment === 'dashboard') return acc;
+    if (segment === '(app)') return acc;
+
+    let href = '';
+    let label = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
+
+    if (segment === 'my-crops') {
+        href = '/dashboard'; 
+        label = 'My Crops';
+    } else {
+        href = `/${pathSegments.slice(0, index + 1).join('/')}`;
+    }
+
+    acc.push({ href, label });
+    return acc;
+  }, [] as { href: string; label: string }[]);
+
 
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
@@ -93,28 +111,20 @@ export function Header() {
               <Link href="/dashboard">Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          {breadcrumbSegments.slice(0, breadcrumbSegments.length -1).map((segment, index) => (
-             <Fragment key={segment}>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                    <BreadcrumbLink asChild>
-                        <Link href={`/${breadcrumbSegments.slice(0, index + 1).join('/')}`}>
-                            {segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ')}
-                        </Link>
-                    </BreadcrumbLink>
-                </BreadcrumbItem>
-             </Fragment>
+          {breadcrumbs.map((crumb, index) => (
+            <Fragment key={crumb.href}>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                {index === breadcrumbs.length - 1 ? (
+                  <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink asChild>
+                    <Link href={crumb.href}>{crumb.label}</Link>
+                  </BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+            </Fragment>
           ))}
-            {breadcrumbSegments.length > 0 && (
-                <Fragment>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbPage>
-                            {breadcrumbSegments[breadcrumbSegments.length - 1].charAt(0).toUpperCase() + breadcrumbSegments[breadcrumbSegments.length - 1].slice(1).replace(/-/g, ' ')}
-                        </BreadcrumbPage>
-                    </BreadcrumbItem>
-                </Fragment>
-            )}
         </BreadcrumbList>
       </Breadcrumb>
       <div className="relative ml-auto flex-1 md:grow-0">
