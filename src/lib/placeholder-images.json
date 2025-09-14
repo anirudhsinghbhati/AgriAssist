@@ -122,60 +122,6 @@
       "imageHint": "tractor sowing"
     },
     {
-      "id": "practice-land-prep",
-      "description": "A tractor preparing land for sowing",
-      "imageUrl": "https://picsum.photos/seed/landprep/100/100",
-      "imageHint": "tractor plowing"
-    },
-    {
-      "id": "practice-variety",
-      "description": "Different varieties of seeds",
-      "imageUrl": "https://picsum.photos/seed/variety/100/100",
-      "imageHint": "seeds variety"
-    },
-    {
-      "id": "practice-seed-treatment",
-      "description": "Seeds being treated with chemicals",
-      "imageUrl": "https://picsum.photos/seed/seedtreatment/100/100",
-      "imageHint": "coated seeds"
-    },
-    {
-      "id": "practice-weed-management",
-      "description": "Farmer removing weeds from a field",
-      "imageUrl": "https://picsum.photos/seed/weedmanagement/100/100",
-      "imageHint": "removing weeds"
-    },
-    {
-      "id": "practice-nutrition",
-      "description": "Bags of fertilizer",
-      "imageUrl": "https://picsum.photos/seed/nutrition/100/100",
-      "imageHint": "fertilizer bags"
-    },
-    {
-      "id": "practice-nutrient-deficiency",
-      "description": "A leaf showing signs of nutrient deficiency",
-      "imageUrl": "https://picsum.photos/seed/nutrientdeficiency/100/100",
-      "imageHint": "yellow leaf"
-    },
-    {
-      "id": "practice-water-management",
-      "description": "Drip irrigation system in a field",
-      "imageUrl": "https://picsum.photos/seed/watermanagement/100/100",
-      "imageHint": "drip irrigation"
-    },
-    {
-      "id": "practice-useful-tips",
-      "description": "A lightbulb icon representing useful tips",
-      "imageUrl": "https://picsum.photos/seed/usefultips/100/100",
-      "imageHint": "lightbulb idea"
-    },
-    {
-      "id": "practice-mechanisation",
-      "description": "A combine harvester in a field",
-      "imageUrl": "https://picsum.photos/seed/mechanisation/100/100",
-      "imageHint": "combine harvester"
-    },
-    {
       "id": "help-card-image",
       "description": "Two farmers looking at a tablet in a greenhouse",
       "imageUrl": "https://picsum.photos/seed/helpcard/300/300",
@@ -204,6 +150,32 @@
       "description": "Crates of freshly harvested vegetables.",
       "imageUrl": "https://picsum.photos/seed/postharvest/600/400",
       "imageHint": "harvested vegetables"
+    },
+    {
+      "id": "seed-soybean-js335",
+      "description": "A close-up of JS-335 soybean seeds.",
+      "imageUrl": "https://picsum.photos/seed/soybeanjs335/600/400",
+      "imageHint": "soybean seeds"
+    },
+    {
+      "id": "seed-soybean-nrc37",
+      "description": "A healthy NRC-37 soybean plant in a field.",
+      "imageUrl": "https://picsum.photos/seed/soybeannrc37/600/400",
+      "imageHint": "soybean plant"
+    },
+    {
+      "id": "seed-cotton-bt",
+      "description": "A BT cotton boll ready for harvest.",
+      "imageUrl": "https://picsum.photos/seed/cottonbt/600/400",
+      "imageHint": "cotton boll"
+    },
+    {
+      "id": "seed-cotton-dch32",
+      "description": "High-quality long-staple DCH-32 cotton fiber.",
+      "imageUrl": "https://picsum.photos/seed/cottondch32/600/400",
+      "imageHint": "cotton fiber"
     }
   ]
 }
+
+    
