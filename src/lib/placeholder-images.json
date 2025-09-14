@@ -35,6 +35,30 @@
       "description": "A soil moisture sensor in the ground",
       "imageUrl": "https://picsum.photos/seed/soilmoisture/100/100",
       "imageHint": "soil sensor"
+    },
+    {
+      "id": "avatar-rajesh",
+      "description": "Avatar for Rajesh Kumar",
+      "imageUrl": "https://picsum.photos/seed/rajesh/100/100",
+      "imageHint": "indian farmer"
+    },
+    {
+      "id": "avatar-anjali",
+      "description": "Avatar for Anjali Patel",
+      "imageUrl": "https://picsum.photos/seed/anjali/100/100",
+      "imageHint": "indian woman"
+    },
+    {
+      "id": "avatar-vikram",
+      "description": "Avatar for Vikram Singh",
+      "imageUrl": "https://picsum.photos/seed/vikram/100/100",
+      "imageHint": "farmer face"
+    },
+    {
+      "id": "avatar-sunita",
+      "description": "Avatar for Sunita Devi",
+      "imageUrl": "https://picsum.photos/seed/sunita/100/100",
+      "imageHint": "woman farmer"
     }
   ]
 }
