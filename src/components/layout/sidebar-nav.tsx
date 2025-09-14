@@ -40,7 +40,7 @@ const navItems = [
   { href: '/weather', icon: CloudSun, label: 'Weather Alerts' },
   { href: '/resource-hub', icon: BookOpen, label: 'Resource Hub' },
   { href: '/community', icon: Users, label: 'Community Forum' },
-  { href: '/consultation', icon: MessageSquare, label: 'Expert Consultation' },
+  { href: '#', icon: MessageSquare, label: 'Expert Consultation' },
   { href: '/reports', icon: ClipboardList, label: 'Reports' },
 ];
 
