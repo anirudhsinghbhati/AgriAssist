@@ -1,0 +1,78 @@
+{
+    "nav": {
+        "dashboard": "Dashboard",
+        "calendar": "Calendar",
+        "crop-recommendations": "Crop Advisory",
+        "pest-detection": "Pest Detection",
+        "irrigation-planner": "Irrigation Planner",
+        "yield-prediction": "Yield Prediction",
+        "market-prices": "Market Prices",
+        "financial-tracker": "Financial Tracker",
+        "inventory": "Inventory",
+        "weather": "Weather Alerts",
+        "resource-hub": "Resource Hub",
+        "community": "Community Forum",
+        "consultation": "Expert Consultation",
+        "reports": "Reports",
+        "settings": "Settings",
+        "my_crops": "My Crops"
+    },
+    "header": {
+        "toggle_menu": "Toggle Menu",
+        "toggle_theme": "Toggle theme",
+        "dropdown": {
+            "my_account": "My Account",
+            "settings": "Settings",
+            "language": "Language",
+            "support": "Support",
+            "logout": "Logout"
+        }
+    },
+    "settings": {
+        "title": "Settings",
+        "description": "Customize your app experience. Manage navigation links, language, and other preferences here.",
+        "language": {
+            "title": "Language",
+            "select_placeholder": "Select language",
+            "english": "English",
+            "hindi": "हिन्दी (Hindi)"
+        },
+        "customize_nav": {
+            "title": "Customize Navigation Menu"
+        },
+        "apply_button": "Apply Changes",
+        "toast": {
+            "title": "Settings Saved",
+            "description": "Your preferences have been updated."
+        }
+    },
+    "dashboard": {
+        "welcome_back": "Welcome back, Farmer!",
+        "summary_today": "Here is your farm's summary for today.",
+        "todays_focus": {
+            "title": "Today's Focus",
+            "description": "Key alerts and conditions for your farm today.",
+            "weather": "28°C Sunny",
+            "humidity": "Humidity: 65%",
+            "soybean_price": "Soybean is up 2.1%",
+            "pest_alert_title": "High Pest Activity Warning!",
+            "pest_alert_description": "Conditions are favorable for aphid infestation in your area. Monitor your crops closely and consider preventative measures."
+        },
+        "my_crops": {
+            "title": "My Crops",
+            "description": "Track the growth stages of your crops.",
+            "add_button": "Add New Crop",
+            "current_stage": "Current Stage"
+        },
+        "quick_actions": {
+            "title": "Quick Actions",
+            "detect_pest": "Detect Pest/Disease",
+            "market_prices": "Check Market Prices",
+            "consult_expert": "Consult an Expert"
+        },
+        "profitability": {
+            "title": "Profitability Score",
+            "change": "+12% from last month"
+        }
+    }
+}

@@ -36,8 +36,11 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import React, { Fragment, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { useVisibleNavItems, useNavStore } from '@/hooks/use-nav-store';
+import { useTranslation } from '@/hooks/use-translation';
+import { navConfig } from '@/lib/nav-config';
 
 export function Header() {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const avatar = PlaceHolderImages.find((img) => img.id === 'avatar');
   const { theme, setTheme } = useTheme();
@@ -53,11 +56,13 @@ export function Header() {
     if (segment === '(app)') return acc;
 
     let href = '';
-    let label = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
+    const navItem = navConfig.find(item => item.href.includes(segment));
+    let label = navItem ? t(`nav.${navItem.id}`) : segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
+
 
     if (segment === 'my-crops') {
         href = '/dashboard'; 
-        label = 'My Crops';
+        label = t('nav.my_crops');
     } else {
         href = `/${pathSegments.slice(0, index + 1).join('/')}`;
     }
@@ -81,7 +86,7 @@ export function Header() {
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
             <PanelLeft className="h-5 w-5" />
-            <span className="sr-only">Toggle Menu</span>
+            <span className="sr-only">{t('header.toggle_menu')}</span>
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="sm:max-w-xs">
@@ -102,7 +107,7 @@ export function Header() {
                 className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
               >
                 <item.icon className="h-5 w-5" />
-                {item.label}
+                {t(`nav.${item.id}`)}
               </Link>
             ))}
           </nav>
@@ -112,7 +117,7 @@ export function Header() {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/dashboard">Dashboard</Link>
+              <Link href="/dashboard">{t('nav.dashboard')}</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           {breadcrumbs.map((crumb, index) => (
@@ -137,7 +142,7 @@ export function Header() {
        <Button variant="outline" size="icon" onClick={toggleTheme}>
             <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle theme</span>
+            <span className="sr-only">{t('header.toggle_theme')}</span>
         </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -155,24 +160,24 @@ export function Header() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>{t('header.dropdown.my_account')}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href="/settings" className='w-full'>Settings</Link>
+            <Link href="/settings" className='w-full'>{t('header.dropdown.settings')}</Link>
           </DropdownMenuItem>
            <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <span>Language</span>
+              <span>{t('header.dropdown.language')}</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
-              <DropdownMenuItem onClick={() => setLanguage('en')}>English</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage('hi')}>हिन्दी (Hindi)</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage('en')}>{t('settings.language.english')}</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage('hi')}>{t('settings.language.hindi')}</DropdownMenuItem>
             </DropdownMenuSubContent>
           </DropdownMenuSub>
-          <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuItem>{t('header.dropdown.support')}</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href="/login">Logout</Link>
+            <Link href="/login">{t('header.dropdown.logout')}</Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

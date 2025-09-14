@@ -1,0 +1,78 @@
+{
+    "nav": {
+        "dashboard": "डैशबोर्ड",
+        "calendar": "कैलेंडर",
+        "crop-recommendations": "फसल सलाह",
+        "pest-detection": "कीट पहचान",
+        "irrigation-planner": "सिंचाई योजनाकार",
+        "yield-prediction": "उपज भविष्यवाणी",
+        "market-prices": "बाजार मूल्य",
+        "financial-tracker": "वित्तीय ट्रैकर",
+        "inventory": "इन्वेंटरी",
+        "weather": "मौसम अलर्ट",
+        "resource-hub": "संसाधन हब",
+        "community": "सामुदायिक मंच",
+        "consultation": "विशेषज्ञ परामर्श",
+        "reports": "रिपोर्ट",
+        "settings": "सेटिंग्स",
+        "my_crops": "मेरी फसलें"
+    },
+    "header": {
+        "toggle_menu": "मेनू टॉगल करें",
+        "toggle_theme": "थीम टॉगल करें",
+        "dropdown": {
+            "my_account": "मेरा खाता",
+            "settings": "सेटिंग्स",
+            "language": "भाषा",
+            "support": "समर्थन",
+            "logout": "लॉग आउट"
+        }
+    },
+    "settings": {
+        "title": "सेटिंग्स",
+        "description": "अपने ऐप अनुभव को अनुकूलित करें। यहां नेविगेशन लिंक, भाषा और अन्य प्राथमिकताएं प्रबंधित करें।",
+        "language": {
+            "title": "भाषा",
+            "select_placeholder": "भाषा चुनें",
+            "english": "English",
+            "hindi": "हिन्दी (Hindi)"
+        },
+        "customize_nav": {
+            "title": "नेविगेशन मेनू अनुकूलित करें"
+        },
+        "apply_button": "बदलाव लागू करें",
+        "toast": {
+            "title": "सेटिंग्स सहेजी गईं",
+            "description": "आपकी प्राथमिकताएं अपडेट कर दी गई हैं।"
+        }
+    },
+    "dashboard": {
+        "welcome_back": "वापसी पर स्वागत है, किसान!",
+        "summary_today": "आज आपके खेत का सारांश यहाँ है।",
+        "todays_focus": {
+            "title": "आज का फोकस",
+            "description": "आज आपके खेत के लिए मुख्य अलर्ट और स्थितियाँ।",
+            "weather": "28°C धूप",
+            "humidity": "आर्द्रता: 65%",
+            "soybean_price": "सोयाबीन 2.1% ऊपर है",
+            "pest_alert_title": "उच्च कीट गतिविधि की चेतावनी!",
+            "pest_alert_description": "आपके क्षेत्र में एफिड संक्रमण के लिए स्थितियाँ अनुकूल हैं। अपनी फसलों की बारीकी से निगरानी करें और निवारक उपायों पर विचार करें।"
+        },
+        "my_crops": {
+            "title": "मेरी फसलें",
+            "description": "अपनी फसलों के विकास चरणों को ट्रैक करें।",
+            "add_button": "नई फसल जोड़ें",
+            "current_stage": "वर्तमान चरण"
+        },
+        "quick_actions": {
+            "title": "त्वरित कार्रवाइयां",
+            "detect_pest": "कीट/रोग का पता लगाएं",
+            "market_prices": "बाजार मूल्य जांचें",
+            "consult_expert": "विशेषज्ञ से सलाह लें"
+        },
+        "profitability": {
+            "title": "लाभप्रदता स्कोर",
+            "change": "पिछले महीने से +12%"
+        }
+    }
+}

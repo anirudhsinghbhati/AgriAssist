@@ -12,8 +12,10 @@ import {
 import { Settings, Leaf } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useVisibleNavItems, useNavStore } from '@/hooks/use-nav-store';
+import { useTranslation } from '@/hooks/use-translation';
 
 export function SidebarNav() {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const visibleNavItems = useVisibleNavItems();
 
@@ -44,10 +46,10 @@ export function SidebarNav() {
                   )}
                 >
                   <item.icon className="h-5 w-5" />
-                  <span className="sr-only">{item.label}</span>
+                  <span className="sr-only">{t(`nav.${item.id}`)}</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">{item.label}</TooltipContent>
+              <TooltipContent side="right">{t(`nav.${item.id}`)}</TooltipContent>
             </Tooltip>
           ))}
         </TooltipProvider>
@@ -64,10 +66,10 @@ export function SidebarNav() {
                         )}
                     >
                         <settingsItem.icon className="h-5 w-5" />
-                        <span className="sr-only">{settingsItem.label}</span>
+                        <span className="sr-only">{t(`nav.${settingsItem.id}`)}</span>
                     </Link>
                     </TooltipTrigger>
-                    <TooltipContent side="right">{settingsItem.label}</TooltipContent>
+                    <TooltipContent side="right">{t(`nav.${settingsItem.id}`)}</TooltipContent>
                 </Tooltip>
             )}
         </TooltipProvider>

@@ -1,4 +1,6 @@
 
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { ArrowUpRight, Cloud, IndianRupee, Lightbulb, Sprout, Leaf, MessageSquare, PlusCircle, TrendingUp, AlertTriangle } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useTranslation } from '@/hooks/use-translation';
 
 const cropData = [
     { 
@@ -28,7 +31,9 @@ const cropStages = [
 ];
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const userAvatar = PlaceHolderImages.find((img) => img.id === 'avatar');
+
   return (
     <div className="flex flex-1 flex-col gap-6 md:gap-8">
       
@@ -44,8 +49,8 @@ export default function Dashboard() {
             />
         )}
         <div>
-            <h1 className="text-3xl font-bold tracking-tight">Welcome back, Farmer!</h1>
-            <p className="text-muted-foreground">Here is your farm's summary for today.</p>
+            <h1 className="text-3xl font-bold tracking-tight">{t('dashboard.welcome_back')}</h1>
+            <p className="text-muted-foreground">{t('dashboard.summary_today')}</p>
         </div>
       </div>
       
@@ -53,29 +58,29 @@ export default function Dashboard() {
         <div className="space-y-6 xl:col-span-2">
            <Card>
              <CardHeader>
-                <CardTitle>Today's Focus</CardTitle>
-                <CardDescription>Key alerts and conditions for your farm today.</CardDescription>
+                <CardTitle>{t('dashboard.todays_focus.title')}</CardTitle>
+                <CardDescription>{t('dashboard.todays_focus.description')}</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 sm:grid-cols-2">
                 <div className="p-4 bg-muted/50 rounded-lg flex items-center gap-4">
                     <Cloud className="h-8 w-8 text-blue-500" />
                     <div>
-                        <p className="font-semibold">28°C Sunny</p>
-                        <p className="text-sm text-muted-foreground">Humidity: 65%</p>
+                        <p className="font-semibold">{t('dashboard.todays_focus.weather')}</p>
+                        <p className="text-sm text-muted-foreground">{t('dashboard.todays_focus.humidity')}</p>
                     </div>
                 </div>
                  <div className="p-4 bg-muted/50 rounded-lg flex items-center gap-4">
                     <TrendingUp className="h-8 w-8 text-green-500" />
                     <div>
                         <p className="font-semibold">₹4,800/Qtl</p>
-                        <p className="text-sm text-muted-foreground">Soybean is up 2.1%</p>
+                        <p className="text-sm text-muted-foreground">{t('dashboard.todays_focus.soybean_price')}</p>
                     </div>
                 </div>
                  <Alert variant="destructive" className="sm:col-span-2">
                     <AlertTriangle className="h-4 w-4" />
-                    <AlertTitle>High Pest Activity Warning!</AlertTitle>
+                    <AlertTitle>{t('dashboard.todays_focus.pest_alert_title')}</AlertTitle>
                     <AlertDescription>
-                        Conditions are favorable for aphid infestation in your area. Monitor your crops closely and consider preventative measures.
+                        {t('dashboard.todays_focus.pest_alert_description')}
                     </AlertDescription>
                 </Alert>
             </CardContent>
@@ -84,14 +89,14 @@ export default function Dashboard() {
           <Card>
             <CardHeader className="flex flex-row items-center">
                 <div className="grid gap-2">
-                <CardTitle>My Crops</CardTitle>
+                <CardTitle>{t('dashboard.my_crops.title')}</CardTitle>
                 <CardDescription>
-                    Track the growth stages of your crops.
+                    {t('dashboard.my_crops.description')}
                 </CardDescription>
                 </div>
                 <Button asChild size="sm" className="ml-auto gap-1">
                 <Link href="#">
-                    Add New Crop
+                    {t('dashboard.my_crops.add_button')}
                     <PlusCircle className="h-4 w-4" />
                 </Link>
                 </Button>
@@ -114,7 +119,7 @@ export default function Dashboard() {
                         <div className="flex-1">
                         <p className="font-semibold leading-none text-lg">{crop.name}</p>
                         <p className="text-sm text-muted-foreground">
-                            Current Stage: <span className="font-semibold text-primary">{crop.stage}</span>
+                            {t('dashboard.my_crops.current_stage')}: <span className="font-semibold text-primary">{crop.stage}</span>
                         </p>
                         </div>
                         <Button variant="ghost" size="icon">
@@ -137,25 +142,25 @@ export default function Dashboard() {
         <div className="space-y-6">
             <Card>
             <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
+                <CardTitle>{t('dashboard.quick_actions.title')}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
                 <Button asChild size="lg" className="w-full justify-start gap-3 p-6">
                     <Link href="/pest-detection">
                         <Leaf className="h-6 w-6"/>
-                        <span className="text-base font-semibold">Detect Pest/Disease</span>
+                        <span className="text-base font-semibold">{t('dashboard.quick_actions.detect_pest')}</span>
                     </Link>
                 </Button>
                 <Button asChild size="lg" variant="secondary" className="w-full justify-start gap-3 p-6">
                     <Link href="/market-prices">
                         <Sprout className="h-6 w-6"/>
-                        <span className="text-base font-semibold">Check Market Prices</span>
+                        <span className="text-base font-semibold">{t('dashboard.quick_actions.market_prices')}</span>
                     </Link>
                 </Button>
                 <Button asChild size="lg" variant="secondary" className="w-full justify-start gap-3 p-6">
                     <Link href="/consultation">
                         <MessageSquare className="h-6 w-6"/>
-                        <span className="text-base font-semibold">Consult an Expert</span>
+                        <span className="text-base font-semibold">{t('dashboard.quick_actions.consult_expert')}</span>
                     </Link>
                 </Button>
             </CardContent>
@@ -163,12 +168,12 @@ export default function Dashboard() {
 
              <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Profitability Score</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('dashboard.profitability.title')}</CardTitle>
                     <IndianRupee className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                     <div className="text-3xl font-bold">85/100</div>
-                    <p className="text-xs text-muted-foreground">+12% from last month</p>
+                    <p className="text-xs text-muted-foreground">{t('dashboard.profitability.change')}</p>
                 </CardContent>
             </Card>
         </div>
