@@ -59,6 +59,30 @@
       "description": "Avatar for Sunita Devi",
       "imageUrl": "https://picsum.photos/seed/sunita/100/100",
       "imageHint": "woman farmer"
+    },
+    {
+      "id": "avatar-anil",
+      "description": "Avatar for Dr. Anil Sharma",
+      "imageUrl": "https://picsum.photos/seed/anil/100/100",
+      "imageHint": "male expert"
+    },
+    {
+      "id": "avatar-kavita",
+      "description": "Avatar for Mrs. Kavita Reddy",
+      "imageUrl": "https://picsum.photos/seed/kavita/100/100",
+      "imageHint": "female expert"
+    },
+    {
+      "id": "avatar-ramesh",
+      "description": "Avatar for Prof. Ramesh Gupta",
+      "imageUrl": "https://picsum.photos/seed/ramesh/100/100",
+      "imageHint": "senior expert"
+    },
+    {
+      "id": "avatar-sunita-expert",
+      "description": "Avatar for Dr. Sunita Singh",
+      "imageUrl": "https://picsum.photos/seed/sunitasingh/100/100",
+      "imageHint": "woman specialist"
     }
   ]
 }
