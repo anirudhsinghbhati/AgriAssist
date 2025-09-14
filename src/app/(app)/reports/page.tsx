@@ -64,7 +64,7 @@ export default function ReportsPage() {
     return (
         <div className="space-y-6">
             <Card>
-                <CardHeader className="flex flex-row justify-between items-start">
+                <CardHeader className="flex flex-col sm:flex-row justify-between items-start gap-4">
                     <div>
                         <CardTitle>Reports & Analytics</CardTitle>
                         <CardDescription>

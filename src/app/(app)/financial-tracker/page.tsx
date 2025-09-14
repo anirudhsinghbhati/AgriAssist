@@ -111,7 +111,7 @@ export default function FinancialTrackerPage() {
                 </Dialog>
                 <Dialog open={isExpenseModalOpen} onOpenChange={setIsExpenseModalOpen}>
                   <DialogTrigger asChild>
-                    <Button className="flex-1">
+                    <Button variant="destructive" className="flex-1">
                         <TrendingDown className="mr-2 h-4 w-4" />
                         Add Expense
                     </Button>
