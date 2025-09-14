@@ -21,6 +21,8 @@ import {
   BookOpen,
   IndianRupee,
   Calendar,
+  Moon,
+  Sun,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -38,11 +40,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Fragment } from 'react';
+import { useTheme } from 'next-themes';
 
 const navItems = [
     { href: '/dashboard', icon: Home, label: 'Dashboard' },
@@ -63,6 +67,7 @@ const navItems = [
 export function Header() {
   const pathname = usePathname();
   const avatar = PlaceHolderImages.find((img) => img.id === 'avatar');
+  const { setTheme, theme } = useTheme();
 
   const pathSegments = pathname.split('/').filter(Boolean);
   const breadcrumbSegments = pathSegments.filter(segment => segment !== 'dashboard');
@@ -132,6 +137,20 @@ export function Header() {
       <div className="relative ml-auto flex-1 md:grow-0">
         {/* Search can go here if needed */}
       </div>
+       <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon">
+            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span className="sr-only">Toggle theme</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
