@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowUpRight, Cloud, DollarSign, Leaf, Lightbulb, Sprout, LineChart, MessageSquare } from 'lucide-react';
+import { ArrowUpRight, Cloud, IndianRupee, Leaf, Lightbulb, Sprout, LineChart, MessageSquare } from 'lucide-react';
 
 export default function Dashboard() {
   return (
@@ -30,7 +30,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Profitability Score</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <IndianRupee className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">85/100</div>
