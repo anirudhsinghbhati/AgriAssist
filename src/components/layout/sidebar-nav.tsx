@@ -23,6 +23,7 @@ import {
   ClipboardList,
   Droplets,
   BookOpen,
+  IndianRupee,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -32,6 +33,7 @@ const navItems = [
   { href: '/pest-detection', icon: Bug, label: 'Pest Detection' },
   { href: '/irrigation-planner', icon: Droplets, label: 'Irrigation Planner' },
   { href: '/market-prices', icon: LineChart, label: 'Market Prices' },
+  { href: '/financial-tracker', icon: IndianRupee, label: 'Financial Tracker' },
   { href: '/weather', icon: CloudSun, label: 'Weather Alerts' },
   { href: '/resource-hub', icon: BookOpen, label: 'Resource Hub' },
   { href: '/community', icon: Users, label: 'Community Forum' },
