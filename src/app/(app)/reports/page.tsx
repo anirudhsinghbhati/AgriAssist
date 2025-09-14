@@ -59,6 +59,8 @@ const chartConfig = {
 };
 
 export default function ReportsPage() {
+    const totalRevenue = harvestData.reduce((acc, curr) => acc + curr.revenue, 0);
+
     return (
         <div className="space-y-6">
             <Card>
@@ -83,7 +85,7 @@ export default function ReportsPage() {
                         <IndianRupee className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">₹4,29,500</div>
+                        <div className="text-2xl font-bold">₹{totalRevenue.toLocaleString('en-IN')}</div>
                         <p className="text-xs text-muted-foreground">in the last 12 months</p>
                     </CardContent>
                 </Card>
@@ -152,9 +154,9 @@ export default function ReportsPage() {
                                     tickMargin={8}
                                 />
                                 <YAxis 
-                                    tickFormatter={(value) => `₹${Number(value) / 1000}k`}
+                                    tickFormatter={(value) => `₹${(Number(value) / 1000).toLocaleString('en-IN')}k`}
                                 />
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+                                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" formatter={(value) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(value))} />} />
                                 <Line
                                     dataKey="profit"
                                     type="monotone"
