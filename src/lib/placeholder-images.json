@@ -228,30 +228,6 @@
       "description": "A modern combine harvester in a field.",
       "imageUrl": "https://picsum.photos/seed/mechanisation/100/100",
       "imageHint": "combine harvester"
-    },
-    {
-      "id": "organic-neem-oil",
-      "description": "A bottle of neem oil with neem leaves.",
-      "imageUrl": "https://picsum.photos/seed/neemoil/600/400",
-      "imageHint": "neem oil"
-    },
-    {
-      "id": "organic-companion-planting",
-      "description": "Marigolds planted next to tomato plants.",
-      "imageUrl": "https://picsum.photos/seed/companion/600/400",
-      "imageHint": "marigolds tomatoes"
-    },
-    {
-      "id": "organic-sticky-traps",
-      "description": "Yellow sticky traps hanging in a greenhouse.",
-      "imageUrl": "https://picsum.photos/seed/stickytrap/600/400",
-      "imageHint": "sticky traps"
-    },
-    {
-      "id": "organic-diatomaceous-earth",
-      "description": "White diatomaceous earth powder sprinkled around a plant.",
-      "imageUrl": "https://picsum.photos/seed/diatomaceous/600/400",
-      "imageHint": "white powder"
     }
   ]
 }
