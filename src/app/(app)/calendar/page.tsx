@@ -31,16 +31,19 @@ export default function CalendarPage() {
               onSelect={setDate}
               className="w-full"
               components={{
-                DayContent: ({ date }) => {
-                  const dayEvents = events.filter(event => isSameDay(event.date, date));
+                DayContent: ({ date: dayDate }) => {
+                  const dayEventsForCell = events.filter(event => isSameDay(event.date, dayDate));
+                  const originalDate = new Date(dayDate);
+                  originalDate.setHours(0,0,0,0);
+                  
                   return (
                     <div className="relative h-full w-full">
-                      <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                        {format(date, 'd')}
+                       <span className={isSameDay(originalDate, new Date(new Date().setHours(0,0,0,0))) ? 'font-bold' : ''}>
+                        {format(dayDate, 'd')}
                       </span>
-                      {dayEvents.length > 0 && (
+                      {dayEventsForCell.length > 0 && (
                         <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex space-x-0.5">
-                          {dayEvents.slice(0, 2).map((event, i) => (
+                          {dayEventsForCell.slice(0, 3).map((event, i) => (
                             <div key={i} className={`h-1.5 w-1.5 rounded-full ${event.color}`} />
                           ))}
                         </div>
