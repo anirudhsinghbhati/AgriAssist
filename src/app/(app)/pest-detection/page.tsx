@@ -1,13 +1,18 @@
+
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import PestDetectionForm from "@/components/pest-detection-form";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function PestDetectionPage() {
+    const { t } = useTranslation();
     return (
         <Card>
             <CardHeader>
-                <CardTitle>AI Pest & Disease Detection</CardTitle>
+                <CardTitle>{t('pest_detection.title')}</CardTitle>
                 <CardDescription>
-                    Upload a photo of an affected crop, and our AI will analyze it to identify potential pests or diseases and suggest treatments.
+                    {t('pest_detection.description')}
                 </CardDescription>
             </CardHeader>
             <CardContent>

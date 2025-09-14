@@ -192,6 +192,27 @@
             "change": "Change"
         }
     },
+    "pest_detection": {
+        "title": "AI Pest & Disease Detection",
+        "description": "Upload a photo of an affected crop, and our AI will analyze it to identify potential pests or diseases and suggest treatments.",
+        "form": {
+            "upload_instruction": "Click to upload or drag & drop an image",
+            "upload_size_limit": "(Max file size: 4MB)",
+            "button_analyzing": "Analyzing...",
+            "button_analyze": "Analyze Crop Image",
+            "error_file_size": "File size must be less than 4MB.",
+            "error_no_image": "Please upload an image first.",
+            "error_analysis": "Failed to analyze the image. Please try again."
+        },
+        "toast": {
+            "title": "Analysis Failed",
+            "description": "There was a problem analyzing your image. Please try another one."
+        },
+        "results": {
+            "diagnosis": "Diagnosis",
+            "treatment": "Treatment Suggestions"
+        }
+    },
     "reports": {
         "title": "Reports & Analytics",
         "description": "Track your farm's productivity, soil health, and get yield predictions.",

@@ -9,6 +9,7 @@ import { aiDrivenPestDiseaseDetection } from '@/ai/flows/ai-driven-pest-disease-
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/use-translation';
 
 type DetectionResult = {
   diagnosis: string;
@@ -16,6 +17,7 @@ type DetectionResult = {
 };
 
 export default function PestDetectionForm() {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<DetectionResult | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -27,7 +29,7 @@ export default function PestDetectionForm() {
     const file = event.target.files?.[0];
     if (file) {
       if (file.size > 4 * 1024 * 1024) { // 4MB limit
-        setError('File size must be less than 4MB.');
+        setError(t('pest_detection.form.error_file_size'));
         setPreview(null);
         return;
       }
@@ -43,7 +45,7 @@ export default function PestDetectionForm() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!preview) {
-      setError('Please upload an image first.');
+      setError(t('pest_detection.form.error_no_image'));
       return;
     }
 
@@ -56,11 +58,11 @@ export default function PestDetectionForm() {
       setResult(response);
     } catch (err) {
       console.error(err);
-      setError('Failed to analyze the image. Please try again.');
+      setError(t('pest_detection.form.error_analysis'));
       toast({
         variant: 'destructive',
-        title: 'Analysis Failed',
-        description: 'There was a problem analyzing your image. Please try another one.',
+        title: t('pest_detection.toast.title'),
+        description: t('pest_detection.toast.description'),
       });
     } finally {
       setIsLoading(false);
@@ -86,8 +88,8 @@ export default function PestDetectionForm() {
           ) : (
             <div className="flex flex-col items-center gap-2 text-muted-foreground">
                 <Upload className="w-10 h-10" />
-                <p>Click to upload or drag &amp; drop an image</p>
-                <p className='text-xs'>(Max file size: 4MB)</p>
+                <p>{t('pest_detection.form.upload_instruction')}</p>
+                <p className='text-xs'>{t('pest_detection.form.upload_size_limit')}</p>
             </div>
           )}
         </div>
@@ -96,7 +98,7 @@ export default function PestDetectionForm() {
 
         <Button type="submit" disabled={isLoading || !preview} className="w-full sm:w-auto">
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isLoading ? 'Analyzing...' : 'Analyze Crop Image'}
+          {isLoading ? t('pest_detection.form.button_analyzing') : t('pest_detection.form.button_analyze')}
         </Button>
       </form>
 
@@ -104,7 +106,7 @@ export default function PestDetectionForm() {
         <div className="grid md:grid-cols-2 gap-6">
             <Card className="bg-primary/5">
                 <CardHeader>
-                    <CardTitle>Diagnosis</CardTitle>
+                    <CardTitle>{t('pest_detection.results.diagnosis')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="whitespace-pre-line">{result.diagnosis}</p>
@@ -112,7 +114,7 @@ export default function PestDetectionForm() {
             </Card>
             <Card className="bg-accent/5">
                 <CardHeader>
-                    <CardTitle>Treatment Suggestions</CardTitle>
+                    <CardTitle>{t('pest_detection.results.treatment')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="whitespace-pre-line">{result.treatmentSuggestions}</p>
