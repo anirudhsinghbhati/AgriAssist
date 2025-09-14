@@ -80,7 +80,7 @@ export default function PestDetectionForm() {
           />
           {preview ? (
             <div className="relative w-full max-w-sm mx-auto aspect-square">
-              <Image src={preview} alt="Crop preview" layout="fill" objectFit="contain" className="rounded-md" />
+              <Image src={preview} alt="Crop preview" fill className="object-contain rounded-md" />
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2 text-muted-foreground">

@@ -58,15 +58,14 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      <div className="hidden bg-muted lg:block">
+      <div className="hidden bg-muted lg:block relative">
         {loginBg && (
           <Image
             src={loginBg.imageUrl}
             alt={loginBg.description}
-            width="1920"
-            height="1080"
+            fill
             data-ai-hint={loginBg.imageHint}
-            className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            className="object-cover dark:brightness-[0.2] dark:grayscale"
           />
         )}
       </div>
