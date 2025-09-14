@@ -87,7 +87,7 @@ export default function ConsultationPage() {
                             </CardHeader>
                             <CardContent className="flex-grow flex flex-col justify-end">
                                 <div className="flex justify-between items-center">
-                                    <Badge variant={expert.status === 'Online' ? 'default' : 'outline'} className={expert.status === 'Online' ? 'bg-green-500/20 text-green-700' : ''}>
+                                    <Badge variant={expert.status === 'Online' ? 'default' : 'outline'} className={expert.status === 'Online' ? 'bg-green-500/20 text-green-700 border-green-500/30' : ''}>
                                         {expert.status}
                                     </Badge>
                                     <div className="flex gap-2">
