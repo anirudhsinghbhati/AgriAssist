@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { voiceAssistedNavigation } from '@/ai/flows/voice-assisted-app-navigation';
+import { Loader2 } from 'lucide-react';
 
 export default function VoiceAssistant() {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +40,7 @@ export default function VoiceAssistant() {
     <>
       <Button
         size="icon"
-        className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg"
+        className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg z-50"
         onClick={() => setIsOpen(true)}
       >
         <Mic className="h-8 w-8" />
@@ -61,14 +62,24 @@ export default function VoiceAssistant() {
               onChange={(e) => setUserInput(e.target.value)}
               placeholder="e.g., 'Show me crop recommendations'"
               disabled={isLoading}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                    handleInteraction();
+                }
+              }}
             />
-            {isLoading && <p className="text-sm text-muted-foreground">Thinking...</p>}
+            {isLoading && (
+                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Thinking...</span>
+                </div>
+            )}
             {aiResponse && (
               <div className="mt-2 rounded-md border bg-muted/50 p-3 text-sm">{aiResponse}</div>
             )}
           </div>
           <DialogFooter>
-            <Button onClick={handleInteraction} disabled={isLoading}>
+            <Button onClick={handleInteraction} disabled={isLoading || !userInput}>
               {isLoading ? 'Processing...' : 'Ask'}
             </Button>
           </DialogFooter>
