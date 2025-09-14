@@ -1,7 +1,29 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowUpRight, Cloud, IndianRupee, Leaf, Lightbulb, Sprout, LineChart, MessageSquare } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { ArrowUpRight, Cloud, IndianRupee, Lightbulb, Sprout, Leaf, MessageSquare, PlusCircle } from 'lucide-react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+
+const cropData = [
+    { 
+        name: 'Soybean', 
+        stage: 'Flowering', 
+        progress: 55, 
+        image: PlaceHolderImages.find(img => img.id === 'soybean-crop'),
+    },
+    { 
+        name: 'Cotton', 
+        stage: 'Vegetative Growth', 
+        progress: 40,
+        image: PlaceHolderImages.find(img => img.id === 'cotton-crop'),
+    },
+];
+
+const cropStages = [
+    'Field Prep', 'Sowing', 'Emergence', 'Vegetative', 'Flowering', 'Pod Formation', 'Seed Dev', 'Maturity', 'Harvesting'
+];
 
 export default function Dashboard() {
   return (
@@ -52,45 +74,47 @@ export default function Dashboard() {
         <Card className="xl:col-span-2">
           <CardHeader className="flex flex-row items-center">
             <div className="grid gap-2">
-              <CardTitle>Crop Recommendations</CardTitle>
+              <CardTitle>My Crops</CardTitle>
               <CardDescription>
-                AI-powered suggestions based on your farm&apos;s data.
+                Track the growth stages of your crops.
               </CardDescription>
             </div>
             <Button asChild size="sm" className="ml-auto gap-1">
-              <Link href="/crop-recommendations">
-                View All
-                <ArrowUpRight className="h-4 w-4" />
+              <Link href="#">
+                Add More Crop
+                <PlusCircle className="h-4 w-4" />
               </Link>
             </Button>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 p-2 rounded-lg hover:bg-muted/50">
-                <div className="bg-primary/10 p-3 rounded-full">
-                  <Sprout className="h-6 w-6 text-primary" />
+          <CardContent className="space-y-6">
+            {cropData.map((crop) => (
+              <div key={crop.name} className="grid gap-3">
+                <div className="flex items-center gap-4">
+                  {crop.image && (
+                    <Image
+                      src={crop.image.imageUrl}
+                      alt={crop.image.description}
+                      width={56}
+                      height={56}
+                      data-ai-hint={crop.image.imageHint}
+                      className="h-14 w-14 rounded-lg object-cover"
+                    />
+                  )}
+                  <div className="flex-1">
+                    <p className="text-sm font-medium leading-none">{crop.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Current Stage: <span className="font-semibold text-primary">{crop.stage}</span>
+                    </p>
+                  </div>
                 </div>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">Soybean</p>
-                  <p className="text-sm text-muted-foreground">
-                    Ideal for current soil moisture levels.
-                  </p>
+                <div>
+                  <Progress value={crop.progress} className="h-2" />
+                  <div className="mt-2 grid grid-cols-9 text-[10px] text-center text-muted-foreground">
+                    {cropStages.map(stage => <span key={stage}>{stage}</span>)}
+                  </div>
                 </div>
-                <div className="ml-auto font-medium text-primary">+88% Match</div>
               </div>
-              <div className="flex items-center gap-4 p-2 rounded-lg hover:bg-muted/50">
-                <div className="bg-accent/10 p-3 rounded-full">
-                  <Leaf className="h-6 w-6 text-accent" />
-                </div>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">Cotton</p>
-                  <p className="text-sm text-muted-foreground">
-                    Good market price and high demand.
-                  </p>
-                </div>
-                <div className="ml-auto font-medium text-accent">+75% Match</div>
-              </div>
-            </div>
+            ))}
           </CardContent>
         </Card>
         <Card>
@@ -106,7 +130,7 @@ export default function Dashboard() {
             </Button>
             <Button asChild size="lg" variant="secondary" className="w-full justify-start gap-2">
                 <Link href="/market-prices">
-                    <LineChart className="h-5 w-5"/>
+                    <Sprout className="h-5 w-5"/>
                     Check Market Prices
                 </Link>
             </Button>

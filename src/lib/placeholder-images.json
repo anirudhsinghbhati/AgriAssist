@@ -17,6 +17,18 @@
       "description": "Farmer user avatar",
       "imageUrl": "https://picsum.photos/seed/farmeravatar/100/100",
       "imageHint": "farmer portrait"
+    },
+    {
+      "id": "soybean-crop",
+      "description": "Image of a soybean plant",
+      "imageUrl": "https://picsum.photos/seed/soybean/100/100",
+      "imageHint": "soybean plant"
+    },
+    {
+      "id": "cotton-crop",
+      "description": "Image of a cotton plant",
+      "imageUrl": "https://picsum.photos/seed/cotton/100/100",
+      "imageHint": "cotton plant"
     }
   ]
 }
