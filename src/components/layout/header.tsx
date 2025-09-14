@@ -4,26 +4,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  Home,
-  LineChart,
-  Package,
   PanelLeft,
   Settings,
-  ShoppingCart,
-  Users,
-  Sprout,
-  Bug,
-  CloudSun,
   Leaf,
-  MessageSquare,
-  ClipboardList,
-  Droplets,
-  BookOpen,
-  IndianRupee,
-  Calendar,
   Moon,
   Sun,
-  TrendingUp,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -41,37 +26,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Fragment, useState } from 'react';
 import { useTheme } from 'next-themes';
-
-const navItems = [
-    { href: '/dashboard', icon: Home, label: 'Dashboard' },
-    { href: '/calendar', icon: Calendar, label: 'Calendar' },
-    { href: '/crop-recommendations', icon: Sprout, label: 'Crop Advisory' },
-    { href: '/pest-detection', icon: Bug, label: 'Pest Detection' },
-    { href: '/irrigation-planner', icon: Droplets, label: 'Irrigation Planner' },
-    { href: '/yield-prediction', icon: TrendingUp, label: 'Yield Prediction' },
-    { href: '/market-prices', icon: LineChart, label: 'Market Prices' },
-    { href: '/financial-tracker', icon: IndianRupee, label: 'Financial Tracker' },
-    { href: '/inventory', icon: Package, label: 'Inventory' },
-    { href: '/weather', icon: CloudSun, label: 'Weather Alerts' },
-    { href: '/resource-hub', icon: BookOpen, label: 'Resource Hub' },
-    { href: '/community', icon: Users, label: 'Community Forum' },
-    { href: '/consultation', icon: MessageSquare, label: 'Expert Consultation' },
-    { href: '/reports', icon: ClipboardList, label: 'Reports' },
-    { href: '#', icon: Settings, label: 'Settings' },
-];
+import { useNavStore } from '@/hooks/use-nav-store';
 
 export function Header() {
   const pathname = usePathname();
   const avatar = PlaceHolderImages.find((img) => img.id === 'avatar');
-  const { setTheme, theme } = useTheme();
+  const { setTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { visibleNavItems } = useNavStore();
+
 
   const pathSegments = pathname.split('/').filter(Boolean);
   const breadcrumbSegments = pathSegments.filter(segment => segment !== 'dashboard');
@@ -99,7 +68,7 @@ export function Header() {
               <Leaf className="h-5 w-5 transition-all group-hover:scale-110" />
               <span className="sr-only">AgriAssist</span>
             </Link>
-            {navItems.map((item) => (
+            {visibleNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -179,7 +148,9 @@ export function Header() {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/settings" className='w-full'>Settings</Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
