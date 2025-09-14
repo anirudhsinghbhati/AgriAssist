@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -14,8 +15,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { voiceAssistedNavigation } from '@/ai/flows/voice-assisted-app-navigation';
 import { Loader2 } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function VoiceAssistant() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +33,7 @@ export default function VoiceAssistant() {
       setAiResponse(result.navigationInstructions);
     } catch (error) {
       console.error('Error with voice assistant:', error);
-      setAiResponse('Sorry, I am having trouble understanding. Please try again.');
+      setAiResponse(t('voice_assistant.error'));
     } finally {
       setIsLoading(false);
     }
@@ -44,15 +47,15 @@ export default function VoiceAssistant() {
         onClick={() => setIsOpen(true)}
       >
         <Mic className="h-8 w-8" />
-        <span className="sr-only">Open Voice Assistant</span>
+        <span className="sr-only">{t('voice_assistant.open_sr')}</span>
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Voice Assistant</DialogTitle>
+            <DialogTitle>{t('voice_assistant.title')}</DialogTitle>
             <DialogDescription>
-              Ask me anything about the app or your farm.
+              {t('voice_assistant.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -60,7 +63,7 @@ export default function VoiceAssistant() {
               id="voice-input"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              placeholder="e.g., 'Show me crop recommendations'"
+              placeholder={t('voice_assistant.placeholder')}
               disabled={isLoading}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -71,7 +74,7 @@ export default function VoiceAssistant() {
             {isLoading && (
                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    <span>Thinking...</span>
+                    <span>{t('voice_assistant.thinking')}</span>
                 </div>
             )}
             {aiResponse && (
@@ -80,7 +83,7 @@ export default function VoiceAssistant() {
           </div>
           <DialogFooter>
             <Button onClick={handleInteraction} disabled={isLoading || !userInput}>
-              {isLoading ? 'Processing...' : 'Ask'}
+              {isLoading ? t('voice_assistant.processing') : t('voice_assistant.ask')}
             </Button>
           </DialogFooter>
         </DialogContent>

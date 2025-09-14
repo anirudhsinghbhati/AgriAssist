@@ -1,3 +1,4 @@
+
 {
     "nav": {
         "dashboard": "Dashboard",
@@ -74,5 +75,15 @@
             "title": "Profitability Score",
             "change": "+12% from last month"
         }
+    },
+    "voice_assistant": {
+        "title": "Voice Assistant",
+        "description": "Ask me anything about the app or your farm.",
+        "placeholder": "e.g., 'Show me crop recommendations'",
+        "thinking": "Thinking...",
+        "error": "Sorry, I am having trouble understanding. Please try again.",
+        "processing": "Processing...",
+        "ask": "Ask",
+        "open_sr": "Open Voice Assistant"
     }
 }
