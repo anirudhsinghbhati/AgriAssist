@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -12,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { smartIrrigationPlanner, SmartIrrigationPlannerOutput } from '@/ai/flows/smart-irrigation-planner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, Droplets, Clock, Info, CheckCircle, XCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   cropType: z.string().min(1, 'Please select a crop type.'),
@@ -27,6 +29,7 @@ type FormValues = z.infer<typeof formSchema>;
 export default function IrrigationPlannerForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [recommendation, setRecommendation] = useState<SmartIrrigationPlannerOutput | null>(null);
+  const { toast } = useToast();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -48,6 +51,11 @@ export default function IrrigationPlannerForm() {
       setRecommendation(result);
     } catch (error) {
       console.error('Failed to get irrigation plan', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error Generating Plan',
+        description: 'The AI model seems to be busy. Please try again in a moment.',
+      });
     } finally {
       setIsLoading(false);
     }
