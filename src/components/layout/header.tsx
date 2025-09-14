@@ -26,13 +26,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import React, { Fragment, useState } from 'react';
 import { useTheme } from 'next-themes';
-import { useVisibleNavItems } from '@/hooks/use-nav-store';
+import { useVisibleNavItems, useNavStore } from '@/hooks/use-nav-store';
 
 export function Header() {
   const pathname = usePathname();
@@ -40,6 +43,7 @@ export function Header() {
   const { theme, setTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const visibleNavItems = useVisibleNavItems();
+  const { language, setLanguage } = useNavStore();
 
 
   const pathSegments = pathname.split('/').filter(Boolean);
@@ -156,6 +160,15 @@ export function Header() {
           <DropdownMenuItem>
             <Link href="/settings" className='w-full'>Settings</Link>
           </DropdownMenuItem>
+           <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <span>Language</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem onClick={() => setLanguage('en')}>English</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage('hi')}>हिन्दी (Hindi)</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>

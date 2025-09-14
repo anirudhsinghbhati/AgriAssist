@@ -9,17 +9,22 @@ import { Button } from "@/components/ui/button";
 import { useNavStore } from "@/hooks/use-nav-store";
 import { navConfig } from "@/lib/nav-config";
 import { useToast } from '@/hooks/use-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function SettingsPage() {
     const { toast } = useToast();
-    const storeVisibility = useNavStore((state) => state.visibility);
-    const setVisibility = useNavStore((state) => state.setVisibility);
+    const { visibility, language, setVisibility, setLanguage } = useNavStore();
     
-    const [localVisibility, setLocalVisibility] = React.useState(storeVisibility);
+    const [localVisibility, setLocalVisibility] = React.useState(visibility);
+    const [localLanguage, setLocalLanguage] = React.useState(language);
     
     React.useEffect(() => {
-        setLocalVisibility(storeVisibility);
-    }, [storeVisibility]);
+        setLocalVisibility(visibility);
+    }, [visibility]);
+
+    React.useEffect(() => {
+        setLocalLanguage(language);
+    }, [language]);
 
     const handleToggle = (id: string) => {
         const item = navConfig.find(item => item.id === id);
@@ -32,9 +37,10 @@ export default function SettingsPage() {
     
     const handleApply = () => {
         setVisibility(localVisibility);
+        setLanguage(localLanguage);
         toast({
             title: 'Settings Saved',
-            description: 'Your navigation preferences have been updated.',
+            description: 'Your preferences have been updated.',
         });
     };
 
@@ -43,12 +49,26 @@ export default function SettingsPage() {
             <CardHeader>
                 <CardTitle>Settings</CardTitle>
                 <CardDescription>
-                    Customize your app experience. Manage navigation links and other preferences here.
+                    Customize your app experience. Manage navigation links, language, and other preferences here.
                 </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-8">
                 <div className="space-y-6">
                     <div>
+                        <h3 className="text-lg font-semibold mb-4">Language</h3>
+                        <div className="max-w-xs">
+                             <Select value={localLanguage} onValueChange={setLocalLanguage}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select language" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="en">English</SelectItem>
+                                    <SelectItem value="hi">हिन्दी (Hindi)</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                     <div>
                         <h3 className="text-lg font-semibold mb-4">Customize Navigation Menu</h3>
                         <div className="space-y-4">
                             {navConfig.map((item) => (
