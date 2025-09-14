@@ -23,6 +23,7 @@ import {
   Calendar,
   Moon,
   Sun,
+  TrendingUp,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -54,6 +55,7 @@ const navItems = [
     { href: '/crop-recommendations', icon: Sprout, label: 'Crop Advisory' },
     { href: '/pest-detection', icon: Bug, label: 'Pest Detection' },
     { href: '/irrigation-planner', icon: Droplets, label: 'Irrigation Planner' },
+    { href: '/yield-prediction', icon: TrendingUp, label: 'Yield Prediction' },
     { href: '/market-prices', icon: LineChart, label: 'Market Prices' },
     { href: '/financial-tracker', icon: IndianRupee, label: 'Financial Tracker' },
     { href: '/inventory', icon: Package, label: 'Inventory' },
