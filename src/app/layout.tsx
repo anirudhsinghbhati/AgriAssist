@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 export const metadata: Metadata = {
   title: 'AgriAssist',
   description: 'Smart Crop Advisory & Farmer App',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
