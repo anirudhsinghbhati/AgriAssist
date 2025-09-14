@@ -39,6 +39,8 @@ export default function CropRecommendationForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       totalLand: 1,
+      maxCapital: undefined,
+      diversification: undefined,
       candidateCrops: [
         { name: 'Maize', expectedYield: 5, sellingPrice: 250, profitPerHectare: 500, investmentPerHectare: 300 },
         { name: 'Soybean', expectedYield: 3, sellingPrice: 500, profitPerHectare: 700, investmentPerHectare: 400 },
@@ -92,7 +94,7 @@ export default function CropRecommendationForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Max Investment Capital (optional)</FormLabel>
-                    <FormControl><Input type="number" {...field} /></FormControl>
+                    <FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -103,7 +105,7 @@ export default function CropRecommendationForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Min. Crops for Diversification (optional)</FormLabel>
-                    <FormControl><Input type="number" {...field} /></FormControl>
+                    <FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
