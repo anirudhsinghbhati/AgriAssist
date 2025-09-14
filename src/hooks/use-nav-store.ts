@@ -6,14 +6,17 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { navConfig } from '@/lib/nav-config';
 
+type Visibility = { [key: string]: boolean };
+
 type NavVisibilityState = {
-  visibility: { [key: string]: boolean };
+  visibility: Visibility;
   toggleVisibility: (id: string) => void;
+  setVisibility: (newVisibility: Visibility) => void;
   getVisibleNavItems: () => typeof navConfig;
 };
 
-const getDefaultVisibility = () => {
-  const visibility: { [key: string]: boolean } = {};
+const getDefaultVisibility = (): Visibility => {
+  const visibility: Visibility = {};
   navConfig.forEach(item => {
     visibility[item.id] = true;
   });
@@ -34,6 +37,9 @@ export const useNavStore = create<NavVisibilityState>()(
           },
         }));
       },
+      setVisibility: (newVisibility: Visibility) => {
+        set({ visibility: newVisibility });
+      },
       getVisibleNavItems: () => {
         const { visibility } = get();
         return navConfig.filter(item => visibility[item.id] ?? true);
@@ -44,7 +50,6 @@ export const useNavStore = create<NavVisibilityState>()(
       storage: createJSONStorage(() => localStorage), 
       onRehydrateStorage: () => (state) => {
         if (state) {
-            // Ensure all nav items from config are present in the persisted state
             const defaultVisibility = getDefaultVisibility();
             const mergedVisibility = { ...defaultVisibility, ...state.visibility };
             navConfig.forEach(item => {
@@ -60,27 +65,20 @@ export const useNavStore = create<NavVisibilityState>()(
 );
 
 export const useVisibleNavItems = () => {
-    const getVisibleNavItems = useNavStore((state) => state.getVisibleNavItems);
-    const [visibleItems, setVisibleItems] = React.useState(navConfig);
+    const visibility = useNavStore((state) => state.visibility);
+    const [visibleItems, setVisibleItems] = React.useState(() => navConfig.filter(item => visibility[item.id] ?? true));
     const [isMounted, setIsMounted] = React.useState(false);
 
     React.useEffect(() => {
         setIsMounted(true);
     }, []);
-
+    
     React.useEffect(() => {
-        if (isMounted) {
-            const updateItems = () => setVisibleItems(getVisibleNavItems());
-            updateItems(); 
-            const unsubscribe = useNavStore.subscribe(
-                (state) => state.visibility,
-                updateItems
-            );
-            return () => unsubscribe();
-        }
-    }, [isMounted, getVisibleNavItems]);
+      if (isMounted) {
+        setVisibleItems(navConfig.filter(item => visibility[item.id] ?? true));
+      }
+    }, [visibility, isMounted]);
 
-    // On the server, or before the client has mounted, return the full default nav config
-    // to ensure the server and client render the same initial HTML.
+
     return isMounted ? visibleItems : navConfig;
 };

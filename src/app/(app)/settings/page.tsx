@@ -1,14 +1,42 @@
+
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import * as React from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { useNavStore } from "@/hooks/use-nav-store";
 import { navConfig } from "@/lib/nav-config";
+import { useToast } from '@/hooks/use-toast';
 
 export default function SettingsPage() {
-    const visibility = useNavStore((state) => state.visibility);
-    const toggleVisibility = useNavStore((state) => state.toggleVisibility);
+    const { toast } = useToast();
+    const storeVisibility = useNavStore((state) => state.visibility);
+    const setVisibility = useNavStore((state) => state.setVisibility);
+    
+    const [localVisibility, setLocalVisibility] = React.useState(storeVisibility);
+    
+    React.useEffect(() => {
+        setLocalVisibility(storeVisibility);
+    }, [storeVisibility]);
+
+    const handleToggle = (id: string) => {
+        const item = navConfig.find(item => item.id === id);
+        if (item?.isLocked) return;
+        setLocalVisibility(prev => ({
+            ...prev,
+            [id]: !prev[id],
+        }));
+    };
+    
+    const handleApply = () => {
+        setVisibility(localVisibility);
+        toast({
+            title: 'Settings Saved',
+            description: 'Your navigation preferences have been updated.',
+        });
+    };
 
     return (
         <Card>
@@ -31,8 +59,8 @@ export default function SettingsPage() {
                                     </Label>
                                     <Switch
                                         id={item.id}
-                                        checked={visibility[item.id] ?? true}
-                                        onCheckedChange={() => toggleVisibility(item.id)}
+                                        checked={localVisibility[item.id] ?? true}
+                                        onCheckedChange={() => handleToggle(item.id)}
                                         disabled={item.isLocked}
                                         aria-label={`Toggle ${item.label}`}
                                     />
@@ -42,6 +70,9 @@ export default function SettingsPage() {
                     </div>
                 </div>
             </CardContent>
+            <CardFooter className="border-t px-6 py-4">
+                <Button onClick={handleApply}>Apply Changes</Button>
+            </CardFooter>
         </Card>
     );
 }
