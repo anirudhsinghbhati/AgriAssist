@@ -81,39 +81,44 @@ export default function Dashboard() {
             </div>
             <Button asChild size="sm" className="ml-auto gap-1">
               <Link href="#">
-                Add More Crop
+                Add New Crop
                 <PlusCircle className="h-4 w-4" />
               </Link>
             </Button>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4">
             {cropData.map((crop) => (
-              <div key={crop.name} className="grid gap-3">
-                <div className="flex items-center gap-4">
-                  {crop.image && (
-                    <Image
-                      src={crop.image.imageUrl}
-                      alt={crop.image.description}
-                      width={56}
-                      height={56}
-                      data-ai-hint={crop.image.imageHint}
-                      className="h-14 w-14 rounded-lg object-cover"
-                    />
-                  )}
-                  <div className="flex-1">
-                    <p className="text-sm font-medium leading-none">{crop.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      Current Stage: <span className="font-semibold text-primary">{crop.stage}</span>
-                    </p>
+              <Link key={crop.name} href={`/my-crops/${crop.name.toLowerCase()}`} className="block p-4 rounded-lg border hover:bg-muted/50 transition-colors">
+                <div className="grid gap-3">
+                  <div className="flex items-center gap-4">
+                    {crop.image && (
+                      <Image
+                        src={crop.image.imageUrl}
+                        alt={crop.image.description}
+                        width={56}
+                        height={56}
+                        data-ai-hint={crop.image.imageHint}
+                        className="h-14 w-14 rounded-lg object-cover"
+                      />
+                    )}
+                    <div className="flex-1">
+                      <p className="font-semibold leading-none text-lg">{crop.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Current Stage: <span className="font-semibold text-primary">{crop.stage}</span>
+                      </p>
+                    </div>
+                     <Button variant="ghost" size="icon">
+                        <ArrowUpRight className="h-5 w-5 transform -rotate-45 group-hover:rotate-0 transition-transform"/>
+                    </Button>
+                  </div>
+                  <div>
+                    <Progress value={crop.progress} className="h-2" />
+                    <div className="mt-2 grid grid-cols-9 text-[10px] text-center text-muted-foreground">
+                      {cropStages.map(stage => <span key={stage}>{stage}</span>)}
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <Progress value={crop.progress} className="h-2" />
-                  <div className="mt-2 grid grid-cols-9 text-[10px] text-center text-muted-foreground">
-                    {cropStages.map(stage => <span key={stage}>{stage}</span>)}
-                  </div>
-                </div>
-              </div>
+              </Link>
             ))}
           </CardContent>
         </Card>

@@ -83,6 +83,42 @@
       "description": "Avatar for Dr. Sunita Singh",
       "imageUrl": "https://picsum.photos/seed/sunitasingh/100/100",
       "imageHint": "woman specialist"
+    },
+    {
+      "id": "pest-aphids",
+      "description": "Aphids on a soybean leaf",
+      "imageUrl": "https://picsum.photos/seed/aphids/400/300",
+      "imageHint": "aphids leaf"
+    },
+    {
+      "id": "pest-caterpillar",
+      "description": "Bihar hairy caterpillar",
+      "imageUrl": "https://picsum.photos/seed/caterpillar/400/300",
+      "imageHint": "hairy caterpillar"
+    },
+    {
+      "id": "pest-girdle-beetle",
+      "description": "Girdle beetle on a plant stem",
+      "imageUrl": "https://picsum.photos/seed/girdlebeetle/400/300",
+      "imageHint": "beetle stem"
+    },
+    {
+      "id": "practice-climate",
+      "description": "Stormy sky over a green field, representing climate requirements",
+      "imageUrl": "https://picsum.photos/seed/climate/400/400",
+      "imageHint": "stormy sky"
+    },
+    {
+      "id": "practice-soil",
+      "description": "Hands holding rich, dark soil with earthworms",
+      "imageUrl": "https://picsum.photos/seed/soil/400/400",
+      "imageHint": "hands soil"
+    },
+    {
+      "id": "practice-sowing",
+      "description": "A tractor sowing seeds in a field",
+      "imageUrl": "https://picsum.photos/seed/sowing/400/400",
+      "imageHint": "tractor sowing"
     }
   ]
 }
