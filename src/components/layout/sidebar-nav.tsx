@@ -16,9 +16,8 @@ import { useNavStore } from '@/hooks/use-nav-store';
 export function SidebarNav() {
   const pathname = usePathname();
   const { visibleNavItems } = useNavStore();
-  const settingsItem = visibleNavItems.find(item => item.id === 'settings');
-  const mainNavItems = visibleNavItems.filter(item => item.id !== 'settings');
-
+  // Filter out the settings link from the main dynamic list
+  const mainNavItems = visibleNavItems.filter(item => !item.isLocked);
 
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
