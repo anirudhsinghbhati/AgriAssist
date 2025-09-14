@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -27,6 +28,7 @@ export default function MarketPricesPage() {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) {
+      // If search is cleared, reset to initial data
       setMarketData(initialMarketData);
       return;
     }
@@ -34,8 +36,11 @@ export default function MarketPricesPage() {
     setError(null);
     try {
       const result = await marketPriceLookup({ cropName: searchQuery });
-      // Check if the crop is already in the list to avoid duplicates
-      const existingCropIndex = marketData.findIndex(item => item.crop.toLowerCase() === result.crop.toLowerCase());
+      
+      const existingCropIndex = marketData.findIndex(
+        (item) => item.crop.toLowerCase() === result.crop.toLowerCase()
+      );
+
       if (existingCropIndex !== -1) {
         // Update existing crop data
         const updatedData = [...marketData];
@@ -53,6 +58,16 @@ export default function MarketPricesPage() {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (!query.trim()) {
+      // Reset to initial data when input is cleared
+      setMarketData(initialMarketData);
+      setError(null);
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -63,58 +78,64 @@ export default function MarketPricesPage() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSearch} className="flex items-center gap-2 mb-6">
-          <Input
-            placeholder="Search for a crop (e.g., 'Rice')"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="max-w-xs"
-          />
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? <Loader2 className="animate-spin" /> : <Search />}
-            <span className="ml-2 hidden sm:inline">Search</span>
+          <div className="relative flex-grow max-w-xs">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search for a crop (e.g., 'Rice')"
+              value={searchQuery}
+              onChange={handleInputChange}
+              className="pl-10"
+            />
+          </div>
+          <Button type="submit" disabled={isLoading || !searchQuery.trim()}>
+            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <span className="hidden sm:inline">Search</span>}
+            {isLoading && <span className="sm:hidden"><Loader2 className="h-4 w-4 animate-spin" /></span>}
+            {!isLoading && <span className="sm:hidden"><Search className="h-4 w-4" /></span>}
           </Button>
         </form>
         {error && <p className="text-destructive text-sm mb-4">{error}</p>}
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Crop</TableHead>
-              <TableHead>Variety</TableHead>
-              <TableHead className="text-right">Price (₹ / Unit)</TableHead>
-              <TableHead className="text-right">Change</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {marketData.map((item) => (
-              <TableRow key={item.crop}>
-                <TableCell className="font-medium">{item.crop}</TableCell>
-                <TableCell>{item.variety}</TableCell>
-                <TableCell className="text-right">
-                  ₹{item.price.toLocaleString('en-IN')} / {item.unit}
-                </TableCell>
-                <TableCell className="text-right">
-                  <Badge
-                    variant={item.trend === 'up' ? 'default' : item.trend === 'down' ? 'destructive' : 'secondary'}
-                    className={
-                      item.trend === 'up'
-                        ? 'bg-green-500/20 text-green-700 hover:bg-green-500/30'
-                        : item.trend === 'down'
-                        ? 'bg-red-500/20 text-red-700 hover:bg-red-500/30'
-                        : ''
-                    }
-                  >
-                    {item.trend === 'up' ? (
-                      <ArrowUp className="h-3 w-3 mr-1" />
-                    ) : item.trend === 'down' ? (
-                      <ArrowDown className="h-3 w-3 mr-1" />
-                    ) : null}
-                    {item.change}%
-                  </Badge>
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Crop</TableHead>
+                <TableHead>Variety</TableHead>
+                <TableHead className="text-right">Price (₹ / Unit)</TableHead>
+                <TableHead className="text-right">Change</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {marketData.map((item) => (
+                <TableRow key={item.crop}>
+                  <TableCell className="font-medium">{item.crop}</TableCell>
+                  <TableCell>{item.variety}</TableCell>
+                  <TableCell className="text-right whitespace-nowrap">
+                    ₹{item.price.toLocaleString('en-IN')} / {item.unit}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Badge
+                      variant={item.trend === 'up' ? 'default' : item.trend === 'down' ? 'destructive' : 'secondary'}
+                      className={
+                        item.trend === 'up'
+                          ? 'bg-green-500/20 text-green-700 hover:bg-green-500/30'
+                          : item.trend === 'down'
+                          ? 'bg-red-500/20 text-red-700 hover:bg-red-500/30'
+                          : ''
+                      }
+                    >
+                      {item.trend === 'up' ? (
+                        <ArrowUp className="h-3 w-3 mr-1" />
+                      ) : item.trend === 'down' ? (
+                        <ArrowDown className="h-3 w-3 mr-1" />
+                      ) : null}
+                      {item.change}%
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );
