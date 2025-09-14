@@ -24,7 +24,7 @@ const VoiceAssistedNavigationOutputSchema = z.object({
   navigationInstructions: z
     .string()
     .describe(
-      'Instructions on how to navigate the app based on the voice input, in the user\u2019s local language.'
+      'Instructions on how to navigate the app based on the voice input, in the user’s local language.'
     ),
 });
 export type VoiceAssistedNavigationOutput = z.infer<
