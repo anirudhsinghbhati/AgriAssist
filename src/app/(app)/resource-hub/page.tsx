@@ -10,7 +10,7 @@ const resources = [
     title: "Seed Selection Guide",
     description: "Find the best seed varieties for your soil, climate, and desired yield. Compare options based on resistance, maturity, and market value.",
     icon: GitBranch,
-    link: "#",
+    link: "/resource-hub/seed-selection-guide",
     imageId: "resource-seed-guide"
   },
   {
