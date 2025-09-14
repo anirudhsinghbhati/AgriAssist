@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -5,47 +6,34 @@ import { navConfig } from '@/lib/nav-config';
 
 const NAV_VISIBILITY_KEY = 'agriassist-nav-visibility';
 
-// Helper function to get initial state from localStorage
-const getInitialVisibility = () => {
-  if (typeof window === 'undefined') {
-    // Return default visibility for server-side rendering
-    const visibility: { [key: string]: boolean } = {};
-    navConfig.forEach(item => {
-      visibility[item.id] = true;
-    });
-    return visibility;
-  }
-  
-  try {
-    const storedItem = window.localStorage.getItem(NAV_VISIBILITY_KEY);
-    if (storedItem) {
-      const storedVisibility = JSON.parse(storedItem);
-      // Ensure all nav items from config are present in the state
-      const initialVisibility: { [key: string]: boolean } = {};
-       navConfig.forEach(item => {
-        initialVisibility[item.id] = storedVisibility[item.id] ?? true;
-      });
-      return initialVisibility;
-    }
-  } catch (error) {
-    console.error('Error reading from localStorage', error);
-  }
-
-  // Default to all visible if nothing in storage
-  const defaultVisibility: { [key: string]: boolean } = {};
+// Helper function to get the default visibility state
+const getDefaultVisibility = () => {
+  const visibility: { [key: string]: boolean } = {};
   navConfig.forEach(item => {
-    defaultVisibility[item.id] = true;
+    visibility[item.id] = true;
   });
-  return defaultVisibility;
+  return visibility;
 };
 
-
 export function useNavStore() {
-  const [visibility, setVisibility] = useState<{ [key: string]: boolean }>(getInitialVisibility());
+  const [visibility, setVisibility] = useState<{ [key: string]: boolean }>(getDefaultVisibility());
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Use useEffect to ensure localStorage is only accessed on the client-side
   useEffect(() => {
-    setVisibility(getInitialVisibility());
+    setIsMounted(true);
+    try {
+      const storedItem = window.localStorage.getItem(NAV_VISIBILITY_KEY);
+      if (storedItem) {
+        const storedVisibility = JSON.parse(storedItem);
+        const initialVisibility: { [key: string]: boolean } = {};
+        navConfig.forEach(item => {
+          initialVisibility[item.id] = storedVisibility[item.id] ?? true;
+        });
+        setVisibility(initialVisibility);
+      }
+    } catch (error) {
+      console.error('Error reading from localStorage', error);
+    }
   }, []);
 
   const toggleVisibility = (id: string) => {
@@ -57,8 +45,8 @@ export function useNavStore() {
       console.error('Error writing to localStorage', error);
     }
   };
-
-  const visibleNavItems = navConfig.filter(item => visibility[item.id]);
+  
+  const visibleNavItems = navConfig.filter(item => isMounted ? visibility[item.id] : true);
 
   return {
     allNavItems: navConfig,
