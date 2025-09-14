@@ -1,6 +1,6 @@
 'use server';
 /**
- * @fileOverview Provides personalized crop recommendations to farmers based on their land, crop choices, and financial constraints.
+ * @fileOverview Provides personalized crop recommendations to farmers based on their location, land, and soil type.
  *
  * - personalizedCropRecommendations - A function that generates crop recommendations.
  * - PersonalizedCropRecommendationsInput - The input type for the personalizedCropRecommendations function.
@@ -10,43 +10,37 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
-const CropDetailSchema = z.object({
-  name: z.string().describe('Name of the crop.'),
-  expectedYield: z.number().describe('Expected yield in tons per hectare.'),
-  sellingPrice: z.number().describe('Selling price per ton.'),
-  profitPerHectare: z.number().describe('Profit per hectare.'),
-  investmentPerHectare: z.number().describe('Investment required per hectare.'),
-  maxAllocation: z.coerce.number().optional().describe('Maximum hectares that can be allocated to this crop.'),
-  minAllocation: z.coerce.number().optional().describe('Minimum hectares that must be allocated to this crop.'),
-});
-
 const PersonalizedCropRecommendationsInputSchema = z.object({
   totalLand: z.coerce.number().describe('Total available land in hectares.'),
-  candidateCrops: z.array(CropDetailSchema).describe('A list of candidate crops with their details.'),
-  maxCapital: z.coerce.number().optional().describe('Maximum available capital for investment.'),
-  diversification: z.coerce.number().optional().describe('Minimum number of different crops to plant.'),
+  state: z.string().describe('The state where the farm is located.'),
+  district: z.string().describe('The district where the farm is located.'),
+  soilType: z.string().describe('The type of soil on the farm (e.g., Alluvial, Black, Red, Loamy).'),
 });
 
 export type PersonalizedCropRecommendationsInput = z.infer<typeof PersonalizedCropRecommendationsInputSchema>;
 
-const RecommendationOptionSchema = z.object({
-    crop: z.string().describe("Name of the crop."),
-    allocation: z.number().describe("Allocated land in hectares for this crop."),
-    investment: z.number().describe("Total investment for this crop based on allocation."),
-    expectedProfit: z.number().describe("Expected profit from this crop based on allocation."),
+const InvestmentBreakdownSchema = z.object({
+  seeds: z.number().describe('Estimated cost for seeds.'),
+  machinery: z.number().describe('Estimated cost for machinery usage.'),
+  labor: z.number().describe('Estimated cost for labor.'),
+  pesticides: z.number().describe('Estimated cost for pesticides and fertilizers.'),
+  other: z.number().describe('Other miscellaneous costs.'),
 });
 
-const AllocationStrategySchema = z.object({
-    strategyName: z.string().describe("Name of the allocation strategy (e.g., 'High Profit Focus', 'Balanced Risk')."),
-    description: z.string().describe("A brief description of this strategy."),
-    allocations: z.array(RecommendationOptionSchema),
-    totalInvestment: z.number().describe("Total investment for this strategy."),
-    totalProfit: z.number().describe("Total expected profit for this strategy."),
-    roi: z.number().describe("Return on Investment percentage for this strategy."),
+const RecommendationStrategySchema = z.object({
+  strategyName: z.string().describe("Name of the crop strategy (e.g., 'Traditional Cropping', 'High-Value Non-Traditional Farming')."),
+  description: z.string().describe("A brief description of this strategy and the crops involved."),
+  totalInvestment: z.number().describe("Total estimated investment for this strategy."),
+  investmentBreakdown: InvestmentBreakdownSchema.describe("A detailed breakdown of the investment costs."),
+  expectedProfit: z.number().describe("Total expected profit for this strategy."),
+  roi: z.number().describe("Return on Investment percentage for this strategy."),
+  risk: z.string().describe("An assessment of the risks involved (e.g., Low, Medium, High) with a brief explanation."),
+  suggestedCrops: z.string().describe("A comma-separated list of the primary crops in this strategy."),
 });
 
 const PersonalizedCropRecommendationsOutputSchema = z.object({
-  recommendations: z.array(AllocationStrategySchema).describe('A list of different crop allocation strategies with their financial details.'),
+  recommendations: z.array(RecommendationStrategySchema).describe('A list of different crop allocation strategies with their financial details.'),
+  extraSuggestions: z.string().optional().describe('Additional notes, suggestions, or considerations for the farmer.'),
 });
 export type PersonalizedCropRecommendationsOutput = z.infer<typeof PersonalizedCropRecommendationsOutputSchema>;
 
@@ -59,29 +53,34 @@ export async function personalizedCropRecommendations(
 
 const prompt = ai.definePrompt({
   name: 'personalizedCropRecommendationsPrompt',
-  input: { schema: PersonalizedCropRecommendationsInputSchema.extend({
-    candidateCropsString: z.string(),
-  }) },
+  input: { schema: PersonalizedCropRecommendationsInputSchema },
   output: { schema: PersonalizedCropRecommendationsOutputSchema },
-  prompt: `You are an expert agricultural financial advisor. A farmer needs a decision-support tool to find the most profitable crop or combination of crops for their land.
+  prompt: `You are an expert agricultural advisor with deep knowledge of Indian farming conditions. A farmer needs a decision-support tool to find the most profitable and suitable crop strategies for their land.
 
-Here are the inputs provided by the farmer:
+Here are the details provided by the farmer:
 - Total available land: {{{totalLand}}} hectares.
-- Candidate crops list: {{{candidateCropsString}}}
-- Optional: Maximum investment capital: {{{maxCapital}}}
-- Optional: Required diversification (minimum number of crops): {{{diversification}}}
+- Location: {{{district}}} district, {{{state}}} state.
+- Soil Type: {{{soilType}}}.
 
-Your task is to act as a decision-support system. Use a greedy heuristic to provide different allocation strategies. A greedy heuristic would involve sorting crops by profit/ha and allocating land until the total land is used up, while respecting the constraints.
+Your task is to provide at least three distinct and diverse farming strategies tailored to these specific conditions. For each strategy, you must provide a detailed analysis.
 
-Please provide approximately 4 different allocation strategies for comparison. For each strategy, provide:
-1.  A strategy name (e.g., "Max Profit Strategy", "Balanced Diversification", "Low Investment High ROI").
-2.  A brief description of the strategy.
-3.  The recommended allocation of land for each crop (in hectares).
-4.  The total expected annual profit for that strategy.
-5.  The total investment required.
-6.  The Return on Investment (ROI) for the strategy.
+The strategies should include:
+1.  A Traditional Crop Strategy: Focus on common, stable crops suitable for the region (e.g., staples like wheat, rice, soyabean). This should be a relatively lower-risk option.
+2.  A Non-Traditional / High-Value Crop Strategy: Suggest a more specialized, potentially higher-profit crop (e.g., saffron, medicinal herbs, exotic fruits, mushrooms) that is viable in the given location and soil. This might be a higher-risk, higher-reward option.
+3.  A Diversified Multi-Crop Strategy: Recommend a mix of crops that can be grown together or in rotation for maximum profit and risk mitigation. This could include vegetables, fruits, medicinal plants, flowers, etc.
 
-Ensure the output is in a structured table format that is easy for the farmer to understand and compare the options. The response should strictly follow the output schema.
+For each of these strategies, provide the following details:
+- A clear strategy name.
+- A description of the strategy and the crops involved.
+- A detailed breakdown of the total investment per hectare, including costs for seeds, machinery, labor, pesticides/fertilizers, and other expenses. Calculate the total investment based on the farmer's total land.
+- The total expected annual profit.
+- The Return on Investment (ROI) for the strategy.
+- An assessment of the risks involved (e.g., Low, Medium, High) with a brief explanation (market volatility, climate sensitivity, skill required, etc.).
+- The primary crops suggested in the strategy.
+
+Finally, add any extra suggestions or important notes for the farmer to consider, such as government schemes, market linkages, or modern farming techniques.
+
+Ensure the response strictly follows the output schema.
 `,
 });
 
@@ -92,10 +91,7 @@ const personalizedCropRecommendationsFlow = ai.defineFlow(
     outputSchema: PersonalizedCropRecommendationsOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt({
-      ...input,
-      candidateCropsString: JSON.stringify(input.candidateCrops),
-    });
+    const { output } = await prompt(input);
     return output!;
   }
 );

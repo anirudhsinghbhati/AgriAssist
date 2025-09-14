@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -9,48 +9,32 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { personalizedCropRecommendations, PersonalizedCropRecommendationsOutput } from '@/ai/flows/personalized-crop-recommendations';
-import { Loader2, PlusCircle, Trash2 } from 'lucide-react';
-
-const cropSchema = z.object({
-  name: z.string().min(1, 'Crop name is required'),
-  expectedYield: z.coerce.number().min(0, 'Must be positive'),
-  sellingPrice: z.coerce.number().min(0, 'Must be positive'),
-  profitPerHectare: z.coerce.number().min(0, 'Must be positive'),
-  investmentPerHectare: z.coerce.number().min(0, 'Must be positive'),
-  maxAllocation: z.coerce.number().optional(),
-  minAllocation: z.coerce.number().optional(),
-});
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Loader2, Lightbulb } from 'lucide-react';
 
 const formSchema = z.object({
   totalLand: z.coerce.number().min(0.1, 'Total land is required.'),
-  maxCapital: z.coerce.number().optional(),
-  diversification: z.coerce.number().optional(),
-  candidateCrops: z.array(cropSchema).min(1, 'Please add at least one crop.'),
+  state: z.string().min(2, 'State is required.'),
+  district: z.string().min(2, 'District is required.'),
+  soilType: z.string().min(2, 'Soil type is required.'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function CropRecommendationForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [recommendations, setRecommendations] = useState<PersonalizedCropRecommendationsOutput['recommendations'] | null>(null);
+  const [recommendations, setRecommendations] = useState<PersonalizedCropRecommendationsOutput | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       totalLand: 1,
-      maxCapital: undefined,
-      diversification: undefined,
-      candidateCrops: [
-        { name: 'Maize', expectedYield: 5, sellingPrice: 250, profitPerHectare: 500, investmentPerHectare: 300 },
-        { name: 'Soybean', expectedYield: 3, sellingPrice: 500, profitPerHectare: 700, investmentPerHectare: 400 },
-      ],
+      state: '',
+      district: '',
+      soilType: '',
     },
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: 'candidateCrops',
   });
 
   async function onSubmit(values: FormValues) {
@@ -58,7 +42,7 @@ export default function CropRecommendationForm() {
     setRecommendations(null);
     try {
       const result = await personalizedCropRecommendations(values);
-      setRecommendations(result.recommendations);
+      setRecommendations(result);
     } catch (error) {
       console.error('Failed to get recommendations', error);
       // Here you might want to use a toast notification
@@ -67,79 +51,58 @@ export default function CropRecommendationForm() {
     }
   }
   
-  const formatCurrency = (value: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value);
-
+  const formatCurrency = (value: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(value);
 
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <Card>
-            <CardHeader><CardTitle>Farm Details</CardTitle></CardHeader>
-            <CardContent className="grid md:grid-cols-3 gap-6">
-              <FormField
-                control={form.control}
-                name="totalLand"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Total Available Land (hectares)</FormLabel>
-                    <FormControl><Input type="number" step="0.1" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="maxCapital"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Max Investment Capital (optional)</FormLabel>
-                    <FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="diversification"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Min. Crops for Diversification (optional)</FormLabel>
-                    <FormControl><Input type="number" {...field} value={field.value ?? ''} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle>Candidate Crops</CardTitle>
-                 <Button type="button" size="sm" variant="outline" onClick={() => append({ name: '', expectedYield: 0, sellingPrice: 0, profitPerHectare: 0, investmentPerHectare: 0 })}>
-                    <PlusCircle className="mr-2 h-4 w-4"/> Add Crop
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {fields.map((field, index) => (
-                <div key={field.id} className="p-4 border rounded-lg relative space-y-4">
-                  <Button type="button" variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => remove(index)}>
-                      <Trash2 className="h-4 w-4 text-destructive"/>
-                  </Button>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <FormField control={form.control} name={`candidateCrops.${index}.name`} render={({ field }) => (<FormItem><FormLabel>Crop Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name={`candidateCrops.${index}.expectedYield`} render={({ field }) => (<FormItem><FormLabel>Yield (tons/ha)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name={`candidateCrops.${index}.sellingPrice`} render={({ field }) => (<FormItem><FormLabel>Price (per ton)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name={`candidateCrops.${index}.profitPerHectare`} render={({ field }) => (<FormItem><FormLabel>Profit/ha</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name={`candidateCrops.${index}.investmentPerHectare`} render={({ field }) => (<FormItem><FormLabel>Investment/ha</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                  </div>
-                </div>
-              ))}
-               {form.formState.errors.candidateCrops?.root && <p className="text-sm font-medium text-destructive">{form.formState.errors.candidateCrops.root.message}</p>}
-            </CardContent>
-          </Card>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <FormField
+              control={form.control}
+              name="totalLand"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Total Land (hectares)</FormLabel>
+                  <FormControl><Input type="number" step="0.1" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>State</FormLabel>
+                  <FormControl><Input placeholder="e.g., Maharashtra" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="district"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>District</FormLabel>
+                  <FormControl><Input placeholder="e.g., Pune" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="soilType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Soil Type</FormLabel>
+                  <FormControl><Input placeholder="e.g., Black, Alluvial" {...field} /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <Button type="submit" disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -148,48 +111,85 @@ export default function CropRecommendationForm() {
         </form>
       </Form>
       
+      {isLoading && (
+        <div className="mt-8 text-center">
+            <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
+            <p className="mt-2 text-muted-foreground">Analyzing your farm data to generate recommendations...</p>
+        </div>
+      )}
+
       {recommendations && (
-        <div className="mt-8 space-y-8">
-            <h2 className="text-2xl font-bold">Your Personalized Recommendations</h2>
-            {recommendations.map((strategy, index) => (
-                <Card key={index} className="bg-muted/30">
-                    <CardHeader>
-                        <CardTitle>{strategy.strategyName}</CardTitle>
-                        <CardDescription>{strategy.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Crop</TableHead>
-                                    <TableHead className="text-right">Allocation (ha)</TableHead>
-                                    <TableHead className="text-right">Investment</TableHead>
-                                    <TableHead className="text-right">Expected Profit</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {strategy.allocations.map((alloc, i) => (
-                                    <TableRow key={i}>
-                                        <TableCell className="font-medium">{alloc.crop}</TableCell>
-                                        <TableCell className="text-right">{alloc.allocation.toFixed(2)}</TableCell>
-                                        <TableCell className="text-right">{formatCurrency(alloc.investment)}</TableCell>
-                                        <TableCell className="text-right">{formatCurrency(alloc.expectedProfit)}</TableCell>
-                                    </TableRow>
-                                ))}
-                                <TableRow className="font-bold bg-muted/50">
-                                    <TableCell>Total</TableCell>
-                                    <TableCell className="text-right">{strategy.allocations.reduce((acc, a) => acc + a.allocation, 0).toFixed(2)}</TableCell>
-                                    <TableCell className="text-right">{formatCurrency(strategy.totalInvestment)}</TableCell>
-                                    <TableCell className="text-right">{formatCurrency(strategy.totalProfit)}</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                         <div className="mt-4 text-right font-semibold">
-                            <p>Return on Investment (ROI): <span className="text-primary">{strategy.roi.toFixed(2)}%</span></p>
+        <div className="mt-8 space-y-6">
+            <h2 className="text-3xl font-bold tracking-tight">Your Personalized Farming Strategies</h2>
+            <Accordion type="single" collapsible defaultValue="item-0" className="w-full">
+            {recommendations.recommendations.map((strategy, index) => (
+                <AccordionItem value={`item-${index}`} key={index}>
+                    <AccordionTrigger>
+                        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8 text-left">
+                           <h3 className="text-lg font-semibold text-primary">{strategy.strategyName}</h3>
+                           <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                                <span>ROI: <strong className="text-green-600">{strategy.roi.toFixed(2)}%</strong></span>
+                                <span>Risk: <strong className="text-amber-600">{strategy.risk.split(' ')[0]}</strong></span>
+                                <span>Crops: <span className="text-muted-foreground">{strategy.suggestedCrops}</span></span>
+                           </div>
                         </div>
-                    </CardContent>
-                </Card>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                        <div className="space-y-4 p-2">
+                            <p className="text-muted-foreground">{strategy.description}</p>
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="text-base">Investment Breakdown</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <Table>
+                                            <TableBody>
+                                                <TableRow><TableCell>Seeds</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.seeds)}</TableCell></TableRow>
+                                                <TableRow><TableCell>Machinery</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.machinery)}</TableCell></TableRow>
+                                                <TableRow><TableCell>Labor</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.labor)}</TableCell></TableRow>
+                                                <TableRow><TableCell>Pesticides & Fertilizers</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.pesticides)}</TableCell></TableRow>
+                                                <TableRow><TableCell>Other</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.other)}</TableCell></TableRow>
+                                                <TableRow className="font-bold bg-muted/50"><TableCell>Total Investment</TableCell><TableCell className="text-right">{formatCurrency(strategy.totalInvestment)}</TableCell></TableRow>
+                                            </TableBody>
+                                        </Table>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                     <CardHeader>
+                                        <CardTitle className="text-base">Financial Projection</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
+                                            <span className="font-medium">Expected Profit</span>
+                                            <span className="font-bold text-lg text-primary">{formatCurrency(strategy.expectedProfit)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
+                                            <span className="font-medium">Return on Investment (ROI)</span>
+                                            <span className="font-bold text-lg text-primary">{strategy.roi.toFixed(2)}%</span>
+                                        </div>
+                                        <Alert>
+                                            <AlertTitle className="font-semibold">Risk Assessment</AlertTitle>
+                                            <AlertDescription>{strategy.risk}</AlertDescription>
+                                        </Alert>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
             ))}
+            </Accordion>
+            
+            {recommendations.extraSuggestions && (
+                 <Alert className="mt-8 border-primary/50 bg-primary/5">
+                    <Lightbulb className="h-4 w-4" />
+                    <AlertTitle className="font-semibold text-primary">Extra Suggestions</AlertTitle>
+                    <AlertDescription className="whitespace-pre-line">
+                        {recommendations.extraSuggestions}
+                    </AlertDescription>
+                </Alert>
+            )}
         </div>
       )}
     </>
