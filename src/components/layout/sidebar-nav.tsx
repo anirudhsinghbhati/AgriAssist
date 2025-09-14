@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -24,11 +25,13 @@ import {
   Droplets,
   BookOpen,
   IndianRupee,
+  Calendar,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
+  { href: '/calendar', icon: Calendar, label: 'Calendar' },
   { href: '/crop-recommendations', icon: Sprout, label: 'Crop Advisory' },
   { href: '/pest-detection', icon: Bug, label: 'Pest Detection' },
   { href: '/irrigation-planner', icon: Droplets, label: 'Irrigation Planner' },
