@@ -85,5 +85,150 @@
         "processing": "संसाधित हो रहा है...",
         "ask": "पूछें",
         "open_sr": "आवाज सहायक खोलें"
+    },
+    "calendar": {
+        "title": "{date} के लिए शेड्यूल",
+        "description": "चयनित दिन के लिए कार्य और घटनाएँ।",
+        "no_events": "इस दिन के लिए कोई कार्यक्रम निर्धारित नहीं है।"
+    },
+    "community": {
+        "title": "सामुदायिक मंच",
+        "description": "स्थानीय किसानों से जुड़ें, सफलता की कहानियाँ साझा करें, और विशेषज्ञों से उत्तर प्राप्त करें।",
+        "search_placeholder": "विषय, प्रश्न खोजें...",
+        "filter_by": "फ़िल्टर करें: नवीनतम",
+        "filter_latest": "नवीनतम",
+        "filter_popular": "सबसे लोकप्रिय",
+        "filter_unanswered": "अनुत्तरित",
+        "new_post_button": "नई पोस्ट"
+    },
+    "consultation": {
+        "title": "एक विशेषज्ञ से जुड़ें",
+        "description": "हमारी कृषि विशेषज्ञों की टीम से व्यक्तिगत सलाह प्राप्त करें। नीचे उपलब्ध विशेषज्ञों को ब्राउज़ करें और बातचीत शुरू करें।",
+        "status_online": "ऑनलाइन",
+        "status_offline": "ऑफलाइन",
+        "years_experience": "वर्ष का अनुभव"
+    },
+    "crop_recommendations": {
+        "title": "व्यक्तिगत फसल सिफारिशें",
+        "description": "अपनी स्थितियों के अनुरूप एआई-संचालित फसल सुझाव प्राप्त करने के लिए अपने खेत का विवरण भरें।",
+        "form": {
+            "total_land": "कुल भूमि (हेक्टेयर)",
+            "state": "राज्य",
+            "state_placeholder": "जैसे, महाराष्ट्र",
+            "district": "जिला",
+            "district_placeholder": "जैसे, पुणे",
+            "soil_type": "मिट्टी का प्रकार",
+            "soil_type_placeholder": "जैसे, काली, जलोढ़",
+            "submit_button": "सिफारिशें प्राप्त करें"
+        },
+        "loading": "सिफारिशें उत्पन्न करने के लिए आपके खेत के डेटा का विश्लेषण किया जा रहा है...",
+        "results": {
+            "title": "आपकी व्यक्तिगत खेती की रणनीतियाँ",
+            "roi": "ROI",
+            "risk": "जोखिम",
+            "crops": "फसलें",
+            "investment_breakdown": "निवेश का विवरण",
+            "seeds": "बीज",
+            "machinery": "मशीनरी",
+            "labor": "श्रम",
+            "pesticides": "कीटनाशक और उर्वरक",
+            "other": "अन्य",
+            "total_investment": "कुल निवेश",
+            "financial_projection": "वित्तीय प्रक्षेपण",
+            "expected_profit": "अपेक्षित लाभ",
+            "roi_full": "निवेश पर प्रतिफल (ROI)",
+            "risk_assessment": "जोखिम मूल्यांकन",
+            "extra_suggestions": "अतिरिक्त सुझाव"
+        }
+    },
+    "financial_tracker": {
+        "title": "वित्तीय ट्रैकर",
+        "description": "अपने खेत की आय, व्यय और समग्र लाभप्रदता की निगरानी करें।",
+        "add_income": "आय जोड़ें",
+        "add_expense": "व्यय जोड़ें",
+        "total_revenue": "कुल राजस्व",
+        "total_expenses": "कुल व्यय",
+        "net_profit": "शुद्ध लाभ",
+        "all_time": "हर समय",
+        "income_vs_expenses": "आय बनाम व्यय",
+        "recent_transactions": "हाल के लेनदेन",
+        "transactions_description": "आपकी हाल की आय और व्यय गतिविधियों का एक लॉग।",
+        "table_date": "तारीख",
+        "table_description": "विवरण",
+        "table_type": "प्रकार",
+        "table_amount": "राशि",
+        "income": "आय",
+        "expense": "व्यय",
+        "add_income_title": "नई आय जोड़ें",
+        "add_expense_title": "नया व्यय जोड़ें"
+    },
+    "inventory": {
+        "title": "इन्वेंटरी प्रबंधन",
+        "description": "अपने बीज, उर्वरक, कीटनाशक और उपकरणों का ट्रैक रखें।",
+        "add_item": "आइटम जोड़ें",
+        "tabs": {
+            "seeds": "बीज",
+            "fertilizers": "उर्वरक",
+            "pesticides": "कीटनाशक",
+            "equipment": "उपकरण"
+        },
+        "table": {
+            "item_name": "आइटम का नाम",
+            "quantity": "मात्रा",
+            "last_updated": "अंतिम अपडेट"
+        },
+        "add_item_title": "{category} में नया आइटम जोड़ें"
+    },
+    "market_prices": {
+        "title": "वास्तविक समय के बाजार मूल्य",
+        "description": "अपने स्थानीय 'मंडी' बाजारों से विभिन्न फसलों के लिए नवीनतम मूल्य। नवीनतम मूल्य प्राप्त करने के लिए फसल खोजें।",
+        "search_placeholder": "फसल खोजें (जैसे, 'चावल')",
+        "search_button": "खोजें",
+        "error": "इस फसल का मूल्य प्राप्त नहीं हो सका। कृपया दूसरा प्रयास करें।",
+        "table": {
+            "crop": "फसल",
+            "variety": "किस्म",
+            "price": "मूल्य (₹ / इकाई)",
+            "change": "परिवर्तन"
+        }
+    },
+    "reports": {
+        "title": "रिपोर्ट और एनालिटिक्स",
+        "description": "अपने खेत की उत्पादकता, मिट्टी के स्वास्थ्य को ट्रैक करें, और उपज की भविष्यवाणियां प्राप्त करें।",
+        "download_button": "रिपोर्ट डाउनलोड करें",
+        "total_revenue": "कुल राजस्व",
+        "revenue_period": "पिछले 12 महीनों में",
+        "avg_yield": "औसत उपज",
+        "avg_yield_change": "पिछले सीजन से +5%",
+        "water_usage": "पानी का उपयोग",
+        "water_usage_period": "इस महीने",
+        "profit_margin": "लाभ मार्जिन",
+        "profit_margin_avg": "सभी फसलों में औसत",
+        "yield_per_crop": "प्रति फसल उपज (टन/हेक्टेयर)",
+        "profit_over_time": "समय के साथ लाभ",
+        "recent_harvests": "हाल की फसलें",
+        "harvests_description": "आपकी हाल की फसल कटाई और उनके राजस्व का एक लॉग।",
+        "table": {
+            "harvest_id": "कटाई आईडी",
+            "crop": "फसल",
+            "quantity": "मात्रा",
+            "harvest_date": "कटाई की तारीख",
+            "revenue": "राजस्व"
+        }
+    },
+    "weather": {
+        "title": "मौसम और जलवायु अलर्ट",
+        "description": "आपके स्थान के लिए लाइव पूर्वानुमान, चेतावनियां और कीट अलर्ट।",
+        "pest_warning_title": "उच्च कीट गतिविधि की चेतावनी",
+        "pest_warning_description": "एफिड संक्रमण के लिए स्थितियाँ अनुकूल हैं। अपनी फसलों की बारीकी से निगरानी करें।",
+        "current_weather": "वर्तमान मौसम",
+        "feels_like": "महसूस होता है",
+        "wind": "हवा",
+        "humidity": "आर्द्रता",
+        "sunrise": "सूर्योदय",
+        "sunset": "सूर्यास्त",
+        "hourly_forecast": "प्रति घंटा पूर्वानुमान",
+        "now": "अभी",
+        "daily_forecast": "6-दिन का पूर्वानुमान"
     }
 }

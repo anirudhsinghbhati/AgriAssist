@@ -85,5 +85,150 @@
         "processing": "Processing...",
         "ask": "Ask",
         "open_sr": "Open Voice Assistant"
+    },
+    "calendar": {
+        "title": "Schedule for {date}",
+        "description": "Tasks and events for the selected day.",
+        "no_events": "No events scheduled for this day."
+    },
+    "community": {
+        "title": "Community Forum",
+        "description": "Connect with local farmers, share success stories, and get answers from experts.",
+        "search_placeholder": "Search topics, questions...",
+        "filter_by": "Filter by: Latest",
+        "filter_latest": "Latest",
+        "filter_popular": "Most Popular",
+        "filter_unanswered": "Unanswered",
+        "new_post_button": "New Post"
+    },
+    "consultation": {
+        "title": "Connect with an Expert",
+        "description": "Get one-on-one advice from our team of agricultural specialists. Browse available experts below and start a conversation.",
+        "status_online": "Online",
+        "status_offline": "Offline",
+        "years_experience": "yrs exp."
+    },
+    "crop_recommendations": {
+        "title": "Personalized Crop Recommendations",
+        "description": "Fill in the details about your farm to receive AI-powered crop suggestions tailored to your conditions.",
+        "form": {
+            "total_land": "Total Land (hectares)",
+            "state": "State",
+            "state_placeholder": "e.g., Maharashtra",
+            "district": "District",
+            "district_placeholder": "e.g., Pune",
+            "soil_type": "Soil Type",
+            "soil_type_placeholder": "e.g., Black, Alluvial",
+            "submit_button": "Get Recommendations"
+        },
+        "loading": "Analyzing your farm data to generate recommendations...",
+        "results": {
+            "title": "Your Personalized Farming Strategies",
+            "roi": "ROI",
+            "risk": "Risk",
+            "crops": "Crops",
+            "investment_breakdown": "Investment Breakdown",
+            "seeds": "Seeds",
+            "machinery": "Machinery",
+            "labor": "Labor",
+            "pesticides": "Pesticides & Fertilizers",
+            "other": "Other",
+            "total_investment": "Total Investment",
+            "financial_projection": "Financial Projection",
+            "expected_profit": "Expected Profit",
+            "roi_full": "Return on Investment (ROI)",
+            "risk_assessment": "Risk Assessment",
+            "extra_suggestions": "Extra Suggestions"
+        }
+    },
+    "financial_tracker": {
+        "title": "Financial Tracker",
+        "description": "Monitor your farm's income, expenses, and overall profitability.",
+        "add_income": "Add Income",
+        "add_expense": "Add Expense",
+        "total_revenue": "Total Revenue",
+        "total_expenses": "Total Expenses",
+        "net_profit": "Net Profit",
+        "all_time": "All time",
+        "income_vs_expenses": "Income vs. Expenses",
+        "recent_transactions": "Recent Transactions",
+        "transactions_description": "A log of your recent income and expense activities.",
+        "table_date": "Date",
+        "table_description": "Description",
+        "table_type": "Type",
+        "table_amount": "Amount",
+        "income": "Income",
+        "expense": "Expense",
+        "add_income_title": "Add New Income",
+        "add_expense_title": "Add New Expense"
+    },
+    "inventory": {
+        "title": "Inventory Management",
+        "description": "Keep track of your seeds, fertilizers, pesticides, and equipment.",
+        "add_item": "Add Item",
+        "tabs": {
+            "seeds": "Seeds",
+            "fertilizers": "Fertilizers",
+            "pesticides": "Pesticides",
+            "equipment": "Equipment"
+        },
+        "table": {
+            "item_name": "Item Name",
+            "quantity": "Quantity",
+            "last_updated": "Last Updated"
+        },
+        "add_item_title": "Add New Item to {category}"
+    },
+    "market_prices": {
+        "title": "Real-Time Market Prices",
+        "description": "Up-to-date prices for various crops from your local 'mandi' markets. Search for a crop to get the latest price.",
+        "search_placeholder": "Search for a crop (e.g., 'Rice')",
+        "search_button": "Search",
+        "error": "Could not fetch price for this crop. Please try another.",
+        "table": {
+            "crop": "Crop",
+            "variety": "Variety",
+            "price": "Price (₹ / Unit)",
+            "change": "Change"
+        }
+    },
+    "reports": {
+        "title": "Reports & Analytics",
+        "description": "Track your farm's productivity, soil health, and get yield predictions.",
+        "download_button": "Download Report",
+        "total_revenue": "Total Revenue",
+        "revenue_period": "in the last 12 months",
+        "avg_yield": "Average Yield",
+        "avg_yield_change": "+5% from last season",
+        "water_usage": "Water Usage",
+        "water_usage_period": "this month",
+        "profit_margin": "Profit Margin",
+        "profit_margin_avg": "Average across all crops",
+        "yield_per_crop": "Yield per Crop (tons/hectare)",
+        "profit_over_time": "Profit Over Time",
+        "recent_harvests": "Recent Harvests",
+        "harvests_description": "A log of your recent crop harvests and their revenue.",
+        "table": {
+            "harvest_id": "Harvest ID",
+            "crop": "Crop",
+            "quantity": "Quantity",
+            "harvest_date": "Harvest Date",
+            "revenue": "Revenue"
+        }
+    },
+    "weather": {
+        "title": "Weather & Climate Alerts",
+        "description": "Live forecast, warnings, and pest alerts for your location.",
+        "pest_warning_title": "High Pest Activity Warning",
+        "pest_warning_description": "Conditions are favorable for aphid infestation. Monitor your crops closely.",
+        "current_weather": "Current Weather",
+        "feels_like": "Feels like",
+        "wind": "Wind",
+        "humidity": "Humidity",
+        "sunrise": "Sunrise",
+        "sunset": "Sunset",
+        "hourly_forecast": "Hourly Forecast",
+        "now": "Now",
+        "daily_forecast": "6-Day Forecast"
     }
 }

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -13,6 +14,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { personalizedCropRecommendations, PersonalizedCropRecommendationsOutput } from '@/ai/flows/personalized-crop-recommendations';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, Lightbulb } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 
 const formSchema = z.object({
   totalLand: z.coerce.number().min(0.1, 'Total land is required.'),
@@ -24,6 +26,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function CropRecommendationForm() {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [recommendations, setRecommendations] = useState<PersonalizedCropRecommendationsOutput | null>(null);
 
@@ -63,7 +66,7 @@ export default function CropRecommendationForm() {
               name="totalLand"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Total Land (hectares)</FormLabel>
+                  <FormLabel>{t('crop_recommendations.form.total_land')}</FormLabel>
                   <FormControl><Input type="number" step="0.1" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,8 +77,8 @@ export default function CropRecommendationForm() {
               name="state"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>State</FormLabel>
-                  <FormControl><Input placeholder="e.g., Maharashtra" {...field} /></FormControl>
+                  <FormLabel>{t('crop_recommendations.form.state')}</FormLabel>
+                  <FormControl><Input placeholder={t('crop_recommendations.form.state_placeholder')} {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -85,8 +88,8 @@ export default function CropRecommendationForm() {
               name="district"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>District</FormLabel>
-                  <FormControl><Input placeholder="e.g., Pune" {...field} /></FormControl>
+                  <FormLabel>{t('crop_recommendations.form.district')}</FormLabel>
+                  <FormControl><Input placeholder={t('crop_recommendations.form.district_placeholder')} {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -96,8 +99,8 @@ export default function CropRecommendationForm() {
               name="soilType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Soil Type</FormLabel>
-                  <FormControl><Input placeholder="e.g., Black, Alluvial" {...field} /></FormControl>
+                  <FormLabel>{t('crop_recommendations.form.soil_type')}</FormLabel>
+                  <FormControl><Input placeholder={t('crop_recommendations.form.soil_type_placeholder')} {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -106,7 +109,7 @@ export default function CropRecommendationForm() {
 
           <Button type="submit" disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Get Recommendations
+            {t('crop_recommendations.form.submit_button')}
           </Button>
         </form>
       </Form>
@@ -114,13 +117,13 @@ export default function CropRecommendationForm() {
       {isLoading && (
         <div className="mt-8 text-center">
             <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
-            <p className="mt-2 text-muted-foreground">Analyzing your farm data to generate recommendations...</p>
+            <p className="mt-2 text-muted-foreground">{t('crop_recommendations.loading')}</p>
         </div>
       )}
 
       {recommendations && (
         <div className="mt-8 space-y-6">
-            <h2 className="text-3xl font-bold tracking-tight">Your Personalized Farming Strategies</h2>
+            <h2 className="text-3xl font-bold tracking-tight">{t('crop_recommendations.results.title')}</h2>
             <Accordion type="single" collapsible defaultValue="item-0" className="w-full">
             {recommendations.recommendations.map((strategy, index) => (
                 <AccordionItem value={`item-${index}`} key={index}>
@@ -128,9 +131,9 @@ export default function CropRecommendationForm() {
                         <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8 text-left">
                            <h3 className="text-lg font-semibold text-primary">{strategy.strategyName}</h3>
                            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                                <span>ROI: <strong className="text-green-600">{strategy.roi.toFixed(2)}%</strong></span>
-                                <span>Risk: <strong className="text-amber-600">{strategy.risk.split(' ')[0]}</strong></span>
-                                <span>Crops: <span className="text-muted-foreground">{strategy.suggestedCrops}</span></span>
+                                <span>{t('crop_recommendations.results.roi')}: <strong className="text-green-600">{strategy.roi.toFixed(2)}%</strong></span>
+                                <span>{t('crop_recommendations.results.risk')}: <strong className="text-amber-600">{strategy.risk.split(' ')[0]}</strong></span>
+                                <span>{t('crop_recommendations.results.crops')}: <span className="text-muted-foreground">{strategy.suggestedCrops}</span></span>
                            </div>
                         </div>
                     </AccordionTrigger>
@@ -140,36 +143,36 @@ export default function CropRecommendationForm() {
                             <div className="grid md:grid-cols-2 gap-6">
                                 <Card>
                                     <CardHeader>
-                                        <CardTitle className="text-base">Investment Breakdown</CardTitle>
+                                        <CardTitle className="text-base">{t('crop_recommendations.results.investment_breakdown')}</CardTitle>
                                     </CardHeader>
                                     <CardContent>
                                         <Table>
                                             <TableBody>
-                                                <TableRow><TableCell>Seeds</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.seeds)}</TableCell></TableRow>
-                                                <TableRow><TableCell>Machinery</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.machinery)}</TableCell></TableRow>
-                                                <TableRow><TableCell>Labor</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.labor)}</TableCell></TableRow>
-                                                <TableRow><TableCell>Pesticides & Fertilizers</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.pesticides)}</TableCell></TableRow>
-                                                <TableRow><TableCell>Other</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.other)}</TableCell></TableRow>
-                                                <TableRow className="font-bold bg-muted/50"><TableCell>Total Investment</TableCell><TableCell className="text-right">{formatCurrency(strategy.totalInvestment)}</TableCell></TableRow>
+                                                <TableRow><TableCell>{t('crop_recommendations.results.seeds')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.seeds)}</TableCell></TableRow>
+                                                <TableRow><TableCell>{t('crop_recommendations.results.machinery')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.machinery)}</TableCell></TableRow>
+                                                <TableRow><TableCell>{t('crop_recommendations.results.labor')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.labor)}</TableCell></TableRow>
+                                                <TableRow><TableCell>{t('crop_recommendations.results.pesticides')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.pesticides)}</TableCell></TableRow>
+                                                <TableRow><TableCell>{t('crop_recommendations.results.other')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.other)}</TableCell></TableRow>
+                                                <TableRow className="font-bold bg-muted/50"><TableCell>{t('crop_recommendations.results.total_investment')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.totalInvestment)}</TableCell></TableRow>
                                             </TableBody>
                                         </Table>
                                     </CardContent>
                                 </Card>
                                 <Card>
                                      <CardHeader>
-                                        <CardTitle className="text-base">Financial Projection</CardTitle>
+                                        <CardTitle className="text-base">{t('crop_recommendations.results.financial_projection')}</CardTitle>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
                                         <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
-                                            <span className="font-medium">Expected Profit</span>
+                                            <span className="font-medium">{t('crop_recommendations.results.expected_profit')}</span>
                                             <span className="font-bold text-lg text-primary">{formatCurrency(strategy.expectedProfit)}</span>
                                         </div>
                                         <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
-                                            <span className="font-medium">Return on Investment (ROI)</span>
+                                            <span className="font-medium">{t('crop_recommendations.results.roi_full')}</span>
                                             <span className="font-bold text-lg text-primary">{strategy.roi.toFixed(2)}%</span>
                                         </div>
                                         <Alert>
-                                            <AlertTitle className="font-semibold">Risk Assessment</AlertTitle>
+                                            <AlertTitle className="font-semibold">{t('crop_recommendations.results.risk_assessment')}</AlertTitle>
                                             <AlertDescription>{strategy.risk}</AlertDescription>
                                         </Alert>
                                     </CardContent>
@@ -184,7 +187,7 @@ export default function CropRecommendationForm() {
             {recommendations.extraSuggestions && (
                  <Alert className="mt-8 border-primary/50 bg-primary/5">
                     <Lightbulb className="h-4 w-4" />
-                    <AlertTitle className="font-semibold text-primary">Extra Suggestions</AlertTitle>
+                    <AlertTitle className="font-semibold text-primary">{t('crop_recommendations.results.extra_suggestions')}</AlertTitle>
                     <AlertDescription className="whitespace-pre-line">
                         {recommendations.extraSuggestions}
                     </AlertDescription>
