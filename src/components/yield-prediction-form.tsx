@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
 import { yieldPrediction, YieldPredictionOutput } from '@/ai/flows/yield-prediction';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, CalendarIcon, TrendingUp, ThumbsUp, ThumbsDown, Info } from 'lucide-react';
