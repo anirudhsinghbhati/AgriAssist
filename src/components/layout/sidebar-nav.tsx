@@ -37,6 +37,7 @@ const navItems = [
   { href: '/irrigation-planner', icon: Droplets, label: 'Irrigation Planner' },
   { href: '/market-prices', icon: LineChart, label: 'Market Prices' },
   { href: '/financial-tracker', icon: IndianRupee, label: 'Financial Tracker' },
+  { href: '/inventory', icon: Package, label: 'Inventory' },
   { href: '/weather', icon: CloudSun, label: 'Weather Alerts' },
   { href: '/resource-hub', icon: BookOpen, label: 'Resource Hub' },
   { href: '/community', icon: Users, label: 'Community Forum' },
