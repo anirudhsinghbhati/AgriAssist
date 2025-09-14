@@ -16,6 +16,7 @@ import {
   Leaf,
   MessageSquare,
   ClipboardList,
+  Droplets,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -43,6 +44,7 @@ const navItems = [
     { href: '/dashboard', icon: Home, label: 'Dashboard' },
     { href: '/crop-recommendations', icon: Sprout, label: 'Crop Advisory' },
     { href: '/pest-detection', icon: Bug, label: 'Pest Detection' },
+    { href: '/irrigation-planner', icon: Droplets, label: 'Irrigation Planner' },
     { href: '/market-prices', icon: LineChart, label: 'Market Prices' },
     { href: '/weather', icon: CloudSun, label: 'Weather Alerts' },
     { href: '/community', icon: Users, label: 'Community Forum' },
