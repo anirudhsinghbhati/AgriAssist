@@ -13,11 +13,13 @@ const cropData = {
         iconId: 'soybean-crop',
         currentStage: 'Vegetative Growth',
         stages: [
-            { name: 'Emergence', duration: '3 - 10 days', status: 'completed' },
-            { name: 'Vegetative Growth', duration: '11 - 40 days', status: 'active' },
-            { name: 'Flowering', duration: '41 - 65 days', status: 'upcoming' },
-            { name: 'Pod Development', duration: '66 - 95 days', status: 'upcoming' },
-            { name: 'Maturity', duration: '96 - 120 days', status: 'upcoming' },
+            { name: 'Field Preparation', duration: '-30 - 0 days', status: 'completed', link: 'field-preparation' },
+            { name: 'Sowing', duration: '0 - 1 days', status: 'completed', link: 'sowing' },
+            { name: 'Emergence', duration: '3 - 10 days', status: 'active', link: 'emergence' },
+            { name: 'Vegetative Growth', duration: '11 - 40 days', status: 'upcoming', link: 'vegetative-growth' },
+            { name: 'Flowering', duration: '41 - 65 days', status: 'upcoming', link: 'flowering' },
+            { name: 'Pod Development', duration: '66 - 95 days', status: 'upcoming', link: 'pod-development' },
+            { name: 'Maturity', duration: '96 - 120 days', status: 'upcoming', link: 'maturity' },
         ],
         pests: [
             { name: 'Aphids', imageId: 'pest-aphids' },
@@ -113,16 +115,18 @@ export default function MyCropDetailPage({ params }: { params: { cropName: strin
                     <CardContent>
                         <div className="flex overflow-x-auto space-x-2 pb-2">
                             {data.stages.map((stage, index) => (
-                                <div key={stage.name} className={`flex-shrink-0 w-28 text-center p-2 rounded-lg transition-all ${stage.status === 'active' ? 'bg-primary/10' : ''}`}>
-                                    <p className={`text-sm font-semibold ${stage.status === 'active' ? 'text-primary' : 'text-foreground'}`}>{stage.name}</p>
-                                    <p className="text-xs text-muted-foreground">{stage.duration}</p>
-                                    <div className={`mt-4 h-20 flex flex-col justify-end items-center ${stage.status === 'active' ? 'bg-primary/10' : ''}`}>
-                                        <div style={{ transform: `scale(${1 + index * 0.1})` }}>
-                                            <PlantIcon status={stage.status} />
+                                <Link key={stage.name} href={`/my-crops/${params.cropName}/${stage.link}`} className="block">
+                                    <div className={`flex-shrink-0 w-28 text-center p-2 rounded-lg transition-all ${stage.status === 'active' ? 'bg-primary/10' : ''}`}>
+                                        <p className={`text-sm font-semibold ${stage.status === 'active' ? 'text-primary' : 'text-foreground'}`}>{stage.name}</p>
+                                        <p className="text-xs text-muted-foreground">{stage.duration}</p>
+                                        <div className={`mt-4 h-20 flex flex-col justify-end items-center ${stage.status === 'active' ? 'bg-primary/10' : ''}`}>
+                                            <div style={{ transform: `scale(${1 + index * 0.1})` }}>
+                                                <PlantIcon status={stage.status} />
+                                            </div>
                                         </div>
+                                        <div className={`h-1 w-full rounded-full ${stage.status !== 'upcoming' ? 'bg-primary' : 'bg-muted'}`}/>
                                     </div>
-                                    <div className={`h-1 w-full rounded-full ${stage.status !== 'upcoming' ? 'bg-primary' : 'bg-muted'}`}/>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </CardContent>
