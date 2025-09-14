@@ -10,7 +10,6 @@ type Visibility = { [key: string]: boolean };
 
 type NavVisibilityState = {
   visibility: Visibility;
-  toggleVisibility: (id: string) => void;
   setVisibility: (newVisibility: Visibility) => void;
   getVisibleNavItems: () => typeof navConfig;
 };
@@ -27,16 +26,6 @@ export const useNavStore = create<NavVisibilityState>()(
   persist(
     (set, get) => ({
       visibility: getDefaultVisibility(),
-      toggleVisibility: (id: string) => {
-        const item = navConfig.find(item => item.id === id);
-        if (item?.isLocked) return; 
-        set((state) => ({
-          visibility: {
-            ...state.visibility,
-            [id]: !state.visibility[id],
-          },
-        }));
-      },
       setVisibility: (newVisibility: Visibility) => {
         set({ visibility: newVisibility });
       },
@@ -46,7 +35,7 @@ export const useNavStore = create<NavVisibilityState>()(
       }
     }),
     {
-      name: 'agriassist-nav-visibility', 
+      name: 'greenroots-nav-visibility', 
       storage: createJSONStorage(() => localStorage), 
       onRehydrateStorage: () => (state) => {
         if (state) {

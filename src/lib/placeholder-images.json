@@ -3,8 +3,8 @@
   "placeholderImages": [
     {
       "id": "logo",
-      "description": "AgriAssist app logo",
-      "imageUrl": "https://picsum.photos/seed/agriassistlogo/100/100",
+      "description": "GreenRoots app logo",
+      "imageUrl": "https://picsum.photos/seed/greenrootslogo/100/100",
       "imageHint": "leaf logo"
     },
     {
