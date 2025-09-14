@@ -204,30 +204,6 @@
       "description": "Crates of freshly harvested vegetables.",
       "imageUrl": "https://picsum.photos/seed/postharvest/600/400",
       "imageHint": "harvested vegetables"
-    },
-    {
-      "id": "seed-soybean-js335",
-      "description": "A handful of JS-335 soybean seeds.",
-      "imageUrl": "https://picsum.photos/seed/js335/600/400",
-      "imageHint": "soybean seeds"
-    },
-    {
-      "id": "seed-soybean-nrc37",
-      "description": "A close-up of NRC-37 soybean seeds.",
-      "imageUrl": "https://picsum.photos/seed/nrc37/600/400",
-      "imageHint": "soybean seeds"
-    },
-    {
-      "id": "seed-cotton-bt",
-      "description": "A pile of BT cotton seeds.",
-      "imageUrl": "https://picsum.photos/seed/btcotton/600/400",
-      "imageHint": "cotton seeds"
-    },
-    {
-      "id": "seed-cotton-dch32",
-      "description": "Close-up of DCH-32 cotton seeds.",
-      "imageUrl": "https://picsum.photos/seed/dch32/600/400",
-      "imageHint": "cotton seeds"
     }
   ]
 }
