@@ -61,27 +61,26 @@ export const useNavStore = create<NavVisibilityState>()(
 
 export const useVisibleNavItems = () => {
     const getVisibleNavItems = useNavStore((state) => state.getVisibleNavItems);
-    // This is a common pattern for Zustand with SSR to avoid hydration issues.
-    // We return an empty array on the server and the actual items on the client.
-    const [visibleItems, setVisibleItems] =
-        typeof window !== 'undefined'
-            ? [getVisibleNavItems(), () => {}]
-            : [[], () => {}];
+    const [visibleItems, setVisibleItems] = React.useState(navConfig);
+    const [isMounted, setIsMounted] = React.useState(false);
 
-    if (typeof window !== 'undefined') {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        React.useEffect(() => {
+    React.useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    React.useEffect(() => {
+        if (isMounted) {
+            const updateItems = () => setVisibleItems(getVisibleNavItems());
+            updateItems(); 
             const unsubscribe = useNavStore.subscribe(
                 (state) => state.visibility,
-                () => {
-                    (setVisibleItems as React.Dispatch<React.SetStateAction<typeof navConfig>>)(getVisibleNavItems());
-                }
+                updateItems
             );
-            // Initial sync
-            (setVisibleItems as React.Dispatch<React.SetStateAction<typeof navConfig>>)(getVisibleNavItems());
             return () => unsubscribe();
-        }, [getVisibleNavItems]);
-    }
-    
-    return visibleItems;
+        }
+    }, [isMounted, getVisibleNavItems]);
+
+    // On the server, or before the client has mounted, return the full default nav config
+    // to ensure the server and client render the same initial HTML.
+    return isMounted ? visibleItems : navConfig;
 };
