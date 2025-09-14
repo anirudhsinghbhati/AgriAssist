@@ -4,9 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useNavStore } from "@/hooks/use-nav-store";
+import { navConfig } from "@/lib/nav-config";
 
 export default function SettingsPage() {
-    const { allNavItems, visibility, toggleVisibility } = useNavStore();
+    const visibility = useNavStore((state) => state.visibility);
+    const toggleVisibility = useNavStore((state) => state.toggleVisibility);
 
     return (
         <Card>
@@ -21,7 +23,7 @@ export default function SettingsPage() {
                     <div>
                         <h3 className="text-lg font-semibold mb-4">Customize Navigation Menu</h3>
                         <div className="space-y-4">
-                            {allNavItems.map((item) => (
+                            {navConfig.map((item) => (
                                 <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
                                     <Label htmlFor={item.id} className="flex items-center gap-3 cursor-pointer">
                                         <item.icon className="h-5 w-5 text-muted-foreground" />

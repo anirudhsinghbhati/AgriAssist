@@ -30,16 +30,16 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useTheme } from 'next-themes';
-import { useNavStore } from '@/hooks/use-nav-store';
+import { useVisibleNavItems } from '@/hooks/use-nav-store';
 
 export function Header() {
   const pathname = usePathname();
   const avatar = PlaceHolderImages.find((img) => img.id === 'avatar');
   const { setTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { visibleNavItems } = useNavStore();
+  const visibleNavItems = useVisibleNavItems();
 
 
   const pathSegments = pathname.split('/').filter(Boolean);
@@ -61,7 +61,7 @@ export function Header() {
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              href="#"
+              href="/dashboard"
               onClick={handleLinkClick}
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
