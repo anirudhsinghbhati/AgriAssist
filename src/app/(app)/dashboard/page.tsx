@@ -22,7 +22,7 @@ const cropData = [
 ];
 
 const cropStages = [
-    'Field Prep', 'Sowing', 'Emergence', 'Vegetative', 'Flowering', 'Pod Formation', 'Seed Dev', 'Maturity', 'Harvesting'
+    'Prep', 'Sowing', 'Emerge', 'Veg', 'Flower', 'Pod', 'Seed', 'Mature', 'Harvest'
 ];
 
 export default function Dashboard() {
