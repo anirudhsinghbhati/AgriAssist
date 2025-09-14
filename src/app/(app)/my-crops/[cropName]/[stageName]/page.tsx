@@ -41,6 +41,18 @@ const stageData = {
             '• A lower temperature tends to delay the flowering. Day length is the key factor in most of the soybean varieties as they are short day plants. In northern India soybean can be planted from third week of June to first fortnight of July.',
             '• Only 25 to 30 percent of the flowers produce set pods, the final number depending on the plant vigour during the flowering period.',
             '• Temperatures below 21°C and above 32°C can reduce flowering and pod set. Extreme temperatures above 40°C are harmful for seed production.',
+        ],
+        soil: [
+          '• Soybean can be grown on a wide range of soils, but it grows best on fertile, well drained loamy soils with a pH between 6.0 and 7.0.',
+          '• In acidic soils, liming is recommended for better crop performance.',
+          '• Saline soils and water-logged soils are not suitable for soybean cultivation.',
+          '• Good aeration is also required in the soil for better nodulation and nitrogen fixation.',
+        ],
+        land: [
+          '• Prepare a clean and clod free seedbed for better germination. The land should be ploughed, harrowed and levelled properly.',
+          '• One deep ploughing followed by 2-3 cross harrowing and planking is sufficient to get a fine tilth.',
+          '• The field should be well leveled to avoid water logging.',
+          '• Laser land leveling is recommended for better water management and crop establishment.',
         ]
     }
   }
@@ -103,12 +115,17 @@ export default function CropStageDetailPage({ params }: { params: { cropName: st
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Agronomical practices.</CardTitle>
+                        <CardTitle>Agronomical practices</CardTitle>
                     </CardHeader>
                     <CardContent>
                          <Accordion type="single" collapsible defaultValue="climate">
                             {agronomicPractices.map((practice) => {
                                 const practiceImage = PlaceHolderImages.find(p => p.id === practice.imageId);
+                                const content = data.content[practice.id as keyof typeof data.content] as string[] | undefined;
+                                
+                                // Don't render the accordion item if there's no content for it
+                                if (!content) return null;
+
                                 return (
                                 <AccordionItem value={practice.id} key={practice.id}>
                                     <AccordionTrigger>
@@ -128,7 +145,7 @@ export default function CropStageDetailPage({ params }: { params: { cropName: st
                                     </AccordionTrigger>
                                     <AccordionContent className="pl-4 border-l-2 border-primary/50 ml-6">
                                        <div className="prose prose-sm text-muted-foreground whitespace-pre-line">
-                                            {(data.content[practice.id as keyof typeof data.content] as string[] || ['No information available for this section.']).join('\n')}
+                                            {content.join('\n')}
                                        </div>
                                     </AccordionContent>
                                 </AccordionItem>
@@ -162,7 +179,7 @@ export default function CropStageDetailPage({ params }: { params: { cropName: st
             
              <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-sm border-t flex justify-end">
                 <Button size="lg">
-                    Next
+                    Next Stage
                     <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
             </div>
