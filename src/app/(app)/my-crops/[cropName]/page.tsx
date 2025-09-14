@@ -1,9 +1,9 @@
+
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { AlertTriangle, ChevronLeft, MessageCircle, Plus, Video } from 'lucide-react';
+import { AlertTriangle, ChevronLeft, MessageCircle, Plus } from 'lucide-react';
 import Link from 'next/link';
 
 // --- MOCK DATA ---
