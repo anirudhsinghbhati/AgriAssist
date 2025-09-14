@@ -77,9 +77,10 @@ export default function ResourceHubPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <Button asChild className="w-full">
+                <Button asChild className="w-full" disabled={resource.link === '#'}>
                   <Link href={resource.link}>
-                    Open Guide <ArrowRight className="ml-2 h-4 w-4" />
+                    {resource.link === '#' ? 'Coming Soon' : 'Open Guide'}
+                    {resource.link !== '#' && <ArrowRight className="ml-2 h-4 w-4" />}
                   </Link>
                 </Button>
               </CardContent>
