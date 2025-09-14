@@ -4,9 +4,9 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { aiDrivenPestDiseaseDetection } from '@/ai/flows/ai-driven-pest-disease-detection';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -28,6 +28,7 @@ export default function PestDetectionForm() {
     if (file) {
       if (file.size > 4 * 1024 * 1024) { // 4MB limit
         setError('File size must be less than 4MB.');
+        setPreview(null);
         return;
       }
       setError(null);
