@@ -56,6 +56,7 @@ export function Header() {
   const avatar = PlaceHolderImages.find((img) => img.id === 'avatar');
 
   const pathSegments = pathname.split('/').filter(Boolean);
+  const breadcrumbSegments = pathSegments.filter(segment => segment !== 'dashboard');
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -95,24 +96,24 @@ export function Header() {
               <Link href="/dashboard">Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          {pathSegments.slice(0, pathSegments.length -1).map((segment, index) => (
+          {breadcrumbSegments.slice(0, breadcrumbSegments.length -1).map((segment, index) => (
              <Fragment key={segment}>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                     <BreadcrumbLink asChild>
-                        <Link href={`/${pathSegments.slice(0, index + 1).join('/')}`}>
+                        <Link href={`/${breadcrumbSegments.slice(0, index + 1).join('/')}`}>
                             {segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ')}
                         </Link>
                     </BreadcrumbLink>
                 </BreadcrumbItem>
              </Fragment>
           ))}
-            {pathSegments.length > 0 && (
+            {breadcrumbSegments.length > 0 && (
                 <Fragment>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
                         <BreadcrumbPage>
-                            {pathSegments[pathSegments.length - 1].charAt(0).toUpperCase() + pathSegments[pathSegments.length - 1].slice(1).replace(/-/g, ' ')}
+                            {breadcrumbSegments[breadcrumbSegments.length - 1].charAt(0).toUpperCase() + breadcrumbSegments[breadcrumbSegments.length - 1].slice(1).replace(/-/g, ' ')}
                         </BreadcrumbPage>
                     </BreadcrumbItem>
                 </Fragment>
