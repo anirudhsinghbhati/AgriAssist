@@ -16,15 +16,15 @@ const CropDetailSchema = z.object({
   sellingPrice: z.number().describe('Selling price per ton.'),
   profitPerHectare: z.number().describe('Profit per hectare.'),
   investmentPerHectare: z.number().describe('Investment required per hectare.'),
-  maxAllocation: z.number().optional().describe('Maximum hectares that can be allocated to this crop.'),
-  minAllocation: z.number().optional().describe('Minimum hectares that must be allocated to this crop.'),
+  maxAllocation: z.coerce.number().optional().describe('Maximum hectares that can be allocated to this crop.'),
+  minAllocation: z.coerce.number().optional().describe('Minimum hectares that must be allocated to this crop.'),
 });
 
 const PersonalizedCropRecommendationsInputSchema = z.object({
-  totalLand: z.number().describe('Total available land in hectares.'),
+  totalLand: z.coerce.number().describe('Total available land in hectares.'),
   candidateCrops: z.array(CropDetailSchema).describe('A list of candidate crops with their details.'),
-  maxCapital: z.number().optional().describe('Maximum available capital for investment.'),
-  diversification: z.number().optional().describe('Minimum number of different crops to plant.'),
+  maxCapital: z.coerce.number().optional().describe('Maximum available capital for investment.'),
+  diversification: z.coerce.number().optional().describe('Minimum number of different crops to plant.'),
 });
 
 export type PersonalizedCropRecommendationsInput = z.infer<typeof PersonalizedCropRecommendationsInputSchema>;
@@ -59,13 +59,15 @@ export async function personalizedCropRecommendations(
 
 const prompt = ai.definePrompt({
   name: 'personalizedCropRecommendationsPrompt',
-  input: { schema: PersonalizedCropRecommendationsInputSchema },
+  input: { schema: PersonalizedCropRecommendationsInputSchema.extend({
+    candidateCropsString: z.string(),
+  }) },
   output: { schema: PersonalizedCropRecommendationsOutputSchema },
   prompt: `You are an expert agricultural financial advisor. A farmer needs a decision-support tool to find the most profitable crop or combination of crops for their land.
 
 Here are the inputs provided by the farmer:
 - Total available land: {{{totalLand}}} hectares.
-- Candidate crops list: {{jsonStringify candidateCrops}}
+- Candidate crops list: {{{candidateCropsString}}}
 - Optional: Maximum investment capital: {{{maxCapital}}}
 - Optional: Required diversification (minimum number of crops): {{{diversification}}}
 
@@ -90,7 +92,10 @@ const personalizedCropRecommendationsFlow = ai.defineFlow(
     outputSchema: PersonalizedCropRecommendationsOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input);
+    const { output } = await prompt({
+      ...input,
+      candidateCropsString: JSON.stringify(input.candidateCrops),
+    });
     return output!;
   }
 );
