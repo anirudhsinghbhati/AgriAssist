@@ -29,6 +29,12 @@
       "description": "Image of a cotton plant",
       "imageUrl": "https://picsum.photos/seed/cotton/100/100",
       "imageHint": "cotton plant"
+    },
+    {
+      "id": "soil-moisture-sensor",
+      "description": "A soil moisture sensor in the ground",
+      "imageUrl": "https://picsum.photos/seed/soilmoisture/100/100",
+      "imageHint": "soil sensor"
     }
   ]
 }
