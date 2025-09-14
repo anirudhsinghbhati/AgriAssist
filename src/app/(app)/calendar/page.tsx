@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { addDays, format, isSameDay, startOfDay } from 'date-fns';
-import { Planting, Droplets, Bug, Sprout, PlusCircle, Calendar as CalendarIcon } from 'lucide-react';
+import { Sprout, Droplets, Bug, Combine, PlusCircle, Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type EventType = 'Planting' | 'Irrigation' | 'Pest Control' | 'Harvesting';
@@ -30,10 +30,10 @@ const initialEvents: CalendarEvent[] = [
 ];
 
 const eventConfig: { [key in EventType]: { icon: React.ElementType, color: string } } = {
-  'Planting': { icon: Planting, color: 'bg-green-500' },
+  'Planting': { icon: Sprout, color: 'bg-green-500' },
   'Irrigation': { icon: Droplets, color: 'bg-blue-500' },
   'Pest Control': { icon: Bug, color: 'bg-red-500' },
-  'Harvesting': { icon: Sprout, color: 'bg-yellow-500' },
+  'Harvesting': { icon: Combine, color: 'bg-yellow-500' },
 };
 
 
