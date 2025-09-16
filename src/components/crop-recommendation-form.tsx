@@ -13,7 +13,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { personalizedCropRecommendations, PersonalizedCropRecommendationsOutput } from '@/ai/flows/personalized-crop-recommendations';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Lightbulb } from 'lucide-react';
+import { Loader2, Lightbulb, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 
 const formSchema = z.object({
@@ -132,14 +132,38 @@ export default function CropRecommendationForm() {
                            <h3 className="text-lg font-semibold text-primary">{strategy.strategyName}</h3>
                            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
                                 <span>{t('crop_recommendations.results.roi')}: <strong className="text-green-600">{strategy.roi.toFixed(2)}%</strong></span>
-                                <span>{t('crop_recommendations.results.risk')}: <strong className="text-amber-600">{strategy.risk.split(' ')[0]}</strong></span>
+                                <span>{t('crop_recommendations.results.risk')}: <strong className="text-amber-600">{strategy.risk}</strong></span>
                                 <span>{t('crop_recommendations.results.crops')}: <span className="text-muted-foreground">{strategy.suggestedCrops}</span></span>
                            </div>
                         </div>
                     </AccordionTrigger>
                     <AccordionContent>
-                        <div className="space-y-4 p-2">
+                        <div className="space-y-6 p-2">
                             <p className="text-muted-foreground">{strategy.description}</p>
+                            
+                            <div className="space-y-4">
+                               <Card>
+                                 <CardHeader>
+                                    <CardTitle className="text-base flex items-center gap-2">
+                                        <CalendarDays className="h-5 w-5 text-primary"/>
+                                        Activity Timeline
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="relative pl-6">
+                                        <div className="absolute left-0 top-0 h-full w-0.5 bg-primary/20" />
+                                        {strategy.timeline.map((step, stepIndex) => (
+                                            <div key={stepIndex} className="relative mb-6">
+                                                <div className="absolute -left-[37px] top-1 h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">{stepIndex + 1}</div>
+                                                <p className="font-semibold">{step.step}</p>
+                                                <p className="text-sm text-muted-foreground">{step.duration}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </CardContent>
+                               </Card>
+                            </div>
+
                             <div className="grid md:grid-cols-2 gap-6">
                                 <Card>
                                     <CardHeader>
@@ -158,25 +182,42 @@ export default function CropRecommendationForm() {
                                         </Table>
                                     </CardContent>
                                 </Card>
-                                <Card>
-                                     <CardHeader>
-                                        <CardTitle className="text-base">{t('crop_recommendations.results.financial_projection')}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="space-y-4">
-                                        <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
-                                            <span className="font-medium">{t('crop_recommendations.results.expected_profit')}</span>
-                                            <span className="font-bold text-lg text-primary">{formatCurrency(strategy.expectedProfit)}</span>
-                                        </div>
-                                        <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
-                                            <span className="font-medium">{t('crop_recommendations.results.roi_full')}</span>
-                                            <span className="font-bold text-lg text-primary">{strategy.roi.toFixed(2)}%</span>
-                                        </div>
-                                        <Alert>
-                                            <AlertTitle className="font-semibold">{t('crop_recommendations.results.risk_assessment')}</AlertTitle>
-                                            <AlertDescription>{strategy.risk}</AlertDescription>
-                                        </Alert>
-                                    </CardContent>
-                                </Card>
+                                <div className="space-y-6">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle className="text-base">{t('crop_recommendations.results.financial_projection')}</CardTitle>
+                                        </CardHeader>
+                                        <CardContent className="space-y-4">
+                                            <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
+                                                <span className="font-medium">{t('crop_recommendations.results.expected_profit')}</span>
+                                                <span className="font-bold text-lg text-primary">{formatCurrency(strategy.expectedProfit)}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
+                                                <span className="font-medium">{t('crop_recommendations.results.roi_full')}</span>
+                                                <span className="font-bold text-lg text-primary">{strategy.roi.toFixed(2)}%</span>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                     <Card>
+                                        <CardHeader>
+                                            <CardTitle className="text-base">{t('crop_recommendations.results.risk_assessment')}</CardTitle>
+                                        </CardHeader>
+                                        <CardContent className="space-y-3">
+                                            <div className="flex items-start gap-3 text-sm">
+                                                <TrendingUp className="h-4 w-4 mt-0.5 text-amber-600 shrink-0"/>
+                                                <div><strong className="font-semibold">Market:</strong> {strategy.riskAnalysis.marketRisk}</div>
+                                            </div>
+                                             <div className="flex items-start gap-3 text-sm">
+                                                <Thermometer className="h-4 w-4 mt-0.5 text-amber-600 shrink-0"/>
+                                                <div><strong className="font-semibold">Weather:</strong> {strategy.riskAnalysis.weatherRisk}</div>
+                                            </div>
+                                             <div className="flex items-start gap-3 text-sm">
+                                                <Bug className="h-4 w-4 mt-0.5 text-amber-600 shrink-0"/>
+                                                <div><strong className="font-semibold">Pest:</strong> {strategy.riskAnalysis.pestRisk}</div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </div>
                             </div>
                         </div>
                     </AccordionContent>

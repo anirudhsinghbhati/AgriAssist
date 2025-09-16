@@ -27,6 +27,17 @@ const InvestmentBreakdownSchema = z.object({
   other: z.number().describe('Other miscellaneous costs.'),
 });
 
+const TimelineStepSchema = z.object({
+    step: z.string().describe("Name of the activity (e.g., Land Preparation, Planting, Harvesting)."),
+    duration: z.string().describe("Estimated duration or timeframe for this step (e.g., '2-3 weeks', 'Mid-June')."),
+});
+
+const RiskAnalysisSchema = z.object({
+    marketRisk: z.string().describe("Analysis of potential market risks like price volatility."),
+    weatherRisk: z.string().describe("Analysis of weather-related risks like drought or heavy rain."),
+    pestRisk: z.string().describe("Analysis of common pest and disease risks for the suggested crops."),
+});
+
 const RecommendationStrategySchema = z.object({
   strategyName: z.string().describe("Name of the crop strategy (e.g., 'Traditional Cropping', 'High-Value Non-Traditional Farming')."),
   description: z.string().describe("A brief description of this strategy and the crops involved."),
@@ -34,7 +45,9 @@ const RecommendationStrategySchema = z.object({
   investmentBreakdown: InvestmentBreakdownSchema.describe("A detailed breakdown of the investment costs."),
   expectedProfit: z.number().describe("Total expected profit for this strategy."),
   roi: z.number().describe("Return on Investment percentage for this strategy."),
-  risk: z.string().describe("An assessment of the risks involved (e.g., Low, Medium, High) with a brief explanation."),
+  risk: z.string().describe("An overall assessment of the risks involved (e.g., Low, Medium, High)."),
+  riskAnalysis: RiskAnalysisSchema.describe("A detailed breakdown of different types of risks."),
+  timeline: z.array(TimelineStepSchema).describe("A step-by-step timeline of key farming activities."),
   suggestedCrops: z.string().describe("A comma-separated list of the primary crops in this strategy."),
 });
 
@@ -75,7 +88,9 @@ For each of these strategies, provide the following details:
 - A detailed breakdown of the total investment per hectare, including costs for seeds, machinery, labor, pesticides/fertilizers, and other expenses. Calculate the total investment based on the farmer's total land.
 - The total expected annual profit.
 - The Return on Investment (ROI) for the strategy.
-- An assessment of the risks involved (e.g., Low, Medium, High) with a brief explanation (market volatility, climate sensitivity, skill required, etc.).
+- An overall risk assessment (e.g., Low, Medium, High).
+- A detailed risk analysis covering market, weather, and pest risks.
+- A step-by-step timeline of key activities (e.g., Land Preparation, Sowing, Irrigation, Harvesting).
 - The primary crops suggested in the strategy.
 
 Finally, add any extra suggestions or important notes for the farmer to consider, such as government schemes, market linkages, or modern farming techniques.
