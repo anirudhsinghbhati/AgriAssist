@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { personalizedCropRecommendations, PersonalizedCropRecommendationsOutput } from '@/ai/flows/personalized-crop-recommendations';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays, MapPin, Sprout, ShoppingCart, Tractor, Phone, Leaf } from 'lucide-react';
+import { Loader2, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays, MapPin, Sprout, ShoppingCart, Tractor, Phone, Leaf, Ruler, Mountain, LocateFixed, Globe } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -61,55 +61,81 @@ export default function CropRecommendationForm() {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <FormField
-              control={form.control}
-              name="totalLand"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('crop_recommendations.form.total_land')}</FormLabel>
-                  <FormControl><Input type="number" step="0.1" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="state"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('crop_recommendations.form.state')}</FormLabel>
-                  <FormControl><Input placeholder={t('crop_recommendations.form.state_placeholder')} {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="district"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('crop_recommendations.form.district')}</FormLabel>
-                  <FormControl><Input placeholder={t('crop_recommendations.form.district_placeholder')} {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="soilType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('crop_recommendations.form.soil_type')}</FormLabel>
-                  <FormControl><Input placeholder={t('crop_recommendations.form.soil_type_placeholder')} {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold">{t('crop_recommendations.form.farm_details_title')}</h3>
+                <p className="text-sm text-muted-foreground">{t('crop_recommendations.form.farm_details_desc')}</p>
+              </div>
+               <div className="grid md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="totalLand"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('crop_recommendations.form.total_land')}</FormLabel>
+                      <div className="relative">
+                          <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <FormControl><Input type="number" step="0.1" {...field} className="pl-10" /></FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                 <FormField
+                  control={form.control}
+                  name="soilType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('crop_recommendations.form.soil_type')}</FormLabel>
+                      <div className="relative">
+                        <Mountain className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <FormControl><Input placeholder={t('crop_recommendations.form.soil_type_placeholder')} {...field} className="pl-10"/></FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+          </div>
+           <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold">{t('crop_recommendations.form.location_details_title')}</h3>
+                <p className="text-sm text-muted-foreground">{t('crop_recommendations.form.location_details_desc')}</p>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('crop_recommendations.form.state')}</FormLabel>
+                       <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <FormControl><Input placeholder={t('crop_recommendations.form.state_placeholder')} {...field} className="pl-10"/></FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="district"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('crop_recommendations.form.district')}</FormLabel>
+                       <div className="relative">
+                        <LocateFixed className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <FormControl><Input placeholder={t('crop_recommendations.form.district_placeholder')} {...field} className="pl-10"/></FormControl>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
           </div>
 
-          <Button type="submit" disabled={isLoading}>
+          <Button type="submit" disabled={isLoading} size="lg">
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t('crop_recommendations.form.submit_button')}
           </Button>
@@ -151,7 +177,7 @@ export default function CropRecommendationForm() {
                     {recommendations.topCropChoices.map((strategy, index) => (
                         <Card key={index} className='flex flex-col'>
                              <CardHeader>
-                                <Badge className='mb-2 w-fit'><Leaf className='mr-1.5 h-3 w-3'/> {strategy.recommendedCrops}</Badge>
+                                <Badge className='mb-2 w-fit' variant="outline"><Leaf className='mr-1.5 h-3 w-3 text-primary'/> {strategy.recommendedCrops}</Badge>
                                 <CardTitle>{strategy.strategyName}</CardTitle>
                             </CardHeader>
                              <CardContent className='space-y-4 flex-grow flex flex-col'>
@@ -217,7 +243,7 @@ export default function CropRecommendationForm() {
                     <CardHeader>
                         <CardTitle className='flex items-center gap-2'><ShieldAlert className='text-primary'/> Risks & Mitigation</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-6">
+                    <CardContent className="space-y-4">
                         {recommendations.topCropChoices.map((strategy, index) => (
                             <div key={index}>
                                 <h4 className='font-semibold mb-3 text-md text-primary'>{strategy.recommendedCrops}</h4>

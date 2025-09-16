@@ -113,6 +113,10 @@
         "title": "Personalized Crop Recommendations",
         "description": "Fill in the details about your farm to receive AI-powered crop suggestions tailored to your conditions.",
         "form": {
+            "farm_details_title": "Farm Details",
+            "farm_details_desc": "Provide information about your land and soil.",
+            "location_details_title": "Location Details",
+            "location_details_desc": "Tell us where your farm is located.",
             "total_land": "Total Land (hectares)",
             "state": "State",
             "state_placeholder": "e.g., Maharashtra",
