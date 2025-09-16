@@ -2,6 +2,7 @@
 'use server';
 /**
  * @fileOverview Provides personalized crop recommendations to farmers based on their location, land, and soil type.
+ * This acts as KrishiMitra AI, an expert agricultural advisor.
  *
  * - personalizedCropRecommendations - A function that generates crop recommendations.
  * - PersonalizedCropRecommendationsInput - The input type for the personalizedCropRecommendations function.
@@ -20,41 +21,47 @@ const PersonalizedCropRecommendationsInputSchema = z.object({
 
 export type PersonalizedCropRecommendationsInput = z.infer<typeof PersonalizedCropRecommendationsInputSchema>;
 
-const InvestmentBreakdownSchema = z.object({
-  seeds: z.number().describe('Estimated cost for seeds.'),
-  machinery: z.number().describe('Estimated cost for machinery usage.'),
-  labor: z.number().describe('Estimated cost for labor.'),
-  pesticides: z.number().describe('Estimated cost for pesticides and fertilizers.'),
-  other: z.number().describe('Other miscellaneous costs.'),
+const LocationAndSoilAnalysisSchema = z.object({
+    summary: z.string().describe("A brief summary of the farmer's location and soil conditions."),
+    soilType: z.string().describe("Identified soil type."),
+    suitableCrops: z.array(z.string()).describe("A list of crops generally suitable for this soil and region."),
 });
 
-const TimelineStepSchema = z.object({
-    step: z.string().describe("Name of the activity (e.g., Land Preparation, Planting, Harvesting)."),
-    duration: z.string().describe("Estimated duration or timeframe for this step (e.g., '2-3 weeks', 'Mid-June')."),
+const EconomicsSchema = z.object({
+    totalInvestment: z.number().describe("Total estimated investment for this crop strategy."),
+    expectedYield: z.string().describe("Expected yield (e.g., '10-12 quintals/hectare')."),
+    expectedProfit: z.number().describe("Total expected net profit for this strategy."),
+    roi: z.number().describe("Return on Investment percentage for this strategy."),
 });
 
-const RiskAnalysisSchema = z.object({
-    marketRisk: z.string().describe("Analysis of potential market risks like price volatility."),
-    weatherRisk: z.string().describe("Analysis of weather-related risks like drought or heavy rain."),
-    pestRisk: z.string().describe("Analysis of common pest and disease risks for the suggested crops."),
+const CultivationStepSchema = z.object({
+    month: z.string().describe("The month for the activity (e.g., 'June', 'July-August')."),
+    tasks: z.string().describe("A brief description of key tasks for that month."),
+});
+
+const RisksAndMitigationSchema = z.object({
+    weather: z.string().describe("Potential weather-related risks and how to mitigate them."),
+    pest: z.string().describe("Common pest/disease risks and mitigation strategies."),
+    market: z.string().describe("Market volatility risks and how to manage them."),
 });
 
 const RecommendationStrategySchema = z.object({
-  strategyName: z.string().describe("Name of the crop strategy (e.g., 'Traditional Cropping', 'High-Value Non-Traditional Farming')."),
-  description: z.string().describe("A brief description of this strategy and the crops involved."),
-  totalInvestment: z.number().describe("Total estimated investment for this strategy."),
-  investmentBreakdown: InvestmentBreakdownSchema.describe("A detailed breakdown of the investment costs."),
-  expectedProfit: z.number().describe("Total expected profit for this strategy."),
-  roi: z.number().describe("Return on Investment percentage for this strategy."),
-  risk: z.string().describe("An overall assessment of the risks involved (e.g., Low, Medium, High)."),
-  riskAnalysis: RiskAnalysisSchema.describe("A detailed breakdown of different types of risks."),
-  timeline: z.array(TimelineStepSchema).describe("A step-by-step timeline of key farming activities."),
-  suggestedCrops: z.string().describe("A comma-separated list of the primary crops in this strategy."),
+  strategyName: z.string().describe("Name of the crop strategy (e.g., 'High-Value Cash Crop')."),
+  recommendedCrops: z.string().describe("The primary crop(s) recommended in this strategy."),
+  rationale: z.string().describe("Clear reasons why this crop/strategy is recommended for the farmer's specific conditions."),
+  economics: EconomicsSchema,
+  cultivationCalendar: z.array(CultivationStepSchema).describe("A month-wise calendar of cultivation tasks."),
+  risksAndMitigation: RisksAndMitigationSchema,
 });
 
 const PersonalizedCropRecommendationsOutputSchema = z.object({
-  recommendations: z.array(RecommendationStrategySchema).describe('A list of different crop allocation strategies with their financial details.'),
-  extraSuggestions: z.string().optional().describe('Additional notes, suggestions, or considerations for the farmer.'),
+  farmerName: z.string().describe("A familiar way to address the farmer, e.g., 'Kisan Bhai'."),
+  locationAndSoilAnalysis: LocationAndSoilAnalysisSchema,
+  topCropChoices: z.array(RecommendationStrategySchema).describe('A list of the top 3 recommended crop strategies.'),
+  sustainablePractices: z.array(z.string()).describe("A list of recommended sustainable/organic practices."),
+  marketStrategy: z.string().describe("General guidance on when and where to sell the produce for best prices."),
+  nextActions: z.array(z.string()).describe("A short, numbered list of immediate next steps for the farmer."),
+  helplineInfo: z.string().describe("Contact information for local agricultural support or helplines."),
 });
 export type PersonalizedCropRecommendationsOutput = z.infer<typeof PersonalizedCropRecommendationsOutputSchema>;
 
@@ -69,34 +76,25 @@ const prompt = ai.definePrompt({
   name: 'personalizedCropRecommendationsPrompt',
   input: { schema: PersonalizedCropRecommendationsInputSchema },
   output: { schema: PersonalizedCropRecommendationsOutputSchema },
-  prompt: `You are an expert agricultural advisor with deep knowledge of Indian farming conditions. A farmer needs a decision-support tool to find the most profitable and suitable crop strategies for their land.
+  prompt: `You are KrishiMitra AI, an expert agricultural advisor for small farmers in India. Your goal is to provide clear, actionable, and sustainable crop recommendations.
 
-Here are the details provided by the farmer:
-- Total available land: {{{totalLand}}} hectares.
-- Location: {{{district}}} district, {{{state}}} state.
-- Soil Type: {{{soilType}}}.
+FARM DETAILS:
+- Farm Size: {{{totalLand}}} hectares
+- Location: {{{district}}}, {{{state}}}
+- Soil Type: {{{soilType}}}
+- Preferred Language: English
 
-Your task is to provide at least three distinct and diverse farming strategies tailored to these specific conditions. For each strategy, you must provide a detailed analysis.
+INSTRUCTIONS:
+1.  Analyze the provided farm details.
+2.  Suggest the TOP 3 diverse and practical crop strategies for the upcoming main season (assume Kharif if not specified).
+3.  For each strategy, provide a detailed breakdown covering rationale, economics, a cultivation calendar, risks, and mitigation.
+4.  Use realistic yield and financial data for the specified Indian location.
+5.  Include advice on sustainable practices and market strategy.
+6.  Conclude with clear, simple next steps and a helpline.
+7.  The response must be in simple English, formatted for a farmer with basic digital literacy.
+8.  Strictly adhere to the output JSON schema.
 
-The strategies should include:
-1.  A Traditional Crop Strategy: Focus on common, stable crops suitable for the region (e.g., staples like wheat, rice, soyabean). This should be a relatively lower-risk option.
-2.  A Non-Traditional / High-Value Crop Strategy: Suggest a more specialized, potentially higher-profit crop (e.g., saffron, medicinal herbs, exotic fruits, mushrooms) that is viable in the given location and soil. This might be a higher-risk, higher-reward option.
-3.  A Diversified Multi-Crop Strategy: Recommend a mix of crops that can be grown together or in rotation for maximum profit and risk mitigation. This could include vegetables, fruits, medicinal plants, flowers, etc.
-
-For each of these strategies, provide the following details:
-- A clear strategy name.
-- A description of the strategy and the crops involved.
-- A detailed breakdown of the total investment per hectare, including costs for seeds, machinery, labor, pesticides/fertilizers, and other expenses. Calculate the total investment based on the farmer's total land.
-- The total expected annual profit.
-- The Return on Investment (ROI) for the strategy.
-- An overall risk assessment (e.g., Low, Medium, High).
-- A detailed risk analysis covering market, weather, and pest risks.
-- A step-by-step timeline of key activities (e.g., Land Preparation, Sowing, Irrigation, Harvesting).
-- The primary crops suggested in the strategy.
-
-Finally, add any extra suggestions or important notes for the farmer to consider, such as government schemes, market linkages, or modern farming techniques.
-
-Ensure the response strictly follows the output schema.
+Begin the analysis now and generate the structured recommendation.
 `,
 });
 

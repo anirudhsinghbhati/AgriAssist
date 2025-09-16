@@ -8,13 +8,14 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { personalizedCropRecommendations, PersonalizedCropRecommendationsOutput } from '@/ai/flows/personalized-crop-recommendations';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Lightbulb, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays } from 'lucide-react';
+import { Loader2, Lightbulb, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays, MapPin, Sprout, ShoppingCart, Tractor, Info, Phone } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 const formSchema = z.object({
   totalLand: z.coerce.number().min(0.1, 'Total land is required.'),
@@ -122,118 +123,162 @@ export default function CropRecommendationForm() {
       )}
 
       {recommendations && (
-        <div className="mt-8 space-y-6">
-            <h2 className="text-3xl font-bold tracking-tight">{t('crop_recommendations.results.title')}</h2>
-            <Accordion type="single" collapsible defaultValue="item-0" className="w-full">
-            {recommendations.recommendations.map((strategy, index) => (
-                <AccordionItem value={`item-${index}`} key={index}>
-                    <AccordionTrigger>
-                        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8 text-left">
-                           <h3 className="text-lg font-semibold text-primary">{strategy.strategyName}</h3>
-                           <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                                <span>{t('crop_recommendations.results.roi')}: <strong className="text-green-600">{strategy.roi.toFixed(2)}%</strong></span>
-                                <span>{t('crop_recommendations.results.risk')}: <strong className="text-amber-600">{strategy.risk}</strong></span>
-                                <span>{t('crop_recommendations.results.crops')}: <span className="text-muted-foreground">{strategy.suggestedCrops}</span></span>
-                           </div>
-                        </div>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                        <div className="space-y-6 p-2">
-                            <p className="text-muted-foreground">{strategy.description}</p>
-                            
-                            <div className="space-y-4">
-                               <Card>
-                                 <CardHeader>
-                                    <CardTitle className="text-base flex items-center gap-2">
-                                        <CalendarDays className="h-5 w-5 text-primary"/>
-                                        Activity Timeline
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="relative pl-6">
-                                        <div className="absolute left-0 top-0 h-full w-0.5 bg-primary/20" />
-                                        {strategy.timeline.map((step, stepIndex) => (
-                                            <div key={stepIndex} className="relative mb-6">
-                                                <div className="absolute -left-[37px] top-1 h-6 w-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">{stepIndex + 1}</div>
-                                                <p className="font-semibold">{step.step}</p>
-                                                <p className="text-sm text-muted-foreground">{step.duration}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                               </Card>
-                            </div>
+        <div className="mt-8 space-y-8">
+            <div className='space-y-2'>
+                <h2 className="text-3xl font-bold tracking-tight">🌾 Crop Recommendation for {recommendations.farmerName}</h2>
+                <p className='text-muted-foreground'>Here is a detailed analysis and tailored farming plan for your land.</p>
+            </div>
 
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle className="text-base">{t('crop_recommendations.results.investment_breakdown')}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <Table>
-                                            <TableBody>
-                                                <TableRow><TableCell>{t('crop_recommendations.results.seeds')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.seeds)}</TableCell></TableRow>
-                                                <TableRow><TableCell>{t('crop_recommendations.results.machinery')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.machinery)}</TableCell></TableRow>
-                                                <TableRow><TableCell>{t('crop_recommendations.results.labor')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.labor)}</TableCell></TableRow>
-                                                <TableRow><TableCell>{t('crop_recommendations.results.pesticides')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.pesticides)}</TableCell></TableRow>
-                                                <TableRow><TableCell>{t('crop_recommendations.results.other')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.investmentBreakdown.other)}</TableCell></TableRow>
-                                                <TableRow className="font-bold bg-muted/50"><TableCell>{t('crop_recommendations.results.total_investment')}</TableCell><TableCell className="text-right">{formatCurrency(strategy.totalInvestment)}</TableCell></TableRow>
-                                            </TableBody>
-                                        </Table>
-                                    </CardContent>
-                                </Card>
-                                <div className="space-y-6">
-                                    <Card>
-                                        <CardHeader>
-                                            <CardTitle className="text-base">{t('crop_recommendations.results.financial_projection')}</CardTitle>
-                                        </CardHeader>
-                                        <CardContent className="space-y-4">
-                                            <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
-                                                <span className="font-medium">{t('crop_recommendations.results.expected_profit')}</span>
-                                                <span className="font-bold text-lg text-primary">{formatCurrency(strategy.expectedProfit)}</span>
-                                            </div>
-                                            <div className="flex justify-between items-center p-3 bg-muted/50 rounded-md">
-                                                <span className="font-medium">{t('crop_recommendations.results.roi_full')}</span>
-                                                <span className="font-bold text-lg text-primary">{strategy.roi.toFixed(2)}%</span>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                     <Card>
-                                        <CardHeader>
-                                            <CardTitle className="text-base">{t('crop_recommendations.results.risk_assessment')}</CardTitle>
-                                        </CardHeader>
-                                        <CardContent className="space-y-3">
-                                            <div className="flex items-start gap-3 text-sm">
-                                                <TrendingUp className="h-4 w-4 mt-0.5 text-amber-600 shrink-0"/>
-                                                <div><strong className="font-semibold">Market:</strong> {strategy.riskAnalysis.marketRisk}</div>
-                                            </div>
-                                             <div className="flex items-start gap-3 text-sm">
-                                                <Thermometer className="h-4 w-4 mt-0.5 text-amber-600 shrink-0"/>
-                                                <div><strong className="font-semibold">Weather:</strong> {strategy.riskAnalysis.weatherRisk}</div>
-                                            </div>
-                                             <div className="flex items-start gap-3 text-sm">
-                                                <Bug className="h-4 w-4 mt-0.5 text-amber-600 shrink-0"/>
-                                                <div><strong className="font-semibold">Pest:</strong> {strategy.riskAnalysis.pestRisk}</div>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle className='flex items-center gap-2'><MapPin className='text-primary'/> Location & Soil Analysis</CardTitle>
+                </CardHeader>
+                <CardContent className='space-y-4'>
+                    <p className='text-muted-foreground'>{recommendations.locationAndSoilAnalysis.summary}</p>
+                    <div className='flex flex-wrap gap-2'>
+                        <Badge variant="outline">Soil: {recommendations.locationAndSoilAnalysis.soilType}</Badge>
+                        {recommendations.locationAndSoilAnalysis.suitableCrops.map(crop => (
+                            <Badge variant="secondary" key={crop}>{crop}</Badge>
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
+
+            <div>
+                 <h3 className="text-2xl font-bold tracking-tight mb-4">🥇 Top 3 Crop Choices</h3>
+                 <div className='grid lg:grid-cols-3 gap-6'>
+                    {recommendations.topCropChoices.map((strategy, index) => (
+                        <Card key={index} className='flex flex-col'>
+                             <CardHeader>
+                                <CardTitle>{strategy.strategyName}</CardTitle>
+                                <CardDescription>Recommended Crop: <span className='font-bold text-primary'>{strategy.recommendedCrops}</span></CardDescription>
+                            </CardHeader>
+                             <CardContent className='space-y-4 flex-grow flex flex-col'>
+                                <p className="text-sm text-muted-foreground border-l-2 border-primary/50 pl-3">{strategy.rationale}</p>
+                                
+                                <div className='space-y-4 mt-auto'>
+                                    <Separator />
+                                    <h4 className='font-semibold text-sm'>Economics</h4>
+                                     <div className="flex justify-between items-center text-sm p-2 bg-muted/50 rounded-md">
+                                        <span className="font-medium">Total Investment</span>
+                                        <span className="font-bold">{formatCurrency(strategy.economics.totalInvestment)}</span>
+                                    </div>
+                                     <div className="flex justify-between items-center text-sm p-2 bg-muted/50 rounded-md">
+                                        <span className="font-medium">Expected Profit</span>
+                                        <span className="font-bold text-green-600">{formatCurrency(strategy.economics.expectedProfit)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-sm p-2 bg-muted/50 rounded-md">
+                                        <span className="font-medium">Return on Investment</span>
+                                        <span className="font-bold text-green-600">{strategy.economics.roi.toFixed(2)}%</span>
+                                    </div>
+                                    <p className='text-xs text-center text-muted-foreground'>Expected Yield: {strategy.economics.expectedYield}</p>
                                 </div>
+                             </CardContent>
+                        </Card>
+                    ))}
+                 </div>
+            </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className='flex items-center gap-2'><CalendarDays className='text-primary'/> Cultivation Calendar & Tasks</CardTitle>
+                    <CardDescription>A general timeline for the recommended crops.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Recommended Crop</TableHead>
+                                <TableHead>Month</TableHead>
+                                <TableHead>Key Tasks</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                         <TableBody>
+                            {recommendations.topCropChoices.map((strategy) => 
+                                strategy.cultivationCalendar.map((step, stepIndex) => (
+                                    <TableRow key={`${strategy.recommendedCrops}-${step.month}`}>
+                                        {stepIndex === 0 && (
+                                            <TableCell rowSpan={strategy.cultivationCalendar.length} className="font-semibold align-top text-primary">{strategy.recommendedCrops}</TableCell>
+                                        )}
+                                        <TableCell className='font-medium'>{step.month}</TableCell>
+                                        <TableCell>{step.tasks}</TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+
+            <div className="grid md:grid-cols-2 gap-6">
+                 <Card>
+                    <CardHeader>
+                        <CardTitle className='flex items-center gap-2'><ShieldAlert className='text-primary'/> Risks & Mitigation</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        {recommendations.topCropChoices.map((strategy, index) => (
+                            <div key={index}>
+                                <h4 className='font-semibold mb-2'>{strategy.recommendedCrops}</h4>
+                                <div className="space-y-3">
+                                    <Alert variant="destructive" className="bg-red-500/5 border-red-500/20">
+                                        <Thermometer className="h-4 w-4 text-red-600" />
+                                        <AlertTitle>Weather</AlertTitle>
+                                        <AlertDescription>{strategy.risksAndMitigation.weather}</AlertDescription>
+                                    </Alert>
+                                    <Alert className="bg-amber-500/5 border-amber-500/20">
+                                        <Bug className="h-4 w-4 text-amber-600" />
+                                        <AlertTitle>Pest & Disease</AlertTitle>
+                                        <AlertDescription>{strategy.risksAndMitigation.pest}</AlertDescription>
+                                    </Alert>
+                                    <Alert className="bg-blue-500/5 border-blue-500/20">
+                                        <TrendingUp className="h-4 w-4 text-blue-600" />
+                                        <AlertTitle>Market</AlertTitle>
+                                        <AlertDescription>{strategy.risksAndMitigation.market}</AlertDescription>
+                                    </Alert>
+                                </div>
+                                {index < recommendations.topCropChoices.length - 1 && <Separator className="my-4" />}
                             </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-            ))}
-            </Accordion>
-            
-            {recommendations.extraSuggestions && (
-                 <Alert className="mt-8 border-primary/50 bg-primary/5">
-                    <Lightbulb className="h-4 w-4" />
-                    <AlertTitle className="font-semibold text-primary">{t('crop_recommendations.results.extra_suggestions')}</AlertTitle>
-                    <AlertDescription className="whitespace-pre-line">
-                        {recommendations.extraSuggestions}
-                    </AlertDescription>
-                </Alert>
-            )}
+                        ))}
+                    </CardContent>
+                </Card>
+                 <div className='space-y-6'>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex items-center gap-2'><Sprout className='text-primary'/> Sustainable Practices</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
+                                {recommendations.sustainablePractices.map((practice, i) => <li key={i}>{practice}</li>)}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex items-center gap-2'><ShoppingCart className='text-primary'/> Market Strategy</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">{recommendations.marketStrategy}</p>
+                        </CardContent>
+                    </Card>
+                 </div>
+            </div>
+
+            <Card className="border-primary bg-primary/5">
+                <CardHeader>
+                    <CardTitle className='flex items-center gap-2'><Tractor className='text-primary'/> Your Next Actions</CardTitle>
+                </CardHeader>
+                <CardContent className='space-y-4'>
+                    <ol className="list-decimal space-y-2 pl-5 font-medium">
+                        {recommendations.nextActions.map((action, i) => <li key={i}>{action}</li>)}
+                    </ol>
+                    <Separator />
+                    <div className='flex items-center gap-3 text-sm'>
+                         <Phone className="h-5 w-5 text-primary"/>
+                         <p className='text-muted-foreground'><span className='font-semibold text-foreground'>Helpline:</span> {recommendations.helplineInfo}</p>
+                    </div>
+                </CardContent>
+            </Card>
+
         </div>
       )}
     </>
