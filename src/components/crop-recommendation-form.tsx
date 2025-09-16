@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -17,12 +17,13 @@ import { Loader2, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays, MapPi
 import { useTranslation } from '@/hooks/use-translation';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import stateDistrictData from '@/lib/india-states-districts.json';
 
 const formSchema = z.object({
   totalLand: z.coerce.number().min(0.1, 'Total land is required.'),
-  state: z.string().min(2, 'State is required.'),
-  district: z.string().min(2, 'District is required.'),
-  soilType: z.string().min(2, 'Soil type is required.'),
+  state: z.string().min(1, 'State is required.'),
+  district: z.string().min(1, 'District is required.'),
+  soilType: z.string().min(1, 'Soil type is required.'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -41,6 +42,14 @@ export default function CropRecommendationForm() {
       soilType: '',
     },
   });
+  
+  const selectedState = form.watch('state');
+
+  const districts = useMemo(() => {
+    if (!selectedState) return [];
+    const state = stateDistrictData.states.find(s => s.state === selectedState);
+    return state ? state.districts : [];
+  }, [selectedState]);
 
   async function onSubmit(values: FormValues) {
     setIsLoading(true);
@@ -124,24 +133,25 @@ export default function CropRecommendationForm() {
                             <p className="text-sm text-muted-foreground">{t('crop_recommendations.form.location_details_desc')}</p>
                         </div>
                         <div className="grid md:grid-cols-2 gap-6">
-                            <FormField
+                           <FormField
                             control={form.control}
                             name="state"
                             render={({ field }) => (
                                 <FormItem>
                                 <FormLabel>{t('crop_recommendations.form.state')}</FormLabel>
-                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                 <Select onValueChange={(value) => {
+                                     field.onChange(value);
+                                     form.resetField('district');
+                                 }} value={field.value}>
                                     <FormControl>
                                       <SelectTrigger>
                                         <SelectValue placeholder="Select a state" />
                                       </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                      <SelectItem value="Maharashtra">Maharashtra</SelectItem>
-                                      <SelectItem value="Punjab">Punjab</SelectItem>
-                                      <SelectItem value="Uttar Pradesh">Uttar Pradesh</SelectItem>
-                                      <SelectItem value="Madhya Pradesh">Madhya Pradesh</SelectItem>
-                                      <SelectItem value="Gujarat">Gujarat</SelectItem>
+                                      {stateDistrictData.states.map((state) => (
+                                          <SelectItem key={state.state} value={state.state}>{state.state}</SelectItem>
+                                      ))}
                                     </SelectContent>
                                   </Select>
                                 <FormMessage />
@@ -154,18 +164,16 @@ export default function CropRecommendationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                 <FormLabel>{t('crop_recommendations.form.district')}</FormLabel>
-                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                 <Select onValueChange={field.onChange} value={field.value} disabled={!selectedState}>
                                     <FormControl>
                                       <SelectTrigger>
-                                        <SelectValue placeholder="Select a district" />
+                                        <SelectValue placeholder={!selectedState ? "Select a state first" : "Select a district"} />
                                       </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                      <SelectItem value="Pune">Pune</SelectItem>
-                                      <SelectItem value="Nashik">Nashik</SelectItem>
-                                      <SelectItem value="Nagpur">Nagpur</SelectItem>
-                                      <SelectItem value="Amritsar">Amritsar</SelectItem>
-                                      <SelectItem value="Ludhiana">Ludhiana</SelectItem>
+                                      {districts.map((district) => (
+                                        <SelectItem key={district} value={district}>{district}</SelectItem>
+                                      ))}
                                     </SelectContent>
                                   </Select>
                                 <FormMessage />
