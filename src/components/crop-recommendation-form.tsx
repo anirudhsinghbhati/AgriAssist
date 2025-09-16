@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { personalizedCropRecommendations, PersonalizedCropRecommendationsOutput } from '@/ai/flows/personalized-crop-recommendations';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays, MapPin, Sprout, ShoppingCart, Tractor, Phone, Leaf, Ruler, Mountain, LocateFixed, Globe } from 'lucide-react';
+import { Loader2, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays, MapPin, Sprout, ShoppingCart, Tractor, Phone, Leaf, Ruler, Mountain, LocateFixed } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -171,13 +171,15 @@ export default function CropRecommendationForm() {
                 </CardContent>
             </Card>
 
+            <Separator />
+
             <div>
                  <h3 className="text-2xl font-bold tracking-tight mb-4">🥇 Top 3 Crop Choices</h3>
                  <div className='grid lg:grid-cols-3 gap-6'>
                     {recommendations.topCropChoices.map((strategy, index) => (
                         <Card key={index} className='flex flex-col'>
                              <CardHeader>
-                                <Badge className='mb-2 w-fit' variant="outline"><Leaf className='mr-1.5 h-3 w-3 text-primary'/> {strategy.recommendedCrops}</Badge>
+                                <Badge className='mb-2 w-fit' variant={index === 0 ? "default" : "secondary"}><Leaf className='mr-1.5 h-3 w-3'/> {strategy.recommendedCrops}</Badge>
                                 <CardTitle>{strategy.strategyName}</CardTitle>
                             </CardHeader>
                              <CardContent className='space-y-4 flex-grow flex flex-col'>
@@ -224,9 +226,9 @@ export default function CropRecommendationForm() {
                          <TableBody>
                             {recommendations.topCropChoices.map((strategy) => 
                                 strategy.cultivationCalendar.map((step, stepIndex) => (
-                                    <TableRow key={`${strategy.recommendedCrops}-${step.month}`}>
+                                    <TableRow key={`${strategy.recommendedCrops}-${step.month}`} className="even:bg-muted/40">
                                         {stepIndex === 0 && (
-                                            <TableCell rowSpan={strategy.cultivationCalendar.length} className="font-semibold align-top text-primary">{strategy.recommendedCrops}</TableCell>
+                                            <TableCell rowSpan={strategy.cultivationCalendar.length} className="font-semibold align-top text-primary border-r">{strategy.recommendedCrops}</TableCell>
                                         )}
                                         <TableCell className='font-medium'>{step.month}</TableCell>
                                         <TableCell>{step.tasks}</TableCell>
