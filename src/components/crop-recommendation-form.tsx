@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { personalizedCropRecommendations, PersonalizedCropRecommendationsOutput } from '@/ai/flows/personalized-crop-recommendations';
@@ -96,10 +97,21 @@ export default function CropRecommendationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                 <FormLabel>{t('crop_recommendations.form.soil_type')}</FormLabel>
-                                <div className="relative">
-                                    <Mountain className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                    <FormControl><Input placeholder={t('crop_recommendations.form.soil_type_placeholder')} {...field} className="pl-10"/></FormControl>
-                                </div>
+                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select a soil type" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="Alluvial">Alluvial</SelectItem>
+                                      <SelectItem value="Black">Black</SelectItem>
+                                      <SelectItem value="Red">Red</SelectItem>
+                                      <SelectItem value="Laterite">Laterite</SelectItem>
+                                      <SelectItem value="Arid">Arid</SelectItem>
+                                       <SelectItem value="Loamy">Loamy</SelectItem>
+                                    </SelectContent>
+                                  </Select>
                                 <FormMessage />
                                 </FormItem>
                             )}
@@ -118,10 +130,20 @@ export default function CropRecommendationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                 <FormLabel>{t('crop_recommendations.form.state')}</FormLabel>
-                                <div className="relative">
-                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                    <FormControl><Input placeholder={t('crop_recommendations.form.state_placeholder')} {...field} className="pl-10"/></FormControl>
-                                </div>
+                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select a state" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="Maharashtra">Maharashtra</SelectItem>
+                                      <SelectItem value="Punjab">Punjab</SelectItem>
+                                      <SelectItem value="Uttar Pradesh">Uttar Pradesh</SelectItem>
+                                      <SelectItem value="Madhya Pradesh">Madhya Pradesh</SelectItem>
+                                      <SelectItem value="Gujarat">Gujarat</SelectItem>
+                                    </SelectContent>
+                                  </Select>
                                 <FormMessage />
                                 </FormItem>
                             )}
@@ -132,10 +154,20 @@ export default function CropRecommendationForm() {
                             render={({ field }) => (
                                 <FormItem>
                                 <FormLabel>{t('crop_recommendations.form.district')}</FormLabel>
-                                <div className="relative">
-                                    <LocateFixed className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                    <FormControl><Input placeholder={t('crop_recommendations.form.district_placeholder')} {...field} className="pl-10"/></FormControl>
-                                </div>
+                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select a district" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="Pune">Pune</SelectItem>
+                                      <SelectItem value="Nashik">Nashik</SelectItem>
+                                      <SelectItem value="Nagpur">Nagpur</SelectItem>
+                                      <SelectItem value="Amritsar">Amritsar</SelectItem>
+                                      <SelectItem value="Ludhiana">Ludhiana</SelectItem>
+                                    </SelectContent>
+                                  </Select>
                                 <FormMessage />
                                 </FormItem>
                             )}
