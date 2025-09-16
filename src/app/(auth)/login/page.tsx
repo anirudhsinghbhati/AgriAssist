@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -29,18 +28,26 @@ export default function LoginPage() {
               <h1 className="text-3xl font-bold font-headline text-primary">GreenRoots</h1>
             </div>
             <p className="text-balance text-muted-foreground">
-              Enter your mobile number to access your dashboard
+              Enter your email below to login to your account
             </p>
           </div>
           <form onSubmit={handleLogin} className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="phone">Mobile Number</Label>
-              <Input id="phone" type="tel" placeholder="01234 567890" required />
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                required
+              />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <Link href="#" className="ml-auto inline-block text-sm underline">
+                <Link
+                  href="#"
+                  className="ml-auto inline-block text-sm underline"
+                >
                   Forgot your password?
                 </Link>
               </div>
@@ -48,6 +55,9 @@ export default function LoginPage() {
             </div>
             <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
               Login
+            </Button>
+            <Button variant="outline" className="w-full">
+              Login with Google
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
