@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview Provides personalized crop recommendations to farmers based on their location, land, and soil type.
@@ -104,6 +105,9 @@ const personalizedCropRecommendationsFlow = ai.defineFlow(
     name: 'personalizedCropRecommendationsFlow',
     inputSchema: PersonalizedCropRecommendationsInputSchema,
     outputSchema: PersonalizedCropRecommendationsOutputSchema,
+    config: {
+        retries: 1, // Retry once if the model response is invalid
+    },
   },
   async (input) => {
     const { output } = await prompt(input);
