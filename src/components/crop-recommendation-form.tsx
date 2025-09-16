@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { personalizedCropRecommendations, PersonalizedCropRecommendationsOutput } from '@/ai/flows/personalized-crop-recommendations';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Lightbulb, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays, MapPin, Sprout, ShoppingCart, Tractor, Info, Phone } from 'lucide-react';
+import { Loader2, TrendingUp, ShieldAlert, Thermometer, Bug, CalendarDays, MapPin, Sprout, ShoppingCart, Tractor, Phone, Leaf } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -47,7 +47,8 @@ export default function CropRecommendationForm() {
     try {
       const result = await personalizedCropRecommendations(values);
       setRecommendations(result);
-    } catch (error) {
+    } catch (error)
+      {
       console.error('Failed to get recommendations', error);
       // Here you might want to use a toast notification
     } finally {
@@ -150,26 +151,27 @@ export default function CropRecommendationForm() {
                     {recommendations.topCropChoices.map((strategy, index) => (
                         <Card key={index} className='flex flex-col'>
                              <CardHeader>
+                                <Badge className='mb-2 w-fit'><Leaf className='mr-1.5 h-3 w-3'/> {strategy.recommendedCrops}</Badge>
                                 <CardTitle>{strategy.strategyName}</CardTitle>
-                                <CardDescription>Recommended Crop: <span className='font-bold text-primary'>{strategy.recommendedCrops}</span></CardDescription>
                             </CardHeader>
                              <CardContent className='space-y-4 flex-grow flex flex-col'>
                                 <p className="text-sm text-muted-foreground border-l-2 border-primary/50 pl-3">{strategy.rationale}</p>
                                 
-                                <div className='space-y-4 mt-auto'>
-                                    <Separator />
+                                <div className='space-y-3 mt-auto pt-4'>
                                     <h4 className='font-semibold text-sm'>Economics</h4>
-                                     <div className="flex justify-between items-center text-sm p-2 bg-muted/50 rounded-md">
-                                        <span className="font-medium">Total Investment</span>
-                                        <span className="font-bold">{formatCurrency(strategy.economics.totalInvestment)}</span>
-                                    </div>
-                                     <div className="flex justify-between items-center text-sm p-2 bg-muted/50 rounded-md">
-                                        <span className="font-medium">Expected Profit</span>
-                                        <span className="font-bold text-green-600">{formatCurrency(strategy.economics.expectedProfit)}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center text-sm p-2 bg-muted/50 rounded-md">
-                                        <span className="font-medium">Return on Investment</span>
-                                        <span className="font-bold text-green-600">{strategy.economics.roi.toFixed(2)}%</span>
+                                    <div className="space-y-2 text-sm p-3 bg-muted/50 rounded-md">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-muted-foreground">Investment</span>
+                                            <span className="font-bold">{formatCurrency(strategy.economics.totalInvestment)}</span>
+                                        </div>
+                                         <div className="flex justify-between items-center">
+                                            <span className="text-muted-foreground">Expected Profit</span>
+                                            <span className="font-bold text-green-600">{formatCurrency(strategy.economics.expectedProfit)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-muted-foreground">Return on Investment</span>
+                                            <span className="font-bold text-green-600">{strategy.economics.roi.toFixed(2)}%</span>
+                                        </div>
                                     </div>
                                     <p className='text-xs text-center text-muted-foreground'>Expected Yield: {strategy.economics.expectedYield}</p>
                                 </div>
@@ -215,10 +217,10 @@ export default function CropRecommendationForm() {
                     <CardHeader>
                         <CardTitle className='flex items-center gap-2'><ShieldAlert className='text-primary'/> Risks & Mitigation</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-6">
                         {recommendations.topCropChoices.map((strategy, index) => (
                             <div key={index}>
-                                <h4 className='font-semibold mb-2'>{strategy.recommendedCrops}</h4>
+                                <h4 className='font-semibold mb-3 text-md text-primary'>{strategy.recommendedCrops}</h4>
                                 <div className="space-y-3">
                                     <Alert variant="destructive" className="bg-red-500/5 border-red-500/20">
                                         <Thermometer className="h-4 w-4 text-red-600" />
@@ -236,7 +238,7 @@ export default function CropRecommendationForm() {
                                         <AlertDescription>{strategy.risksAndMitigation.market}</AlertDescription>
                                     </Alert>
                                 </div>
-                                {index < recommendations.topCropChoices.length - 1 && <Separator className="my-4" />}
+                                {index < recommendations.topCropChoices.length - 1 && <Separator className="my-6" />}
                             </div>
                         ))}
                     </CardContent>
