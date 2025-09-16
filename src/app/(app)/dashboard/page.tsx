@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { ArrowUpRight, Cloud, IndianRupee, Lightbulb, Sprout, Leaf, MessageSquare, PlusCircle, TrendingUp, AlertTriangle } from 'lucide-react';
+import { ArrowUpRight, Cloud, Lightbulb, Sprout, Leaf, MessageSquare, PlusCircle, TrendingUp, AlertTriangle } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useTranslation } from '@/hooks/use-translation';
@@ -169,7 +169,7 @@ export default function Dashboard() {
              <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">{t('dashboard.profitability.title')}</CardTitle>
-                    <IndianRupee className="h-4 w-4 text-muted-foreground" />
+                    <span className="h-4 w-4 text-muted-foreground">₹</span>
                 </CardHeader>
                 <CardContent>
                     <div className="text-3xl font-bold">85/100</div>

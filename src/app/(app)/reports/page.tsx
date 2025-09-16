@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart } from "recharts";
-import { Download, IndianRupee, Sprout, Droplets } from 'lucide-react';
+import { Download, Sprout, Droplets } from 'lucide-react';
 
 const yieldData = [
   { crop: 'Soybean', yield: 2.5, fill: "var(--color-soybean)" },
@@ -82,7 +82,7 @@ export default function ReportsPage() {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                        <IndianRupee className="h-4 w-4 text-muted-foreground" />
+                        <span className="h-4 w-4 text-muted-foreground">₹</span>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">₹{totalRevenue.toLocaleString('en-IN')}</div>
@@ -112,7 +112,7 @@ export default function ReportsPage() {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Profit Margin</CardTitle>
-                        <IndianRupee className="h-4 w-4 text-muted-foreground" />
+                        <span className="h-4 w-4 text-muted-foreground">₹</span>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">42%</div>

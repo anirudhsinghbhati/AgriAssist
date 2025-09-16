@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { IndianRupee, PlusCircle, TrendingDown, TrendingUp } from 'lucide-react';
+import { PlusCircle, TrendingDown, TrendingUp } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import TransactionForm, { TransactionFormValues } from '@/components/transaction-form';
@@ -151,7 +151,7 @@ export default function FinancialTrackerPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Net Profit</CardTitle>
-            <IndianRupee className="h-4 w-4 text-muted-foreground" />
+            <span className="h-4 w-4 text-muted-foreground">₹</span>
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${summary.profit >= 0 ? 'text-primary' : 'text-destructive'}`}>{formatCurrency(summary.profit)}</div>
