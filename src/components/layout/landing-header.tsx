@@ -7,7 +7,7 @@ import { Leaf } from 'lucide-react';
 
 export function Header() {
   return (
-    <header className="absolute top-0 left-0 right-0 z-20 bg-transparent py-4">
+    <header className="absolute top-0 left-0 right-0 z-20 bg-transparent py-4 animate-slide-in-from-top">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           <Leaf className="h-8 w-8 text-white" />

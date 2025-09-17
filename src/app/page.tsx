@@ -55,7 +55,7 @@ export default function LandingPage() {
                     src={heroImage.imageUrl}
                     alt={heroImage.description}
                     fill
-                    className="object-cover"
+                    className="object-cover animate-background-pan"
                     data-ai-hint={heroImage.imageHint}
                     priority
                 />
@@ -94,10 +94,11 @@ export default function LandingPage() {
               {features.map((feature, index) => (
                 <div 
                   key={feature.title} 
-                  className="animate-fade-in-up flex flex-col items-center text-center p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/20 transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+                  className="animate-fade-in-up group relative flex flex-col items-center text-center p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/20 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white/20"
                   style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <div className="absolute top-0 left-0 w-full h-full rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-border-glow" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
                     <feature.icon className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-xl font-semibold text-white">{feature.title}</h3>
