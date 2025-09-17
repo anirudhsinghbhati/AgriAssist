@@ -3,10 +3,7 @@
     "nav": {
         "dashboard": "Dashboard",
         "calendar": "Calendar",
-        "crop-recommendations": "Crop Advisory",
-        "pest-detection": "Pest Detection",
-        "irrigation-planner": "Irrigation Planner",
-        "yield-prediction": "Yield Prediction",
+        "ai-tools": "AI Tools",
         "market-prices": "Market Prices",
         "financial-tracker": "Financial Tracker",
         "inventory": "Inventory",
@@ -244,7 +241,7 @@
     },
     "weather": {
         "title": "Weather & Climate Alerts",
-        "description": "Live forecast, warnings, and pest alerts for your location.",
+        "description": "Select a location to view the live forecast, warnings, and pest alerts.",
         "pest_warning_title": "High Pest Activity Warning",
         "pest_warning_description": "Conditions are favorable for aphid infestation. Monitor your crops closely.",
         "current_weather": "Current Weather",

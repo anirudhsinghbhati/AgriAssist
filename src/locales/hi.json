@@ -3,10 +3,7 @@
     "nav": {
         "dashboard": "डैशबोर्ड",
         "calendar": "कैलेंडर",
-        "crop-recommendations": "फसल सलाह",
-        "pest-detection": "कीट पहचान",
-        "irrigation-planner": "सिंचाई योजनाकार",
-        "yield-prediction": "उपज भविष्यवाणी",
+        "ai-tools": "एआई उपकरण",
         "market-prices": "बाजार मूल्य",
         "financial-tracker": "वित्तीय ट्रैकर",
         "inventory": "इन्वेंटरी",
@@ -244,7 +241,7 @@
     },
     "weather": {
         "title": "मौसम और जलवायु अलर्ट",
-        "description": "आपके स्थान के लिए लाइव पूर्वानुमान, चेतावनियां और कीट अलर्ट।",
+        "description": "अपने स्थान के लिए लाइव पूर्वानुमान, चेतावनियां और कीट अलर्ट।",
         "pest_warning_title": "उच्च कीट गतिविधि की चेतावनी",
         "pest_warning_description": "एफिड संक्रमण के लिए स्थितियाँ अनुकूल हैं। अपनी फसलों की बारीकी से निगरानी करें।",
         "current_weather": "वर्तमान मौसम",

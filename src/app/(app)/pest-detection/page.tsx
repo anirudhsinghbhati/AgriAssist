@@ -1,23 +1,14 @@
 
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import PestDetectionForm from "@/components/pest-detection-form";
-import { useTranslation } from "@/hooks/use-translation";
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function PestDetectionPage() {
-    const { t } = useTranslation();
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>{t('pest_detection.title')}</CardTitle>
-                <CardDescription>
-                    {t('pest_detection.description')}
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <PestDetectionForm />
-            </CardContent>
-        </Card>
-    );
+    const router = useRouter();
+    useEffect(() => {
+        router.replace('/ai-tools?tab=pest-detection');
+    }, [router]);
+    
+    return null;
 }

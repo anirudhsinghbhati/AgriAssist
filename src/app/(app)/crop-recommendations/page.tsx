@@ -1,12 +1,14 @@
 
 'use client';
 
-import CropRecommendationForm from "@/components/crop-recommendation-form";
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function CropRecommendationsPage() {
-    return (
-        <div>
-           <CropRecommendationForm />
-        </div>
-    );
+    const router = useRouter();
+    useEffect(() => {
+        router.replace('/ai-tools');
+    }, [router]);
+    
+    return null;
 }
