@@ -162,7 +162,7 @@ export function Header() {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{t('header.dropdown.my_account')}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/settings" className='w-full'>{t('header.dropdown.settings')}</Link>
           </DropdownMenuItem>
            <DropdownMenuSub>
