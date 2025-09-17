@@ -59,15 +59,18 @@ export function Header() {
     const navItem = navConfig.find(item => item.href.includes(segment));
     let label = navItem ? t(`nav.${navItem.id}`) : segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
 
+    const currentPath = `/${pathSegments.slice(0, index + 1).join('/')}`;
 
-    if (segment === 'my-crops') {
-        href = '/dashboard'; 
-        label = t('nav.my_crops');
-    } else {
-        href = `/${pathSegments.slice(0, index + 1).join('/')}`;
+    // Special handling for nested routes that don't map 1:1 to navConfig
+    if (pathname.startsWith('/my-crops/')) {
+        if(segment === 'my-crops') label = t('nav.my_crops');
+    } else if (pathname.startsWith('/settings/')) {
+        if(segment === 'settings') label = t('nav.settings');
+        if(segment === 'navigation') label = t('settings.customize_nav.title');
+        if(segment === 'language') label = t('settings.language.title');
     }
 
-    acc.push({ href, label });
+    acc.push({ href: currentPath, label });
     return acc;
   }, [] as { href: string; label: string }[]);
 
@@ -163,7 +166,7 @@ export function Header() {
           <DropdownMenuLabel>{t('header.dropdown.my_account')}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href="/settings" className='w-full'>{t('header.dropdown.settings')}</Link>
+            <Link href="/settings">{t('header.dropdown.settings')}</Link>
           </DropdownMenuItem>
            <DropdownMenuSub>
             <DropdownMenuSubTrigger>
@@ -176,7 +179,7 @@ export function Header() {
           </DropdownMenuSub>
           <DropdownMenuItem>{t('header.dropdown.support')}</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/login">{t('header.dropdown.logout')}</Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
