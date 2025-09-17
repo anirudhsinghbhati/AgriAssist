@@ -62,11 +62,11 @@ export default function LandingPage() {
              <FallingLeaves />
           </div>
 
-          <div className="container relative mx-auto px-4 text-center text-foreground">
+          <div className="container relative mx-auto px-4 text-center text-white">
             <h1 className="animate-fade-in-up text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl font-headline" style={{ animationDelay: '0.2s' }}>
               Smart Farming for a Brighter Future
             </h1>
-            <p className="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg text-foreground/80" style={{ animationDelay: '0.4s' }}>
+            <p className="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg text-white/80" style={{ animationDelay: '0.4s' }}>
               GreenRoots empowers farmers with AI-driven insights, real-time data, and expert advice to increase yield and profitability.
             </p>
             <div className="animate-fade-in-up mt-10" style={{ animationDelay: '0.6s' }}>

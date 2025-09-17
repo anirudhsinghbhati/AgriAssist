@@ -20,7 +20,7 @@ export const FallingLeaves = () => {
     return Array.from({ length: 15 }).map((_, i) => {
       const style = {
         left: `${random() * 100}%`,
-        animationDuration: `${5 + random() * 5}s`,
+        animationDuration: `${5 + random() * 5}s, ${3 + random() * 2}s`,
         animationDelay: `${random() * 5}s`,
         opacity: 0.5 + random() * 0.5,
         transform: `scale(${0.6 + random() * 0.4})`,
