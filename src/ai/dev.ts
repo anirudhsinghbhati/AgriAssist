@@ -7,3 +7,4 @@ import '@/ai/flows/voice-assisted-app-navigation.ts';
 import '@/ai/flows/market-price-lookup.ts';
 import '@/ai/flows/smart-irrigation-planner.ts';
 import '@/ai/flows/yield-prediction.ts';
+import '@/ai/tools/weather.ts';

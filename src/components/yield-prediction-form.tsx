@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -19,6 +19,7 @@ import { Loader2, CalendarIcon, TrendingUp, ThumbsUp, ThumbsDown, Info } from 'l
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import stateDistrictData from '@/lib/india-states-districts.json';
 
 const formSchema = z.object({
   cropType: z.string().min(1, 'Please select a crop type.'),
@@ -26,7 +27,8 @@ const formSchema = z.object({
   soilType: z.string().min(1, 'Please select a soil type.'),
   plantingDate: z.date({ required_error: 'A planting date is required.' }),
   historicalAverageYield: z.coerce.number().optional(),
-  weatherForecast: z.string().min(1, 'Please select a weather forecast.'),
+  state: z.string().min(1, 'State is required.'),
+  district: z.string().min(1, 'District is required.'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -39,13 +41,23 @@ export default function YieldPredictionForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      cropType: '',
+      cropType: 'Soybean',
       landArea: 1,
-      soilType: '',
+      soilType: 'Black',
       plantingDate: new Date(),
-      weatherForecast: '',
+      state: 'Madhya Pradesh',
+      district: 'Indore',
     },
   });
+
+   const selectedState = form.watch('state');
+
+  const districts = useMemo(() => {
+    if (!selectedState) return [];
+    const state = stateDistrictData.states.find(s => s.state === selectedState);
+    return state ? state.districts : [];
+  }, [selectedState]);
+
 
   async function onSubmit(values: FormValues) {
     setIsLoading(true);
@@ -151,27 +163,6 @@ export default function YieldPredictionForm() {
             />
             <FormField
               control={form.control}
-              name="weatherForecast"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Seasonal Weather Forecast</FormLabel>
-                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger><SelectValue placeholder="Select forecast" /></SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Normal Monsoon">Normal Monsoon</SelectItem>
-                      <SelectItem value="Above-average rainfall">Above-average rainfall</SelectItem>
-                      <SelectItem value="Below-average rainfall">Below-average rainfall</SelectItem>
-                      <SelectItem value="Drought conditions likely">Drought conditions likely</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
               name="historicalAverageYield"
               render={({ field }) => (
                 <FormItem>
@@ -179,6 +170,53 @@ export default function YieldPredictionForm() {
                   <FormControl><Input type="number" step="0.1" placeholder="Optional" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                  <FormItem>
+                  <FormLabel>State</FormLabel>
+                    <Select onValueChange={(value) => {
+                        field.onChange(value);
+                        form.resetField('district');
+                    }} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a state" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {stateDistrictData.states.map((state) => (
+                            <SelectItem key={state.state} value={state.state}>{state.state}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  <FormMessage />
+                  </FormItem>
+              )}
+              />
+              <FormField
+              control={form.control}
+              name="district"
+              render={({ field }) => (
+                  <FormItem>
+                  <FormLabel>District</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={!selectedState}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder={!selectedState ? "Select a state first" : "Select a district"} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {districts.map((district) => (
+                          <SelectItem key={district} value={district}>{district}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  <FormMessage />
+                  </FormItem>
               )}
             />
           </div>

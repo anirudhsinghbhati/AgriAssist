@@ -9,6 +9,8 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
+import { getRealTimeWeather } from '@/ai/tools/weather';
+
 
 const YieldPredictionInputSchema = z.object({
   cropType: z.string().describe('The type of crop being grown (e.g., Soybean, Cotton, Wheat).'),
@@ -16,7 +18,8 @@ const YieldPredictionInputSchema = z.object({
   soilType: z.string().describe('The type of soil (e.g., Alluvial, Black, Red).'),
   plantingDate: z.string().describe('The date the crop was planted in YYYY-MM-DD format.'),
   historicalAverageYield: z.coerce.number().optional().describe('The historical average yield for this crop on this farm in tons per hectare.'),
-  weatherForecast: z.string().describe('The seasonal weather forecast (e.g., "Normal Monsoon", "Below-average rainfall expected", "Drought conditions likely").'),
+  state: z.string().describe('The state where the farm is located.'),
+  district: z.string().describe('The district where the farm is located.'),
 });
 export type YieldPredictionInput = z.infer<typeof YieldPredictionInputSchema>;
 
@@ -40,20 +43,25 @@ const prompt = ai.definePrompt({
   name: 'yieldPredictionPrompt',
   input: { schema: YieldPredictionInputSchema },
   output: { schema: YieldPredictionOutputSchema },
-  prompt: `You are an expert agricultural scientist specializing in crop yield prediction. Based on the data provided, generate a detailed yield prediction for the upcoming harvest.
+  tools: [getRealTimeWeather],
+  prompt: `You are an expert agricultural scientist specializing in crop yield prediction. 
+  
+First, use the getRealTimeWeather tool to get the seasonal weather forecast for the specified location.
+
+Then, based on the weather data and the farm data provided below, generate a detailed yield prediction for the upcoming harvest.
 
 Farm Data:
 - Crop Type: {{{cropType}}}
 - Land Area: {{{landArea}}} hectares
 - Soil Type: {{{soilType}}}
 - Planting Date: {{{plantingDate}}}
-- Weather Forecast: {{{weatherForecast}}}
+- Location: {{{district}}}, {{{state}}}
 {{#if historicalAverageYield}}- Historical Average Yield: {{{historicalAverageYield}}} tons/hectare{{/if}}
 
 Your task is to:
 1.  Calculate the total predicted yield in tons and the yield per hectare.
 2.  Provide a confidence score for your prediction (0-100%).
-3.  Identify the key positive and negative factors influencing this prediction based on the inputs.
+3.  Identify the key positive and negative factors influencing this prediction based on the inputs and weather data.
 4.  Provide a few concise recommendations to help the farmer maximize or protect their yield.
 
 Strictly follow the output schema.
