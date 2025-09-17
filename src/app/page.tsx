@@ -51,6 +51,7 @@ export default function LandingPage() {
         <section className="relative w-full py-20 md:py-32 lg:py-40 overflow-hidden">
            {heroImage && (
              <div className="absolute inset-0">
+                <div className="absolute inset-0 bg-primary/20 -z-10 animate-aurora-bg" />
                 <Image
                     src={heroImage.imageUrl}
                     alt={heroImage.description}
@@ -94,15 +95,18 @@ export default function LandingPage() {
               {features.map((feature, index) => (
                 <div 
                   key={feature.title} 
-                  className="animate-fade-in-up group relative flex flex-col items-center text-center p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/20 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white/20"
+                  className="animate-fade-in-up group relative flex flex-col items-center text-center p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/20 transition-all duration-300 hover:scale-105 hover:shadow-primary/20 hover:shadow-2xl overflow-hidden"
                   style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                 >
-                  <div className="absolute top-0 left-0 w-full h-full rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-border-glow" />
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:scale-110">
-                    <feature.icon className="h-6 w-6" />
+                  <div className="absolute top-0 left-0 w-full h-full rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-aurora-bg" />
+                   <div className="absolute inset-0 p-px rounded-xl group-hover:bg-gradient-to-br group-hover:from-primary/50 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative z-10 flex flex-col items-center">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:-translate-y-2 group-hover:scale-110">
+                      <feature.icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="mt-6 text-xl font-semibold text-white">{feature.title}</h3>
+                    <p className="mt-2 text-sm text-white/80">{feature.description}</p>
                   </div>
-                  <h3 className="mt-6 text-xl font-semibold text-white">{feature.title}</h3>
-                  <p className="mt-2 text-sm text-white/80">{feature.description}</p>
                 </div>
               ))}
             </div>
