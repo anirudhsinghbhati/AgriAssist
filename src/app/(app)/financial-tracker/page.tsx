@@ -1,40 +1,17 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { PlusCircle, TrendingDown, TrendingUp } from 'lucide-react';
+import { TrendingDown, TrendingUp } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import TransactionForm, { TransactionFormValues } from '@/components/transaction-form';
-
-const initialFinancialData = {
-  summary: {
-    revenue: 429500,
-    expenses: 185200,
-    profit: 244300,
-  },
-  chartData: [
-    { month: 'Jan', income: 45000, expense: 22000 },
-    { month: 'Feb', income: 48000, expense: 25000 },
-    { month: 'Mar', income: 52000, expense: 20000 },
-    { month: 'Apr', income: 60000, expense: 30000 },
-    { month: 'May', income: 85000, expense: 40000 },
-    { month: 'Jun', income: 95000, expense: 35000 },
-  ],
-  transactions: [
-    { id: 'T001', date: '2024-06-25', description: 'Sold Soybean (5 Quintal)', type: 'Income', amount: 25000 },
-    { id: 'T002', date: '2024-06-22', description: 'Fertilizer Purchase', type: 'Expense', amount: -8500 },
-    { id: 'T003', date: '2024-06-20', description: 'Labor Wages', type: 'Expense', amount: -15000 },
-    { id: 'T004', date: '2024-06-18', description: 'Sold Cotton (2 Quintal)', type: 'Income', amount: 14400 },
-    { id: 'T005', date: '2024-06-15', description: 'Diesel for Tractor', type: 'Expense', amount: -3200 },
-    { id: 'T006', date: '2024-06-12', description: 'Seed Purchase', type: 'Expense', amount: -12000 },
-  ],
-};
+import { format } from 'date-fns';
 
 const chartConfig = {
   income: {
@@ -58,19 +35,48 @@ type Transaction = {
 };
 
 export default function FinancialTrackerPage() {
-  const [transactions, setTransactions] = useState<Transaction[]>(initialFinancialData.transactions);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
 
-  const summary = transactions.reduce((acc, t) => {
-    if (t.type === 'Income') {
-      acc.revenue += t.amount;
-    } else {
-      acc.expenses += Math.abs(t.amount);
-    }
-    acc.profit = acc.revenue - acc.expenses;
-    return acc;
-  }, { revenue: 0, expenses: 0, profit: 0 });
+  const summary = useMemo(() => {
+    return transactions.reduce((acc, t) => {
+      if (t.type === 'Income') {
+        acc.revenue += t.amount;
+      } else {
+        acc.expenses += Math.abs(t.amount);
+      }
+      acc.profit = acc.revenue - acc.expenses;
+      return acc;
+    }, { revenue: 0, expenses: 0, profit: 0 });
+  }, [transactions]);
+
+  const chartData = useMemo(() => {
+    const monthlyData: { [key: string]: { month: string; income: number; expense: number } } = {};
+
+    transactions.forEach(t => {
+      const month = format(new Date(t.date), 'MMM');
+      const year = new Date(t.date).getFullYear();
+      const key = `${year}-${month}`;
+
+      if (!monthlyData[key]) {
+        monthlyData[key] = { month, income: 0, expense: 0 };
+      }
+
+      if (t.type === 'Income') {
+        monthlyData[key].income += t.amount;
+      } else {
+        monthlyData[key].expense += Math.abs(t.amount);
+      }
+    });
+
+    return Object.values(monthlyData).sort((a, b) => {
+        const dateA = new Date(`01 ${a.month} 2000`);
+        const dateB = new Date(`01 ${b.month} 2000`);
+        return dateA.getMonth() - dateB.getMonth();
+    });
+  }, [transactions]);
+
 
   const handleAddTransaction = (values: TransactionFormValues, type: 'Income' | 'Expense') => {
     const newTransaction: Transaction = {
@@ -165,8 +171,9 @@ export default function FinancialTrackerPage() {
           <CardTitle>Income vs. Expenses</CardTitle>
         </CardHeader>
         <CardContent>
+        {transactions.length > 0 ? (
           <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-            <BarChart data={initialFinancialData.chartData}>
+            <BarChart data={chartData}>
               <CartesianGrid vertical={false} />
               <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
               <YAxis tickFormatter={(value) => `${Number(value) / 1000}k`} />
@@ -175,6 +182,11 @@ export default function FinancialTrackerPage() {
               <Bar dataKey="expense" fill="var(--color-expense)" radius={4} />
             </BarChart>
           </ChartContainer>
+        ) : (
+            <div className="flex items-center justify-center min-h-[300px] text-muted-foreground">
+              <p>No data to display. Add a transaction to see your chart.</p>
+            </div>
+        )}
         </CardContent>
       </Card>
       
@@ -194,18 +206,26 @@ export default function FinancialTrackerPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {transactions.map((t) => (
-                <TableRow key={t.id}>
-                  <TableCell>{t.date}</TableCell>
-                  <TableCell className="font-medium">{t.description}</TableCell>
-                  <TableCell>
-                    <Badge variant={t.type === 'Income' ? 'default' : 'secondary'} className={t.type === 'Income' ? 'bg-green-500/20 text-green-700' : 'bg-red-500/20 text-red-700'}>
-                      {t.type}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className={`text-right font-semibold ${t.type === 'Income' ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(t.amount)}</TableCell>
+              {transactions.length > 0 ? (
+                transactions.map((t) => (
+                  <TableRow key={t.id}>
+                    <TableCell>{format(new Date(t.date), 'dd MMM yyyy')}</TableCell>
+                    <TableCell className="font-medium">{t.description}</TableCell>
+                    <TableCell>
+                      <Badge variant={t.type === 'Income' ? 'default' : 'secondary'} className={t.type === 'Income' ? 'bg-green-500/20 text-green-700' : 'bg-red-500/20 text-red-700'}>
+                        {t.type}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className={`text-right font-semibold ${t.type === 'Income' ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(t.amount)}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                 <TableRow>
+                    <TableCell colSpan={4} className="text-center h-24 text-muted-foreground">
+                        No transactions yet.
+                    </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </CardContent>
