@@ -67,3 +67,9 @@
     color: hsl(var(--foreground));
   }
 }
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation-fill-mode: both;
+  }
+}
