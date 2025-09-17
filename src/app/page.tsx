@@ -1,11 +1,11 @@
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Leaf, BrainCircuit, LineChart, BarChart, CloudSun, Users, ArrowRight } from 'lucide-react';
 import { Header } from '@/components/layout/landing-header';
 import { Footer } from '@/components/layout/landing-footer';
+import { FallingLeaves } from '@/components/falling-leaves';
 
 const features = [
   {
@@ -49,25 +49,24 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative w-full py-20 md:py-32 lg:py-40 overflow-hidden">
-           {heroImage && (
-             <div className="absolute inset-0">
-                <div className="absolute inset-0 bg-primary/20 -z-10 animate-aurora-bg" />
-                <Image
-                    src={heroImage.imageUrl}
-                    alt={heroImage.description}
-                    fill
-                    className="object-cover animate-background-pan"
-                    data-ai-hint={heroImage.imageHint}
-                    priority
-                />
-                <div className="absolute inset-0 bg-black/60" />
-             </div>
-           )}
-          <div className="container relative mx-auto px-4 text-center text-white">
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-200 via-green-200 to-amber-200 dark:from-sky-900 dark:via-emerald-900 dark:to-yellow-900 -z-10">
+            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-green-800/80 to-transparent">
+               <div className="grass-container">
+                    <div className="grass"></div>
+                    <div className="grass"></div>
+                    <div className="grass"></div>
+                    <div className="grass"></div>
+                    <div className="grass"></div>
+                </div>
+            </div>
+             <FallingLeaves />
+          </div>
+
+          <div className="container relative mx-auto px-4 text-center text-foreground">
             <h1 className="animate-fade-in-up text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl font-headline" style={{ animationDelay: '0.2s' }}>
               Smart Farming for a Brighter Future
             </h1>
-            <p className="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg text-white/90" style={{ animationDelay: '0.4s' }}>
+            <p className="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg text-foreground/80" style={{ animationDelay: '0.4s' }}>
               GreenRoots empowers farmers with AI-driven insights, real-time data, and expert advice to increase yield and profitability.
             </p>
             <div className="animate-fade-in-up mt-10" style={{ animationDelay: '0.6s' }}>
@@ -81,13 +80,13 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="w-full py-20 md:py-24 lg:py-32 bg-transparent -mt-20">
+        <section id="features" className="w-full py-20 md:py-24 lg:py-32 bg-background">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-white">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-foreground">
                 Everything Your Farm Needs in One App
               </h2>
-              <p className="mt-4 text-lg text-white/80">
+              <p className="mt-4 text-lg text-muted-foreground">
                 From planting to profit, GreenRoots provides the tools you need to succeed.
               </p>
             </div>
@@ -95,17 +94,15 @@ export default function LandingPage() {
               {features.map((feature, index) => (
                 <div 
                   key={feature.title} 
-                  className="animate-fade-in-up group relative flex flex-col items-center text-center p-6 bg-white/10 backdrop-blur-md rounded-xl shadow-lg border border-white/20 transition-all duration-300 hover:scale-105 hover:shadow-primary/20 hover:shadow-2xl overflow-hidden"
+                  className="animate-fade-in-up group relative flex flex-col items-center text-center p-6 bg-card rounded-xl shadow-lg border transition-all duration-300 hover:scale-105 hover:shadow-primary/20 hover:shadow-2xl overflow-hidden"
                   style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                 >
-                  <div className="absolute top-0 left-0 w-full h-full rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-aurora-bg" />
-                   <div className="absolute inset-0 p-px rounded-xl group-hover:bg-gradient-to-br group-hover:from-primary/50 group-hover:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="relative z-10 flex flex-col items-center">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:-translate-y-2 group-hover:scale-110">
                       <feature.icon className="h-6 w-6" />
                     </div>
-                    <h3 className="mt-6 text-xl font-semibold text-white">{feature.title}</h3>
-                    <p className="mt-2 text-sm text-white/80">{feature.description}</p>
+                    <h3 className="mt-6 text-xl font-semibold text-card-foreground">{feature.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
                   </div>
                 </div>
               ))}
