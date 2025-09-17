@@ -10,7 +10,7 @@ export function Header() {
     <header className="absolute top-0 left-0 right-0 z-20 bg-transparent py-4 animate-slide-in-from-top">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
-          <Leaf className="h-8 w-8 text-white" />
+          <Leaf className="h-8 w-8 text-primary" />
           <span className="text-2xl font-bold text-white font-headline">GreenRoots</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
