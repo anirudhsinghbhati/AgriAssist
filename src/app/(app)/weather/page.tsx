@@ -108,13 +108,17 @@ export default function WeatherPage() {
                 </CardContent>
             </Card>
 
-            <Alert variant="destructive">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>High Pest Activity Warning</AlertTitle>
-                <AlertDescription>
-                    Conditions are favorable for aphid infestation in the selected region. Monitor your crops closely.
-                </AlertDescription>
-            </Alert>
+            {isLoading ? (
+                <Skeleton className="h-24 w-full" />
+            ) : weather?.alert ? (
+                <Alert variant="destructive">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertTitle>{weather.alert.title}</AlertTitle>
+                    <AlertDescription>
+                       {weather.alert.description}
+                    </AlertDescription>
+                </Alert>
+            ) : null }
 
             <div className="grid gap-6 lg:grid-cols-5">
                 <Card className="lg:col-span-3">
