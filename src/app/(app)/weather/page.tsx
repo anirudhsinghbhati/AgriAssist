@@ -20,12 +20,13 @@ const weatherIcons: { [key: string]: JSX.Element } = {
     "Cloudy": <Cloud className="h-10 w-10 text-gray-500" />,
 }
 
-const weatherBackgrounds: { [key: string]: string } = {
-    "Sunny": "from-yellow-200 via-orange-200 to-yellow-300 text-slate-800",
-    "Rainy": "from-blue-300 to-slate-400 text-white",
-    "Cloudy": "from-gray-300 to-slate-400 text-slate-800",
-    "Partly Cloudy": "from-sky-300 to-gray-400 text-slate-800",
+const weatherBackgrounds: { [key: string]: { background: string; color: string } } = {
+    "Sunny": { background: 'linear-gradient(to bottom right, #FDE68A, #F97316)', color: '#1E293B' },
+    "Rainy": { background: 'linear-gradient(to bottom right, #93C5FD, #64748B)', color: '#FFFFFF' },
+    "Cloudy": { background: 'linear-gradient(to bottom right, #D1D5DB, #6B7280)', color: '#1E293B' },
+    "Partly Cloudy": { background: 'linear-gradient(to bottom right, #7DD3FC, #9CA3AF)', color: '#1E293B' },
 };
+
 
 export default function WeatherPage() {
     const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -60,7 +61,7 @@ export default function WeatherPage() {
     };
 
     const CurrentWeatherIcon = weather ? (weatherIcons[weather.condition] || <Cloud className="h-24 w-24 text-gray-400" />) : null;
-    const backgroundClass = weather ? weatherBackgrounds[weather.condition] || 'bg-card' : 'bg-card';
+    const backgroundStyle = weather ? weatherBackgrounds[weather.condition] || {} : {};
 
 
     return (
@@ -129,7 +130,7 @@ export default function WeatherPage() {
             ) : null }
 
             <div className="grid gap-6 lg:grid-cols-5">
-                <Card className={cn("lg:col-span-3 transition-all duration-500 bg-gradient-to-br", backgroundClass)}>
+                <Card className="lg:col-span-3 transition-all duration-500" style={backgroundStyle}>
                     <CardHeader>
                         <CardTitle className="text-inherit">Current Weather for {currentLocation.district}, {currentLocation.state}</CardTitle>
                     </CardHeader>
@@ -145,7 +146,7 @@ export default function WeatherPage() {
                                 </div>
                             ) : weather ? (
                                 <div className="flex items-center gap-6">
-                                    {React.cloneElement(CurrentWeatherIcon!, { className: "h-24 w-24 text-inherit" })}
+                                    {React.cloneElement(CurrentWeatherIcon!, { className: "h-24 w-24 text-inherit opacity-80" })}
                                     <div>
                                         <p className="text-6xl font-bold">{weather.temperature}°C</p>
                                         <p className="opacity-80">Feels like {weather.feelsLike}°C</p>
@@ -228,5 +229,3 @@ export default function WeatherPage() {
         </div>
     )
 }
-
-    
