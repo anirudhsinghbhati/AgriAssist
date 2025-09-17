@@ -15,6 +15,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2, Droplets, Clock, Info, CheckCircle, XCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import stateDistrictData from '@/lib/india-states-districts.json';
+import { useNavStore } from '@/hooks/use-nav-store';
 
 const formSchema = z.object({
   cropType: z.string().min(1, 'Please select a crop type.'),
@@ -30,6 +31,7 @@ export default function IrrigationPlannerForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [recommendation, setRecommendation] = useState<SmartIrrigationPlannerOutput | null>(null);
   const { toast } = useToast();
+  const { language } = useNavStore();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -55,7 +57,10 @@ export default function IrrigationPlannerForm() {
     setIsLoading(true);
     setRecommendation(null);
     try {
-      const result = await smartIrrigationPlanner(values);
+      const result = await smartIrrigationPlanner({
+        ...values,
+        language: language === 'hi' ? 'Hindi' : 'English',
+      });
       setRecommendation(result);
     } catch (error) {
       console.error('Failed to get irrigation plan', error);

@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
+import { useNavStore } from '@/hooks/use-nav-store';
 
 type DetectionResult = {
   diagnosis: string;
@@ -18,6 +19,7 @@ type DetectionResult = {
 
 export default function PestDetectionForm() {
   const { t } = useTranslation();
+  const { language } = useNavStore();
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<DetectionResult | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -54,7 +56,10 @@ export default function PestDetectionForm() {
     setError(null);
 
     try {
-      const response = await aiDrivenPestDiseaseDetection({ photoDataUri: preview });
+      const response = await aiDrivenPestDiseaseDetection({
+        photoDataUri: preview,
+        language: language === 'hi' ? 'Hindi' : 'English',
+      });
       setResult(response);
     } catch (err) {
       console.error(err);

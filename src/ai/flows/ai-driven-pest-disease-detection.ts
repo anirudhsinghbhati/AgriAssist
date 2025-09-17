@@ -16,6 +16,7 @@ const AIDrivenPestDiseaseDetectionInputSchema = z.object({
     .describe(
       "A photo of a potentially diseased crop, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
+  language: z.string().optional().describe("The user's preferred language (e.g., 'English', 'Hindi')."),
 });
 export type AIDrivenPestDiseaseDetectionInput = z.infer<typeof AIDrivenPestDiseaseDetectionInputSchema>;
 
@@ -34,6 +35,8 @@ const prompt = ai.definePrompt({
   input: {schema: AIDrivenPestDiseaseDetectionInputSchema},
   output: {schema: AIDrivenPestDiseaseDetectionOutputSchema},
   prompt: `You are an expert in plant pathology. A farmer has provided a photo of a potentially diseased crop. Analyze the image and provide a diagnosis, along with treatment suggestions.
+
+Your entire response must be in the user's preferred language: {{{language}}}.
 
 Photo: {{media url=photoDataUri}}
 

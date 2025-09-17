@@ -20,6 +20,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
 import stateDistrictData from '@/lib/india-states-districts.json';
+import { useNavStore } from '@/hooks/use-nav-store';
 
 const formSchema = z.object({
   cropType: z.string().min(1, 'Please select a crop type.'),
@@ -37,6 +38,7 @@ export default function YieldPredictionForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [prediction, setPrediction] = useState<YieldPredictionOutput | null>(null);
   const { toast } = useToast();
+  const { language } = useNavStore();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -66,6 +68,7 @@ export default function YieldPredictionForm() {
       const result = await yieldPrediction({
         ...values,
         plantingDate: format(values.plantingDate, 'yyyy-MM-dd'),
+        language: language === 'hi' ? 'Hindi' : 'English',
       });
       setPrediction(result);
     } catch (error) {

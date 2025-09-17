@@ -11,12 +11,14 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
+import { getRealTimeWeather } from '@/ai/tools/weather';
 
 const PersonalizedCropRecommendationsInputSchema = z.object({
   totalLand: z.coerce.number().describe('Total available land in hectares.'),
   state: z.string().describe('The state where the farm is located.'),
   district: z.string().describe('The district where the farm is located.'),
   soilType: z.string().describe('The type of soil on the farm (e.g., Alluvial, Black, Red, Loamy).'),
+  language: z.string().optional().describe("The user's preferred language (e.g., 'English', 'Hindi')."),
 });
 
 export type PersonalizedCropRecommendationsInput = z.infer<typeof PersonalizedCropRecommendationsInputSchema>;
@@ -76,23 +78,26 @@ const prompt = ai.definePrompt({
   name: 'personalizedCropRecommendationsPrompt',
   input: { schema: PersonalizedCropRecommendationsInputSchema },
   output: { schema: PersonalizedCropRecommendationsOutputSchema },
+  tools: [getRealTimeWeather],
   prompt: `You are KrishiMitra AI, an expert agricultural advisor for small farmers in India. Your goal is to provide clear, actionable, and sustainable crop recommendations.
 
 FARM DETAILS:
 - Farm Size: {{{totalLand}}} hectares
 - Location: {{{district}}}, {{{state}}}
 - Soil Type: {{{soilType}}}
-- Preferred Language: English
+- Preferred Language: {{{language}}}
 
 INSTRUCTIONS:
-1.  Analyze the provided farm details.
-2.  Suggest the TOP 3 diverse and practical crop strategies for the upcoming main season (assume Kharif if not specified).
-3.  For each strategy, provide a detailed breakdown covering rationale, economics, a cultivation calendar, risks, and mitigation.
-4.  Use realistic yield and financial data for the specified Indian location.
-5.  Include advice on sustainable practices and market strategy.
-6.  Conclude with clear, simple next steps and a helpline.
-7.  The response must be in simple English, formatted for a farmer with basic digital literacy.
-8.  Strictly adhere to the output JSON schema.
+1.  First, call the getRealTimeWeather tool to fetch the current weather conditions for the farmer's location.
+2.  Analyze the provided farm details AND the real-time weather data.
+3.  Suggest the TOP 3 diverse and practical crop strategies for the upcoming main season (assume Kharif if not specified).
+4.  For each strategy, provide a detailed breakdown covering rationale, economics, a cultivation calendar, risks, and mitigation.
+5.  Use realistic yield and financial data for the specified Indian location.
+6.  Incorporate the weather data into your risk analysis and recommendations.
+7.  Include advice on sustainable practices and market strategy.
+8.  Conclude with clear, simple next steps and a helpline.
+9.  The response must be in the user's Preferred Language (e.g., 'English' or 'Hindi').
+10. Strictly adhere to the output JSON schema.
 
 Begin the analysis now and generate the structured recommendation.
 `,

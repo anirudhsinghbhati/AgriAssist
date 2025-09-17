@@ -20,6 +20,7 @@ const YieldPredictionInputSchema = z.object({
   historicalAverageYield: z.coerce.number().optional().describe('The historical average yield for this crop on this farm in tons per hectare.'),
   state: z.string().describe('The state where the farm is located.'),
   district: z.string().describe('The district where the farm is located.'),
+  language: z.string().optional().describe("The user's preferred language (e.g., 'English', 'Hindi')."),
 });
 export type YieldPredictionInput = z.infer<typeof YieldPredictionInputSchema>;
 
@@ -44,7 +45,7 @@ const prompt = ai.definePrompt({
   input: { schema: YieldPredictionInputSchema },
   output: { schema: YieldPredictionOutputSchema },
   tools: [getRealTimeWeather],
-  prompt: `You are an expert agricultural scientist specializing in crop yield prediction. 
+  prompt: `You are an expert agricultural scientist specializing in crop yield prediction. Your entire response must be in the user's preferred language: {{{language}}}.
   
 First, use the getRealTimeWeather tool to get the seasonal weather forecast for the specified location.
 

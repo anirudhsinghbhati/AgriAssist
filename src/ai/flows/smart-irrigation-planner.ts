@@ -17,6 +17,7 @@ const SmartIrrigationPlannerInputSchema = z.object({
   soilMoisture: z.coerce.number().describe('The current soil moisture level as a percentage (e.g., 45).'),
   state: z.string().describe('The state where the farm is located.'),
   district: z.string().describe('The district where the farm is located.'),
+  language: z.string().optional().describe("The user's preferred language (e.g., 'English', 'Hindi')."),
 });
 export type SmartIrrigationPlannerInput = z.infer<typeof SmartIrrigationPlannerInputSchema>;
 
@@ -37,7 +38,7 @@ const prompt = ai.definePrompt({
   input: { schema: SmartIrrigationPlannerInputSchema },
   output: { schema: SmartIrrigationPlannerOutputSchema },
   tools: [getRealTimeWeather],
-  prompt: `You are an expert agricultural hydrologist specializing in water conservation and crop irrigation. Your task is to provide a smart irrigation recommendation.
+  prompt: `You are an expert agricultural hydrologist specializing in water conservation and crop irrigation. Your task is to provide a smart irrigation recommendation. Your entire response must be in the user's preferred language: {{{language}}}.
 
 First, use the getRealTimeWeather tool to get the current weather conditions for the specified location.
 

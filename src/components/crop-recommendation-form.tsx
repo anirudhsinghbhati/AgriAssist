@@ -18,6 +18,7 @@ import { useTranslation } from '@/hooks/use-translation';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import stateDistrictData from '@/lib/india-states-districts.json';
+import { useNavStore } from '@/hooks/use-nav-store';
 
 const formSchema = z.object({
   totalLand: z.coerce.number().min(0.1, 'Total land is required.'),
@@ -30,6 +31,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function CropRecommendationForm() {
   const { t } = useTranslation();
+  const { language } = useNavStore();
   const [isLoading, setIsLoading] = useState(false);
   const [recommendations, setRecommendations] = useState<PersonalizedCropRecommendationsOutput | null>(null);
 
@@ -55,7 +57,10 @@ export default function CropRecommendationForm() {
     setIsLoading(true);
     setRecommendations(null);
     try {
-      const result = await personalizedCropRecommendations(values);
+      const result = await personalizedCropRecommendations({
+        ...values,
+        language: language === 'hi' ? 'Hindi' : 'English',
+      });
       setRecommendations(result);
     } catch (error)
       {
@@ -72,7 +77,7 @@ export default function CropRecommendationForm() {
     <>
       <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-              <CardContent className="space-y-8 pt-6">
+              <div className="space-y-8 pt-6">
                   <div className="space-y-6">
                       <div>
                           <h3 className="text-lg font-semibold">{t('crop_recommendations.form.farm_details_title')}</h3>
@@ -175,8 +180,8 @@ export default function CropRecommendationForm() {
                           />
                       </div>
                   </div>
-              </CardContent>
-              <CardFooter>
+              </div>
+              <CardFooter className="px-0 pt-6">
                   <Button type="submit" disabled={isLoading} size="lg">
                       {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       {t('crop_recommendations.form.submit_button')}
