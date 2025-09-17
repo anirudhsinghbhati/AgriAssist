@@ -62,8 +62,10 @@ export async function getCurrentWeather(params: { district: string; state: strin
   } else if (['Himachal Pradesh', 'Uttarakhand'].includes(params.state)) {
     condition = "Partly Cloudy";
     baseTemp = 22;
-  } else if (condition === "Rainy") {
-     alert = {
+  } else if (params.district === "Indore") { // Default case for Indore
+    condition = "Partly Cloudy";
+    baseTemp = 28;
+    alert = {
         title: 'Fungal Disease Alert',
         description: 'Consistent rain increases the risk of fungal diseases like blight and mildew. Consider preventative spraying.',
     };

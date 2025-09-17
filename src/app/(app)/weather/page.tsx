@@ -68,7 +68,6 @@ export default function WeatherPage() {
                                 <label className='text-sm font-medium'>State</label>
                                 <Select onValueChange={(value) => {
                                     setSelectedState(value);
-                                    // Find the new state's districts and set the first one as selected
                                     const newState = stateDistrictData.states.find(s => s.state === value);
                                     if (newState && newState.districts.length > 0) {
                                       setSelectedDistrict(newState.districts[0]);
