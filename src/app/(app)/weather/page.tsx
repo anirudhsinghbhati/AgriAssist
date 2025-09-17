@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import stateDistrictData from '@/lib/india-states-districts.json';
+import { cn } from '@/lib/utils';
 
 
 const weatherIcons: { [key: string]: JSX.Element } = {
@@ -18,6 +19,13 @@ const weatherIcons: { [key: string]: JSX.Element } = {
     "Rainy": <CloudRain className="h-10 w-10 text-blue-500" />,
     "Cloudy": <Cloud className="h-10 w-10 text-gray-500" />,
 }
+
+const weatherBackgrounds: { [key: string]: string } = {
+    "Sunny": "from-yellow-200 via-orange-200 to-yellow-300 text-slate-800",
+    "Rainy": "from-blue-300 to-slate-400 text-white",
+    "Cloudy": "from-gray-300 to-slate-400 text-slate-800",
+    "Partly Cloudy": "from-sky-300 to-gray-400 text-slate-800",
+};
 
 export default function WeatherPage() {
     const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -52,6 +60,7 @@ export default function WeatherPage() {
     };
 
     const CurrentWeatherIcon = weather ? (weatherIcons[weather.condition] || <Cloud className="h-24 w-24 text-gray-400" />) : null;
+    const backgroundClass = weather ? weatherBackgrounds[weather.condition] || 'bg-card' : 'bg-card';
 
 
     return (
@@ -120,9 +129,9 @@ export default function WeatherPage() {
             ) : null }
 
             <div className="grid gap-6 lg:grid-cols-5">
-                <Card className="lg:col-span-3">
+                <Card className={cn("lg:col-span-3 transition-all duration-500 bg-gradient-to-br", backgroundClass)}>
                     <CardHeader>
-                        <CardTitle>Current Weather for {currentLocation.district}, {currentLocation.state}</CardTitle>
+                        <CardTitle className="text-inherit">Current Weather for {currentLocation.district}, {currentLocation.state}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -136,10 +145,10 @@ export default function WeatherPage() {
                                 </div>
                             ) : weather ? (
                                 <div className="flex items-center gap-6">
-                                    {React.cloneElement(CurrentWeatherIcon!, { className: "h-24 w-24" })}
+                                    {React.cloneElement(CurrentWeatherIcon!, { className: "h-24 w-24 text-inherit" })}
                                     <div>
                                         <p className="text-6xl font-bold">{weather.temperature}°C</p>
-                                        <p className="text-muted-foreground">Feels like {weather.feelsLike}°C</p>
+                                        <p className="opacity-80">Feels like {weather.feelsLike}°C</p>
                                     </div>
                                 </div>
                             ) : null}
@@ -149,10 +158,10 @@ export default function WeatherPage() {
                                     Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-5 w-32" />)
                             ) : weather ? (
                                     <>
-                                        <div className="flex items-center gap-2"><Wind className="h-5 w-5 text-muted-foreground" /> Wind: {weather.wind} km/h</div>
-                                        <div className="flex items-center gap-2"><Droplets className="h-5 w-5 text-muted-foreground" /> Humidity: {weather.humidity}%</div>
-                                        <div className="flex items-center gap-2"><Sunrise className="h-5 w-5 text-muted-foreground" /> Sunrise: {weather.sunrise}</div>
-                                        <div className="flex items-center gap-2"><Sunset className="h-5 w-5 text-muted-foreground" /> Sunset: {weather.sunset}</div>
+                                        <div className="flex items-center gap-2 opacity-80"><Wind className="h-5 w-5" /> Wind: {weather.wind} km/h</div>
+                                        <div className="flex items-center gap-2 opacity-80"><Droplets className="h-5 w-5" /> Humidity: {weather.humidity}%</div>
+                                        <div className="flex items-center gap-2 opacity-80"><Sunrise className="h-5 w-5" /> Sunrise: {weather.sunrise}</div>
+                                        <div className="flex items-center gap-2 opacity-80"><Sunset className="h-5 w-5" /> Sunset: {weather.sunset}</div>
                                     </>
                             ) : null}
                             </div>
@@ -219,3 +228,5 @@ export default function WeatherPage() {
         </div>
     )
 }
+
+    
