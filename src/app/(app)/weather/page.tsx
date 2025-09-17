@@ -124,36 +124,38 @@ export default function WeatherPage() {
                     <CardHeader>
                         <CardTitle>Current Weather for {currentLocation.district}, {currentLocation.state}</CardTitle>
                     </CardHeader>
-                    <CardContent className="flex flex-col md:flex-row items-center justify-between gap-6">
-                        {isLoading ? (
-                            <div className="flex items-center gap-6">
-                                <Skeleton className="h-24 w-24 rounded-full" />
-                                <div className="space-y-2">
-                                    <Skeleton className="h-12 w-24" />
-                                    <Skeleton className="h-4 w-32" />
+                    <CardContent>
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                            {isLoading ? (
+                                <div className="flex items-center gap-6">
+                                    <Skeleton className="h-24 w-24 rounded-full" />
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-12 w-24" />
+                                        <Skeleton className="h-4 w-32" />
+                                    </div>
                                 </div>
-                            </div>
-                        ) : weather ? (
-                             <div className="flex items-center gap-6">
-                                {React.cloneElement(CurrentWeatherIcon!, { className: "h-24 w-24" })}
-                                <div>
-                                    <p className="text-6xl font-bold">{weather.temperature}°C</p>
-                                    <p className="text-muted-foreground">Feels like {weather.feelsLike}°C</p>
+                            ) : weather ? (
+                                <div className="flex items-center gap-6">
+                                    {React.cloneElement(CurrentWeatherIcon!, { className: "h-24 w-24" })}
+                                    <div>
+                                        <p className="text-6xl font-bold">{weather.temperature}°C</p>
+                                        <p className="text-muted-foreground">Feels like {weather.feelsLike}°C</p>
+                                    </div>
                                 </div>
+                            ) : null}
+                        
+                            <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-sm">
+                            {isLoading ? (
+                                    Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-5 w-32" />)
+                            ) : weather ? (
+                                    <>
+                                        <div className="flex items-center gap-2"><Wind className="h-5 w-5 text-muted-foreground" /> Wind: {weather.wind} km/h</div>
+                                        <div className="flex items-center gap-2"><Droplets className="h-5 w-5 text-muted-foreground" /> Humidity: {weather.humidity}%</div>
+                                        <div className="flex items-center gap-2"><Sunrise className="h-5 w-5 text-muted-foreground" /> Sunrise: {weather.sunrise}</div>
+                                        <div className="flex items-center gap-2"><Sunset className="h-5 w-5 text-muted-foreground" /> Sunset: {weather.sunset}</div>
+                                    </>
+                            ) : null}
                             </div>
-                        ) : null}
-                       
-                        <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-sm">
-                           {isLoading ? (
-                                Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-5 w-32" />)
-                           ) : weather ? (
-                                <>
-                                    <div className="flex items-center gap-2"><Wind className="h-5 w-5 text-muted-foreground" /> Wind: {weather.wind} km/h</div>
-                                    <div className="flex items-center gap-2"><Droplets className="h-5 w-5 text-muted-foreground" /> Humidity: {weather.humidity}%</div>
-                                    <div className="flex items-center gap-2"><Sunrise className="h-5 w-5 text-muted-foreground" /> Sunrise: {weather.sunrise}</div>
-                                    <div className="flex items-center gap-2"><Sunset className="h-5 w-5 text-muted-foreground" /> Sunset: {weather.sunset}</div>
-                                </>
-                           ) : null}
                         </div>
                     </CardContent>
                 </Card>
