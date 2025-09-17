@@ -10,16 +10,16 @@ export function Header() {
     <header className="absolute top-0 left-0 right-0 z-20 bg-transparent py-4">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
-          <Leaf className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold text-primary-foreground font-headline">GreenRoots</span>
+          <Leaf className="h-8 w-8 text-white" />
+          <span className="text-2xl font-bold text-white font-headline">GreenRoots</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-          <Link href="#features" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+          <Link href="#features" className="text-white/80 hover:text-white transition-colors">
             Features
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-           <Button variant="ghost" className="text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground" asChild>
+           <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white" asChild>
                 <Link href="/login">Sign In</Link>
            </Button>
            <Button asChild>
