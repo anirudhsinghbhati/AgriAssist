@@ -234,12 +234,6 @@ export default function MyCropDetailPage({ params }: { params: { cropName: strin
 
             </main>
             
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-sm border-t">
-                <Button className="w-full" size="lg">
-                    <MessageCircle className="mr-2 h-5 w-5" />
-                    Ask query
-                </Button>
-            </div>
         </div>
     );
 }
