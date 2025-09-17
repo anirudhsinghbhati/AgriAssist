@@ -27,7 +27,7 @@ const initialFinancialData = {
     { month: 'Jun', income: 95000, expense: 35000 },
   ],
   transactions: [
-    { id: 'T001', date: '2024-06-25', description: 'Sold Soybean (5 Quintal)', type: 'Income', amount: 24000 },
+    { id: 'T001', date: '2024-06-25', description: 'Sold Soybean (5 Quintal)', type: 'Income', amount: 25000 },
     { id: 'T002', date: '2024-06-22', description: 'Fertilizer Purchase', type: 'Expense', amount: -8500 },
     { id: 'T003', date: '2024-06-20', description: 'Labor Wages', type: 'Expense', amount: -15000 },
     { id: 'T004', date: '2024-06-18', description: 'Sold Cotton (2 Quintal)', type: 'Income', amount: 14400 },
@@ -150,7 +150,7 @@ export default function FinancialTrackerPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Net Profit</CardTitle>
+            <CardTitle className="text-sm font-medium">Profit</CardTitle>
             <span className="h-4 w-4 text-muted-foreground"></span>
           </CardHeader>
           <CardContent>
