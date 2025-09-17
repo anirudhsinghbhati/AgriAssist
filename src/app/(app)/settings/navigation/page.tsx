@@ -10,25 +10,17 @@ import { useNavStore } from "@/hooks/use-nav-store";
 import { navConfig } from "@/lib/nav-config";
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
-import { ArrowUp, ArrowDown } from 'lucide-react';
 
 export default function NavigationSettingsPage() {
     const { t } = useTranslation();
     const { toast } = useToast();
-    const { visibility, navOrder, setVisibility, setNavOrder } = useNavStore();
+    const { visibility, setVisibility } = useNavStore();
     
     const [localVisibility, setLocalVisibility] = React.useState(visibility);
-    const [localNavOrder, setLocalNavOrder] = React.useState(navOrder);
 
-    const orderedNavConfig = React.useMemo(() => {
-        const itemMap = new Map(navConfig.map(item => [item.id, item]));
-        return localNavOrder.map(id => itemMap.get(id)).filter(Boolean);
-    }, [localNavOrder]);
-    
     React.useEffect(() => {
         setLocalVisibility(visibility);
-        setLocalNavOrder(navOrder);
-    }, [visibility, navOrder]);
+    }, [visibility]);
 
     const handleToggle = (id: string) => {
         const item = navConfig.find(item => item.id === id);
@@ -38,25 +30,9 @@ export default function NavigationSettingsPage() {
             [id]: !prev[id],
         }));
     };
-    
-    const handleMove = (index: number, direction: 'up' | 'down') => {
-        const newOrder = [...localNavOrder];
-        const targetIndex = direction === 'up' ? index - 1 : index + 1;
-
-        if (targetIndex >= 0 && targetIndex < newOrder.length) {
-            const itemToMove = newOrder[index];
-            const itemIsLocked = navConfig.find(nav => nav.id === itemToMove)?.isLocked;
-            const targetItemIsLocked = navConfig.find(nav => nav.id === newOrder[targetIndex])?.isLocked;
-            if(itemIsLocked || targetItemIsLocked) return;
-
-            [newOrder[index], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[index]];
-            setLocalNavOrder(newOrder);
-        }
-    };
 
     const handleApply = () => {
         setVisibility(localVisibility);
-        setNavOrder(localNavOrder);
         toast({
             title: t('settings.toast.title'),
             description: t('settings.toast.description'),
@@ -65,11 +41,9 @@ export default function NavigationSettingsPage() {
 
     const handleCancel = () => {
         setLocalVisibility(visibility);
-        setLocalNavOrder(navOrder);
     };
 
-    const hasChanges = JSON.stringify(localVisibility) !== JSON.stringify(visibility) || 
-                       JSON.stringify(localNavOrder) !== JSON.stringify(navOrder);
+    const hasChanges = JSON.stringify(localVisibility) !== JSON.stringify(visibility);
 
     return (
         <div className="space-y-6">
@@ -94,43 +68,6 @@ export default function NavigationSettingsPage() {
                             />
                         </div>
                     ))}
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>Navigation Order</CardTitle>
-                    <CardDescription>Change the order of items in the sidebar. Locked items cannot be moved.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                     {orderedNavConfig.map((item, index) => {
-                        if (!item) return null;
-                        return (
-                        <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
-                            <div className="flex items-center gap-3">
-                                <item.icon className="h-5 w-5 text-muted-foreground" />
-                                <span className="font-medium">{t(`nav.${item.id}`)}</span>
-                            </div>
-                            <div className="flex gap-1">
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => handleMove(index, 'up')}
-                                    disabled={item.isLocked || index === 0 || navConfig.find(i => i.id === localNavOrder[index - 1])?.isLocked}
-                                >
-                                    <ArrowUp className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => handleMove(index, 'down')}
-                                    disabled={item.isLocked || index === localNavOrder.length - 1 || navConfig.find(i => i.id === localNavOrder[index + 1])?.isLocked}
-                                >
-                                    <ArrowDown className="h-4 w-4" />
-                                </Button>
-                            </div>
-                        </div>
-                    )})}
                 </CardContent>
             </Card>
 

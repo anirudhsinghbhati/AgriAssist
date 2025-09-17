@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from '@/hooks/use-translation';
-import { ArrowRight, Languages, List } from 'lucide-react';
+import { ArrowRight, Languages, List, MoveVertical } from 'lucide-react';
 import Link from 'next/link';
 
 export default function SettingsPage() {
@@ -13,9 +13,16 @@ export default function SettingsPage() {
         {
             id: 'navigation',
             title: t('settings.customize_nav.title'),
-            description: 'Change the order and visibility of items in the sidebar.',
+            description: 'Change the visibility of items in the sidebar.',
             icon: List,
             href: '/settings/navigation'
+        },
+        {
+            id: 'navigation-order',
+            title: 'Navigation Order',
+            description: 'Change the order of items in the sidebar.',
+            icon: MoveVertical,
+            href: '/settings/navigation-order'
         },
         {
             id: 'language',

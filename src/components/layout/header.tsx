@@ -68,6 +68,7 @@ export function Header() {
         if(segment === 'settings') label = t('nav.settings');
         if(segment === 'navigation') label = t('settings.customize_nav.title');
         if(segment === 'language') label = t('settings.language.title');
+        if(segment === 'navigation-order') label = 'Navigation Order';
     }
 
     acc.push({ href: currentPath, label });
