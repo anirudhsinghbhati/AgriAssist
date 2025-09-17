@@ -11,22 +11,28 @@ import { navConfig } from "@/lib/nav-config";
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslation } from '@/hooks/use-translation';
+import { ArrowUp, ArrowDown } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 export default function SettingsPage() {
     const { t } = useTranslation();
     const { toast } = useToast();
-    const { visibility, language, setVisibility, setLanguage } = useNavStore();
+    const { visibility, language, navOrder, setVisibility, setLanguage, setNavOrder } = useNavStore();
     
     const [localVisibility, setLocalVisibility] = React.useState(visibility);
     const [localLanguage, setLocalLanguage] = React.useState(language);
+    const [localNavOrder, setLocalNavOrder] = React.useState(navOrder);
+
+    const orderedNavConfig = React.useMemo(() => {
+        const itemMap = new Map(navConfig.map(item => [item.id, item]));
+        return localNavOrder.map(id => itemMap.get(id)).filter(Boolean);
+    }, [localNavOrder]);
     
     React.useEffect(() => {
         setLocalVisibility(visibility);
-    }, [visibility]);
-
-    React.useEffect(() => {
         setLocalLanguage(language);
-    }, [language]);
+        setLocalNavOrder(navOrder);
+    }, [visibility, language, navOrder]);
 
     const handleToggle = (id: string) => {
         const item = navConfig.find(item => item.id === id);
@@ -37,9 +43,25 @@ export default function SettingsPage() {
         }));
     };
     
+    const handleMove = (index: number, direction: 'up' | 'down') => {
+        const newOrder = [...localNavOrder];
+        const targetIndex = direction === 'up' ? index - 1 : index + 1;
+
+        if (targetIndex >= 0 && targetIndex < newOrder.length) {
+            const itemToMove = newOrder[index];
+            const itemIsLocked = navConfig.find(nav => nav.id === itemToMove)?.isLocked;
+            const targetItemIsLocked = navConfig.find(nav => nav.id === newOrder[targetIndex])?.isLocked;
+            if(itemIsLocked || targetItemIsLocked) return;
+
+            [newOrder[index], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[index]];
+            setLocalNavOrder(newOrder);
+        }
+    };
+
     const handleApply = () => {
         setVisibility(localVisibility);
         setLanguage(localLanguage);
+        setNavOrder(localNavOrder);
         toast({
             title: t('settings.toast.title'),
             description: t('settings.toast.description'),
@@ -70,15 +92,16 @@ export default function SettingsPage() {
                     </div>
                      <div>
                         <h3 className="text-lg font-semibold mb-4">{t('settings.customize_nav.title')}</h3>
+                        <p className="text-sm text-muted-foreground mb-4">Toggle visibility for each navigation item.</p>
                         <div className="space-y-4">
                             {navConfig.map((item) => (
                                 <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
-                                    <Label htmlFor={item.id} className="flex items-center gap-3 cursor-pointer">
+                                    <Label htmlFor={`visibility-${item.id}`} className="flex items-center gap-3 cursor-pointer">
                                         <item.icon className="h-5 w-5 text-muted-foreground" />
                                         <span className="font-medium">{t(`nav.${item.id}`)}</span>
                                     </Label>
                                     <Switch
-                                        id={item.id}
+                                        id={`visibility-${item.id}`}
                                         checked={localVisibility[item.id] ?? true}
                                         onCheckedChange={() => handleToggle(item.id)}
                                         disabled={item.isLocked}
@@ -86,6 +109,41 @@ export default function SettingsPage() {
                                     />
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                    <Separator />
+                    <div>
+                        <h3 className="text-lg font-semibold mb-4">Navigation Order</h3>
+                         <p className="text-sm text-muted-foreground mb-4">Change the order of the items in the sidebar. Locked items cannot be moved.</p>
+                        <div className="space-y-2">
+                            {orderedNavConfig.map((item, index) => {
+                                if (!item) return null;
+                                return (
+                                <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
+                                    <div className="flex items-center gap-3">
+                                        <item.icon className="h-5 w-5 text-muted-foreground" />
+                                        <span className="font-medium">{t(`nav.${item.id}`)}</span>
+                                    </div>
+                                    <div className="flex gap-1">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => handleMove(index, 'up')}
+                                            disabled={item.isLocked || index === 0 || navConfig.find(i => i.id === localNavOrder[index - 1])?.isLocked}
+                                        >
+                                            <ArrowUp className="h-4 w-4" />
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => handleMove(index, 'down')}
+                                            disabled={item.isLocked || index === localNavOrder.length - 1 || navConfig.find(i => i.id === localNavOrder[index + 1])?.isLocked}
+                                        >
+                                            <ArrowDown className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            )})}
                         </div>
                     </div>
                 </div>

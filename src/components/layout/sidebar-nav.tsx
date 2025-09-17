@@ -21,7 +21,7 @@ export function SidebarNav() {
 
   // The settings item is always visible and locked.
   const mainNavItems = visibleNavItems.filter(item => !item.isLocked);
-  const settingsItem = useNavStore.getState().getVisibleNavItems().find(item => item.id === 'settings');
+  const settingsItem = visibleNavItems.find(item => item.id === 'settings');
 
 
   return (
