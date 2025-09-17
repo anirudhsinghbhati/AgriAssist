@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Leaf } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const GoogleIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
@@ -20,11 +21,20 @@ const GoogleIcon = () => (
 
 export default function LoginPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const loginBg = PlaceHolderImages.find((img) => img.id === 'login-background');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/dashboard');
+    // In a real app, you would handle authentication here.
+    // For this demo, we'll show a toast and redirect.
+    toast({
+      title: 'Login Successful!',
+      description: 'Redirecting to your dashboard...',
+    });
+    setTimeout(() => {
+        router.push('/dashboard');
+    }, 1000);
   };
 
   return (
@@ -47,6 +57,7 @@ export default function LoginPage() {
                 id="email"
                 type="email"
                 placeholder="name@example.com"
+                defaultValue="farmer@greenroots.com"
                 required
               />
             </div>
@@ -60,7 +71,7 @@ export default function LoginPage() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" defaultValue="password" required />
             </div>
             <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
               Login
