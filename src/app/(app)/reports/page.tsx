@@ -37,7 +37,7 @@ const chartConfig = {
     label: "Yield (tons/ha)",
   },
   profit: {
-    label: "Profit (₹)",
+    label: "Profit (\u20B9)",
     color: "hsl(var(--chart-1))",
   },
   soybean: {
@@ -82,10 +82,10 @@ export default function ReportsPage() {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                        <span className="h-4 w-4 text-muted-foreground">₹</span>
+                        <span className="h-4 w-4 text-muted-foreground">{'\u20B9'}</span>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">₹{totalRevenue.toLocaleString('en-IN')}</div>
+                        <div className="text-2xl font-bold">{'\u20B9'}{totalRevenue.toLocaleString('en-IN')}</div>
                         <p className="text-xs text-muted-foreground">in the last 12 months</p>
                     </CardContent>
                 </Card>
@@ -112,7 +112,7 @@ export default function ReportsPage() {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Profit Margin</CardTitle>
-                        <span className="h-4 w-4 text-muted-foreground">₹</span>
+                        <span className="h-4 w-4 text-muted-foreground">{'\u20B9'}</span>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">42%</div>
@@ -154,7 +154,7 @@ export default function ReportsPage() {
                                     tickMargin={8}
                                 />
                                 <YAxis 
-                                    tickFormatter={(value) => `₹${(Number(value) / 1000).toLocaleString('en-IN')}k`}
+                                    tickFormatter={(value) => `${'\u20B9'}${(Number(value) / 1000).toLocaleString('en-IN')}k`}
                                 />
                                 <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" formatter={(value) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(value))} />} />
                                 <Line
@@ -193,7 +193,7 @@ export default function ReportsPage() {
                                     <TableCell>{harvest.crop}</TableCell>
                                     <TableCell>{harvest.quantity} {harvest.unit}</TableCell>
                                     <TableCell>{harvest.date}</TableCell>
-                                    <TableCell className="text-right">₹{harvest.revenue.toLocaleString('en-IN')}</TableCell>
+                                    <TableCell className="text-right">{'\u20B9'}{harvest.revenue.toLocaleString('en-IN')}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

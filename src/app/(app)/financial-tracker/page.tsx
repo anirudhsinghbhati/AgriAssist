@@ -151,7 +151,7 @@ export default function FinancialTrackerPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Net Profit</CardTitle>
-            <span className="h-4 w-4 text-muted-foreground">₹</span>
+            <span className="h-4 w-4 text-muted-foreground">{'\u20B9'}</span>
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${summary.profit >= 0 ? 'text-primary' : 'text-destructive'}`}>{formatCurrency(summary.profit)}</div>
@@ -169,7 +169,7 @@ export default function FinancialTrackerPage() {
             <BarChart data={initialFinancialData.chartData}>
               <CartesianGrid vertical={false} />
               <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
-              <YAxis tickFormatter={(value) => `₹${Number(value) / 1000}k`} />
+              <YAxis tickFormatter={(value) => `${'\u20B9'}${Number(value) / 1000}k`} />
               <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} />} />
               <Bar dataKey="income" fill="var(--color-income)" radius={4} />
               <Bar dataKey="expense" fill="var(--color-expense)" radius={4} />

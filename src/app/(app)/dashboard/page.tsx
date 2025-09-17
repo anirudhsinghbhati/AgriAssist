@@ -93,7 +93,7 @@ export default function Dashboard() {
                  <div className="p-4 bg-muted/50 rounded-lg flex items-center gap-4">
                     <TrendingUp className="h-8 w-8 text-green-500" />
                     <div>
-                        <p className="font-semibold">₹4,800/Qtl</p>
+                        <p className="font-semibold">{'\u20B9'}4,800/Qtl</p>
                         <p className="text-sm text-muted-foreground">{t('dashboard.todays_focus.soybean_price')}</p>
                     </div>
                 </div>
@@ -190,7 +190,7 @@ export default function Dashboard() {
              <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">{t('dashboard.profitability.title')}</CardTitle>
-                    <span className="h-4 w-4 text-muted-foreground">₹</span>
+                    <span className="h-4 w-4 text-muted-foreground">{'\u20B9'}</span>
                 </CardHeader>
                 <CardContent>
                     <div className="text-3xl font-bold">85/100</div>

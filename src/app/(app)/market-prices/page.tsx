@@ -2,11 +2,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { ArrowDown, ArrowUp, Loader2, Search } from 'lucide-react';
 import { marketPriceLookup, MarketPriceLookupOutput } from '@/ai/flows/market-price-lookup';
 
@@ -100,7 +100,7 @@ export default function MarketPricesPage() {
               <TableRow>
                 <TableHead>Crop</TableHead>
                 <TableHead>Variety</TableHead>
-                <TableHead className="text-right">Price (₹ / Unit)</TableHead>
+                <TableHead className="text-right">Price ({'\u20B9'} / Unit)</TableHead>
                 <TableHead className="text-right">Change</TableHead>
               </TableRow>
             </TableHeader>
@@ -110,7 +110,7 @@ export default function MarketPricesPage() {
                   <TableCell className="font-medium">{item.crop}</TableCell>
                   <TableCell>{item.variety}</TableCell>
                   <TableCell className="text-right whitespace-nowrap">
-                    ₹{item.price.toLocaleString('en-IN')} / {item.unit}
+                    {'\u20B9'}{item.price.toLocaleString('en-IN')} / {item.unit}
                   </TableCell>
                   <TableCell className="text-right">
                     <Badge
