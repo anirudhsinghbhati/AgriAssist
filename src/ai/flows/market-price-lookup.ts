@@ -2,20 +2,14 @@
 /**
  * @fileOverview This file defines a Genkit flow for looking up real-time market prices for crops.
  *
- * - marketPriceLookup - A function that takes a crop name and returns its current market price and trends.
- * - MarketPriceLookupInput - The input type for the marketPriceLookup function.
- * - MarketPriceLookupOutput - The return type for the marketPriceLookup function.
+ * - marketPriceLookup - A function that returns a list of current market prices and trends for major crops.
+ * - MarketPriceListOutput - The return type for the marketPriceLookup function.
  */
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
-const MarketPriceLookupInputSchema = z.object({
-  cropName: z.string().describe('The name of the crop to look up.'),
-});
-export type MarketPriceLookupInput = z.infer<typeof MarketPriceLookupInputSchema>;
-
-const MarketPriceLookupOutputSchema = z.object({
+const MarketPriceItemSchema = z.object({
   crop: z.string().describe('The name of the crop.'),
   variety: z.string().describe('The common variety of the crop.'),
   price: z.number().describe('The current market price in INR.'),
@@ -23,19 +17,20 @@ const MarketPriceLookupOutputSchema = z.object({
   change: z.number().describe('The percentage change in price recently.'),
   trend: z.enum(['up', 'down', 'stable']).describe('The recent price trend.'),
 });
-export type MarketPriceLookupOutput = z.infer<typeof MarketPriceLookupOutputSchema>;
 
-export async function marketPriceLookup(input: MarketPriceLookupInput): Promise<MarketPriceLookupOutput> {
-  return marketPriceLookupFlow(input);
+const MarketPriceListOutputSchema = z.object({
+    prices: z.array(MarketPriceItemSchema).describe('A list of real-time market prices for various crops.')
+});
+export type MarketPriceListOutput = z.infer<typeof MarketPriceListOutputSchema>;
+
+export async function marketPriceLookup(): Promise<MarketPriceListOutput> {
+  return marketPriceLookupFlow();
 }
 
 const prompt = ai.definePrompt({
   name: 'marketPriceLookupPrompt',
-  input: { schema: MarketPriceLookupInputSchema },
-  output: { schema: MarketPriceLookupOutputSchema },
-  prompt: `You are an agricultural market data analyst. Provide the current, real-world market price for the following crop in the Indian market. Provide a realistic price, variety, and recent trend.
-
-Crop: {{{cropName}}}
+  output: { schema: MarketPriceListOutputSchema },
+  prompt: `You are an agricultural market data analyst. Provide a list of current, real-world market prices for at least 8 major crops relevant to the Indian market (e.g., Wheat, Soybean, Cotton, Maize, Tomato, Onion, Rice, Potato). Provide a realistic price, variety, and recent trend for each crop.
 
 Provide the output in the specified JSON format.`,
 });
@@ -43,11 +38,10 @@ Provide the output in the specified JSON format.`,
 const marketPriceLookupFlow = ai.defineFlow(
   {
     name: 'marketPriceLookupFlow',
-    inputSchema: MarketPriceLookupInputSchema,
-    outputSchema: MarketPriceLookupOutputSchema,
+    outputSchema: MarketPriceListOutputSchema,
   },
-  async (input) => {
-    const { output } = await prompt(input);
+  async () => {
+    const { output } = await prompt();
     return output!;
   }
 );
