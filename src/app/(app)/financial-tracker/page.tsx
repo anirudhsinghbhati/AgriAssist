@@ -11,7 +11,9 @@ import { TrendingDown, TrendingUp } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import TransactionForm, { TransactionFormValues } from '@/components/transaction-form';
-import { format } from 'date-fns';
+import { format, getQuarter } from 'date-fns';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 const chartConfig = {
   income: {
@@ -34,10 +36,15 @@ type Transaction = {
   amount: number;
 };
 
+type ChartView = 'daily' | 'monthly' | 'quarterly' | 'yearly';
+
+
 export default function FinancialTrackerPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+  const [chartView, setChartView] = useState<ChartView>('monthly');
+
 
   const summary = useMemo(() => {
     return transactions.reduce((acc, t) => {
@@ -52,30 +59,47 @@ export default function FinancialTrackerPage() {
   }, [transactions]);
 
   const chartData = useMemo(() => {
-    const monthlyData: { [key: string]: { month: string; income: number; expense: number } } = {};
+    const dataMap: { [key: string]: { label: string; income: number; expense: number } } = {};
 
     transactions.forEach(t => {
-      const month = format(new Date(t.date), 'MMM');
-      const year = new Date(t.date).getFullYear();
-      const key = `${year}-${month}`;
+      const date = new Date(t.date);
+      let key = '';
+      let label = '';
 
-      if (!monthlyData[key]) {
-        monthlyData[key] = { month, income: 0, expense: 0 };
+      if (chartView === 'daily') {
+        key = format(date, 'yyyy-MM-dd');
+        label = format(date, 'dd MMM');
+      } else if (chartView === 'monthly') {
+        key = format(date, 'yyyy-MM');
+        label = format(date, 'MMM yy');
+      } else if (chartView === 'quarterly') {
+        const year = date.getFullYear();
+        const quarter = getQuarter(date);
+        key = `${year}-Q${quarter}`;
+        label = `Q${quarter} ${year}`;
+      } else if (chartView === 'yearly') {
+        key = String(date.getFullYear());
+        label = key;
+      }
+
+      if (!dataMap[key]) {
+        dataMap[key] = { label, income: 0, expense: 0 };
       }
 
       if (t.type === 'Income') {
-        monthlyData[key].income += t.amount;
+        dataMap[key].income += t.amount;
       } else {
-        monthlyData[key].expense += Math.abs(t.amount);
+        dataMap[key].expense += Math.abs(t.amount);
       }
     });
-
-    return Object.values(monthlyData).sort((a, b) => {
-        const dateA = new Date(`01 ${a.month} 2000`);
-        const dateB = new Date(`01 ${b.month} 2000`);
-        return dateA.getMonth() - dateB.getMonth();
+    
+    return Object.values(dataMap).sort((a, b) => {
+        // A simple sort that should work for most keys generated
+        if (a.label < b.label) return -1;
+        if (a.label > b.label) return 1;
+        return 0;
     });
-  }, [transactions]);
+  }, [transactions, chartView]);
 
 
   const handleAddTransaction = (values: TransactionFormValues, type: 'Income' | 'Expense') => {
@@ -86,7 +110,7 @@ export default function FinancialTrackerPage() {
       type,
       amount: type === 'Income' ? values.amount : -values.amount,
     };
-    setTransactions(prev => [newTransaction, ...prev]);
+    setTransactions(prev => [newTransaction, ...prev].sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
     if (type === 'Income') setIsIncomeModalOpen(false);
     if (type === 'Expense') setIsExpenseModalOpen(false);
   };
@@ -168,14 +192,27 @@ export default function FinancialTrackerPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Income vs. Expenses</CardTitle>
+          <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+            <div>
+                <CardTitle>Income vs. Expenses</CardTitle>
+                <CardDescription>Visualize your financial performance over time.</CardDescription>
+            </div>
+             <Tabs defaultValue="monthly" onValueChange={(value) => setChartView(value as ChartView)}>
+                <TabsList className="grid w-full grid-cols-4">
+                    <TabsTrigger value="daily">Daily</TabsTrigger>
+                    <TabsTrigger value="monthly">Monthly</TabsTrigger>
+                    <TabsTrigger value="quarterly">Quarterly</TabsTrigger>
+                    <TabsTrigger value="yearly">Yearly</TabsTrigger>
+                </TabsList>
+            </Tabs>
+          </div>
         </CardHeader>
         <CardContent>
         {transactions.length > 0 ? (
           <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} />
-              <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} />
+              <XAxis dataKey="label" tickLine={false} tickMargin={10} axisLine={false} />
               <YAxis tickFormatter={(value) => `${Number(value) / 1000}k`} />
               <ChartTooltip content={<ChartTooltipContent formatter={(value) => formatCurrency(Number(value))} />} />
               <Bar dataKey="income" fill="var(--color-income)" radius={4} />
