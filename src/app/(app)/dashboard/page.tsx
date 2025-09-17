@@ -41,7 +41,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchWeather() {
       // In a real app, you might get the user's location dynamically
-      const weatherData = await getCurrentWeather({ district: 'Indore', state: 'Madhya Pradesh' });
+      const weatherData = await getCurrentWeather({ district: 'Jaipur', state: 'Rajasthan' });
       setWeather(weatherData);
     }
     fetchWeather();
