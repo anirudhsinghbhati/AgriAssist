@@ -30,6 +30,13 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.8rem;
+    
+    /* Weather Card Backgrounds - Light Theme */
+    --weather-sunny-bg: linear-gradient(to bottom right, #fef08a, #fbbf24);
+    --weather-rainy-bg: linear-gradient(to bottom right, #a5b4fc, #60a5fa);
+    --weather-cloudy-bg: linear-gradient(to bottom right, #e5e7eb, #9ca3af);
+    --weather-partly-cloudy-bg: linear-gradient(to bottom right, #bae6fd, #a5f3fc);
+    --weather-fg: 240 10% 3.9%;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -56,6 +63,13 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* Weather Card Backgrounds - Dark Theme */
+    --weather-sunny-bg: linear-gradient(to bottom right, #422006, #78350f);
+    --weather-rainy-bg: linear-gradient(to bottom right, #1e293b, #334155);
+    --weather-cloudy-bg: linear-gradient(to bottom right, #4b5563, #374151);
+    --weather-partly-cloudy-bg: linear-gradient(to bottom right, #1e3a8a, #374151);
+    --weather-fg: 0 0% 98%;
   }
 }
 

@@ -10,7 +10,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import stateDistrictData from '@/lib/india-states-districts.json';
-import { cn } from '@/lib/utils';
 
 
 const weatherIcons: { [key: string]: JSX.Element } = {
@@ -20,11 +19,20 @@ const weatherIcons: { [key: string]: JSX.Element } = {
     "Cloudy": <Cloud className="h-10 w-10 text-gray-500" />,
 }
 
-const weatherBackgrounds: { [key: string]: { background: string; color: string } } = {
-    "Sunny": { background: 'linear-gradient(to bottom right, #FDE68A, #F97316)', color: '#1E293B' },
-    "Rainy": { background: 'linear-gradient(to bottom right, #93C5FD, #64748B)', color: '#FFFFFF' },
-    "Cloudy": { background: 'linear-gradient(to bottom right, #D1D5DB, #6B7280)', color: '#1E293B' },
-    "Partly Cloudy": { background: 'linear-gradient(to bottom right, #7DD3FC, #9CA3AF)', color: '#1E293B' },
+const getBackgroundForWeather = (condition: string | undefined): React.CSSProperties => {
+  if (!condition) return {};
+
+  const backgroundMap: { [key: string]: string } = {
+    "Sunny": 'var(--weather-sunny-bg)',
+    "Rainy": 'var(--weather-rainy-bg)',
+    "Cloudy": 'var(--weather-cloudy-bg)',
+    "Partly Cloudy": 'var(--weather-partly-cloudy-bg)',
+  };
+
+  return {
+    background: backgroundMap[condition] || 'var(--weather-cloudy-bg)',
+    color: 'hsl(var(--weather-fg))',
+  };
 };
 
 
@@ -61,7 +69,7 @@ export default function WeatherPage() {
     };
 
     const CurrentWeatherIcon = weather ? (weatherIcons[weather.condition] || <Cloud className="h-24 w-24 text-gray-400" />) : null;
-    const backgroundStyle = weather ? weatherBackgrounds[weather.condition] || {} : {};
+    const backgroundStyle = getBackgroundForWeather(weather?.condition);
 
 
     return (
