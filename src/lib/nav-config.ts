@@ -25,8 +25,8 @@ export type NavItem = {
 
 export const navConfig: NavItem[] = [
   { id: 'dashboard', href: '/dashboard', icon: Home, label: 'Dashboard', isLocked: true },
-  { id: 'calendar', href: '/calendar', icon: Calendar, label: 'Calendar' },
   { id: 'ai-tools', href: '/ai-tools', icon: BrainCircuit, label: 'AI Tools' },
+  { id: 'calendar', href: '/calendar', icon: Calendar, label: 'Calendar' },
   { id: 'market-prices', href: '/market-prices', icon: LineChart, label: 'Market Prices' },
   { id: 'financial-tracker', href: '/financial-tracker', icon: IndianRupee, label: 'Financial Tracker' },
   { id: 'inventory', href: '/inventory', icon: Package, label: 'Inventory' },
