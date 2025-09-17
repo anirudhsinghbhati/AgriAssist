@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +11,8 @@ import { ArrowUpRight, Cloud, Lightbulb, Sprout, Leaf, MessageSquare, PlusCircle
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useTranslation } from '@/hooks/use-translation';
+import { getCurrentWeather, WeatherData } from '@/app/actions/weather';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const cropData = [
     { 
@@ -33,6 +36,17 @@ const cropStages = [
 export default function Dashboard() {
   const { t } = useTranslation();
   const userAvatar = PlaceHolderImages.find((img) => img.id === 'avatar');
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+
+  useEffect(() => {
+    async function fetchWeather() {
+      // In a real app, you might get the user's location dynamically
+      const weatherData = await getCurrentWeather({ district: 'Indore', state: 'Madhya Pradesh' });
+      setWeather(weatherData);
+    }
+    fetchWeather();
+  }, []);
+
 
   return (
     <div className="flex flex-1 flex-col gap-6 md:gap-8">
@@ -64,10 +78,17 @@ export default function Dashboard() {
             <CardContent className="grid gap-4 sm:grid-cols-2">
                 <div className="p-4 bg-muted/50 rounded-lg flex items-center gap-4">
                     <Cloud className="h-8 w-8 text-blue-500" />
-                    <div>
-                        <p className="font-semibold">{t('dashboard.todays_focus.weather')}</p>
-                        <p className="text-sm text-muted-foreground">{t('dashboard.todays_focus.humidity')}</p>
-                    </div>
+                    {weather ? (
+                        <div>
+                            <p className="font-semibold">{weather.temperature}°C {weather.condition}</p>
+                            <p className="text-sm text-muted-foreground">Humidity: {weather.humidity}%</p>
+                        </div>
+                    ) : (
+                         <div className="space-y-2">
+                            <Skeleton className="h-5 w-32" />
+                            <Skeleton className="h-4 w-24" />
+                        </div>
+                    )}
                 </div>
                  <div className="p-4 bg-muted/50 rounded-lg flex items-center gap-4">
                     <TrendingUp className="h-8 w-8 text-green-500" />
