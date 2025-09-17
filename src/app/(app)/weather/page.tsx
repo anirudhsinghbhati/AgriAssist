@@ -31,9 +31,9 @@ const forecastData = [
 export default function WeatherPage() {
     const [weather, setWeather] = useState<WeatherData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedState, setSelectedState] = useState('Madhya Pradesh');
-    const [selectedDistrict, setSelectedDistrict] = useState('Indore');
-    const [currentLocation, setCurrentLocation] = useState({ district: 'Indore', state: 'Madhya Pradesh' });
+    const [selectedState, setSelectedState] = useState('Rajasthan');
+    const [selectedDistrict, setSelectedDistrict] = useState('Jaipur');
+    const [currentLocation, setCurrentLocation] = useState({ district: 'Jaipur', state: 'Rajasthan' });
 
     const districts = useMemo(() => {
         if (!selectedState) return [];
@@ -51,7 +51,7 @@ export default function WeatherPage() {
     };
 
     useEffect(() => {
-        fetchWeather('Indore', 'Madhya Pradesh');
+        fetchWeather('Jaipur', 'Rajasthan');
     }, []);
 
     const handleGetWeather = () => {
