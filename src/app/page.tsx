@@ -59,14 +59,14 @@ export default function LandingPage() {
                     data-ai-hint={heroImage.imageHint}
                     priority
                 />
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-black/60" />
              </div>
            )}
-          <div className="container relative mx-auto px-4 text-center text-primary-foreground">
+          <div className="container relative mx-auto px-4 text-center text-white">
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl font-headline">
               Smart Farming for a Brighter Future
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-primary-foreground/90">
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-white/90">
               GreenRoots empowers farmers with AI-driven insights, real-time data, and expert advice to increase yield and profitability.
             </p>
             <div className="mt-10">
