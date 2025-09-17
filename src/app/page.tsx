@@ -1,7 +1,6 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Leaf, BrainCircuit, LineChart, BarChart, CloudSun, Users, ArrowRight } from 'lucide-react';
 import { Header } from '@/components/layout/landing-header';
 import { Footer } from '@/components/layout/landing-footer';
@@ -40,20 +39,18 @@ const features = [
 ];
 
 export default function LandingPage() {
-  const heroImage = PlaceHolderImages.find((img) => img.id === 'landing-hero');
-
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-slate-900 text-white">
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative w-full py-20 md:py-32 lg:py-40 overflow-hidden">
-           <div className="absolute inset-0 bg-gradient-to-tr from-green-200 via-sky-300 to-purple-400 dark:from-green-900 dark:via-sky-800 dark:to-purple-900 animate-background-pan -z-10" />
+           <div className="absolute inset-0 bg-gradient-to-tr from-green-500/30 via-sky-500/30 to-purple-500/30 animate-background-pan -z-10" />
           <div className="container relative mx-auto px-4 text-center">
-            <h1 className="animate-fade-in-up text-4xl font-extrabold tracking-tight text-slate-800 dark:text-white sm:text-5xl md:text-6xl font-headline" style={{ animationDelay: '0.2s' }}>
+            <h1 className="animate-fade-in-up text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl font-headline" style={{ animationDelay: '0.2s' }}>
               Smart Farming for a Brighter Future
             </h1>
-            <p className="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg text-slate-600 dark:text-white/80" style={{ animationDelay: '0.4s' }}>
+            <p className="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg text-white/80" style={{ animationDelay: '0.4s' }}>
               GreenRoots empowers farmers with AI-driven insights, real-time data, and expert advice to increase yield and profitability.
             </p>
             <div className="animate-fade-in-up mt-10" style={{ animationDelay: '0.6s' }}>
@@ -67,13 +64,13 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="w-full py-20 md:py-24 lg:py-32 bg-background">
+        <section id="features" className="w-full py-20 md:py-24 lg:py-32">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-foreground">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl font-headline text-white">
                 Everything Your Farm Needs in One App
               </h2>
-              <p className="mt-4 text-lg text-muted-foreground">
+              <p className="mt-4 text-lg text-white/70">
                 From planting to profit, GreenRoots provides the tools you need to succeed.
               </p>
             </div>
@@ -81,15 +78,15 @@ export default function LandingPage() {
               {features.map((feature, index) => (
                 <div 
                   key={feature.title} 
-                  className="animate-fade-in-up group relative flex flex-col items-center text-center p-6 bg-card rounded-xl shadow-lg border transition-all duration-300 hover:shadow-primary/20 hover:shadow-2xl overflow-hidden transform-style-3d hover:-translate-y-2 hover:rotate-x-8 hover:rotate-y-0"
+                  className="animate-fade-in-up group relative flex flex-col items-center text-center p-6 bg-slate-800/60 rounded-xl shadow-lg border border-white/10 transition-all duration-300 hover:shadow-primary/20 hover:shadow-2xl overflow-hidden transform-style-3d hover:-translate-y-2 hover:rotate-x-8 hover:rotate-y-0"
                   style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                 >
                   <div className="relative z-10 flex flex-col items-center transition-transform duration-300 group-hover:translate-z-20">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover:-translate-y-2 group-hover:scale-110">
                       <feature.icon className="h-6 w-6" />
                     </div>
-                    <h3 className="mt-6 text-xl font-semibold text-card-foreground">{feature.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
+                    <h3 className="mt-6 text-xl font-semibold text-white">{feature.title}</h3>
+                    <p className="mt-2 text-sm text-white/70">{feature.description}</p>
                   </div>
                 </div>
               ))}
