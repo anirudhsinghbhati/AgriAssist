@@ -135,27 +135,27 @@
     },
     {
       "id": "resource-seed-guide",
-      "description": "Rows of different types of seeds in compartments.",
-      "imageUrl": "https://picsum.photos/seed/seedguide/600/400",
-      "imageHint": "seed varieties"
+      "description": "A close-up of a young plant sprout.",
+      "imageUrl": "https://picsum.photos/seed/plantsprout/600/400",
+      "imageHint": "plant sprout"
     },
     {
       "id": "resource-crop-rotation",
-      "description": "A field divided into different sections showing crop rotation.",
-      "imageUrl": "https://picsum.photos/seed/croprotation/600/400",
-      "imageHint": "divided field"
+      "description": "A lush, green agricultural field.",
+      "imageUrl": "https://picsum.photos/seed/greenfield/600/400",
+      "imageHint": "agricultural field"
     },
     {
       "id": "resource-organic-pest",
-      "description": "A ladybug on a leaf, representing organic pest control.",
-      "imageUrl": "https://picsum.photos/seed/organicpest/600/400",
-      "imageHint": "ladybug leaf"
+      "description": "Healthy green leaves on a plant.",
+      "imageUrl": "https://picsum.photos/seed/healthyleaves/600/400",
+      "imageHint": "green leaves"
     },
     {
       "id": "resource-post-harvest",
-      "description": "Crates of freshly harvested vegetables.",
-      "imageUrl": "https://picsum.photos/seed/postharvest/600/400",
-      "imageHint": "harvested vegetables"
+      "description": "A vibrant agricultural landscape at sunset.",
+      "imageUrl": "https://picsum.photos/seed/farmlandscape/600/400",
+      "imageHint": "farm landscape"
     },
     {
       "id": "seed-soybean-js335",
