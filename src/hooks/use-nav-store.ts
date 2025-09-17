@@ -68,7 +68,7 @@ export const useNavStore = create<NavState>()(
     {
       name: 'greenroots-nav-preferences',
       storage: createJSONStorage(() => localStorage),
-      onRehydrateStorage: () => (state) => {
+      onRehydrateStorage: () => (state, error) => {
         if (state) {
             const defaultVisibility = getDefaultVisibility();
             const mergedVisibility = { ...defaultVisibility, ...state.visibility };
@@ -81,14 +81,20 @@ export const useNavStore = create<NavState>()(
 
             // Ensure order is up-to-date with navConfig
             const rehydratedOrder = state.navOrder || [];
-            const allIds = new Set(rehydratedOrder);
-            const newOrder = [...rehydratedOrder];
-            defaultOrder.forEach(id => {
-                if (!allIds.has(id)) {
-                    newOrder.push(id);
-                }
-            });
-            state.navOrder = newOrder.filter(id => navConfig.some(item => item.id === id));
+            
+            // If the rehydrated order is empty or missing items, start fresh with the default
+            if (rehydratedOrder.length === 0 || rehydratedOrder.length < defaultOrder.length) {
+                 state.navOrder = defaultOrder;
+            } else {
+                const allIds = new Set(rehydratedOrder);
+                const newOrder = [...rehydratedOrder];
+                defaultOrder.forEach(id => {
+                    if (!allIds.has(id)) {
+                        newOrder.push(id);
+                    }
+                });
+                state.navOrder = newOrder.filter(id => navConfig.some(item => item.id === id));
+            }
         }
       }
     }
