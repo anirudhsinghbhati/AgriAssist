@@ -19,15 +19,6 @@ const weatherIcons: { [key: string]: JSX.Element } = {
     "Cloudy": <Cloud className="h-10 w-10 text-gray-500" />,
 }
 
-const forecastData = [
-    { day: 'Tue', temp: '30°C', condition: 'Sunny' },
-    { day: 'Wed', temp: '28°C', condition: 'Partly Cloudy' },
-    { day: 'Thu', temp: '29°C', condition: 'Partly Cloudy' },
-    { day: 'Fri', temp: '26°C', condition: 'Rainy' },
-    { day: 'Sat', temp: '31°C', condition: 'Sunny' },
-    { day: 'Sun', temp: '32°C', condition: 'Sunny' },
-];
-
 export default function WeatherPage() {
     const [weather, setWeather] = useState<WeatherData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -77,7 +68,13 @@ export default function WeatherPage() {
                                 <label className='text-sm font-medium'>State</label>
                                 <Select onValueChange={(value) => {
                                     setSelectedState(value);
-                                    setSelectedDistrict(''); // Reset district when state changes
+                                    // Find the new state's districts and set the first one as selected
+                                    const newState = stateDistrictData.states.find(s => s.state === value);
+                                    if (newState && newState.districts.length > 0) {
+                                      setSelectedDistrict(newState.districts[0]);
+                                    } else {
+                                      setSelectedDistrict('');
+                                    }
                                 }} value={selectedState}>
                                     <SelectTrigger>
                                     <SelectValue placeholder="Select a state" />
@@ -175,18 +172,18 @@ export default function WeatherPage() {
                         </div>
                         <div className="flex flex-col items-center gap-1">
                             <p className="text-xs text-muted-foreground">3 PM</p>
-                            <Sun className="h-6 w-6 text-yellow-500"/>
-                            <p className="font-bold">30°</p>
+                            {isLoading ? <Skeleton className="h-10 w-10" /> : <Sun className="h-6 w-6 text-yellow-500"/>}
+                            {isLoading ? <Skeleton className="h-5 w-8" /> : <p className="font-bold">30°</p>}
                         </div>
                         <div className="flex flex-col items-center gap-1">
                             <p className="text-xs text-muted-foreground">6 PM</p>
-                            <Cloud className="h-6 w-6 text-gray-400"/>
-                            <p className="font-bold">27°</p>
+                             {isLoading ? <Skeleton className="h-10 w-10" /> : <Cloud className="h-6 w-6 text-gray-400"/>}
+                             {isLoading ? <Skeleton className="h-5 w-8" /> : <p className="font-bold">27°</p>}
                         </div>
                         <div className="flex flex-col items-center gap-1">
                             <p className="text-xs text-muted-foreground">9 PM</p>
-                            <Cloud className="h-6 w-6 text-gray-400"/>
-                            <p className="font-bold">24°</p>
+                            {isLoading ? <Skeleton className="h-10 w-10" /> : <Cloud className="h-6 w-6 text-gray-400"/>}
+                            {isLoading ? <Skeleton className="h-5 w-8" /> : <p className="font-bold">24°</p>}
                         </div>
                     </CardContent>
                 </Card>
@@ -197,11 +194,20 @@ export default function WeatherPage() {
                     <CardTitle>6-Day Forecast</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
-                    {forecastData.map(day => (
+                    {isLoading ? (
+                        Array.from({ length: 6 }).map((_, i) => (
+                           <div key={i} className="flex flex-col items-center gap-2 p-4 bg-muted/50 rounded-lg">
+                               <Skeleton className="h-6 w-10" />
+                               <Skeleton className="h-10 w-10 rounded-full" />
+                               <Skeleton className="h-8 w-12" />
+                               <Skeleton className="h-5 w-20" />
+                           </div>
+                        ))
+                    ) : weather?.forecast.map(day => (
                         <div key={day.day} className="flex flex-col items-center gap-2 p-4 bg-muted/50 rounded-lg">
                             <p className="font-semibold text-lg">{day.day}</p>
-                            {weatherIcons[day.condition as keyof typeof weatherIcons]}
-                            <p className="font-bold text-2xl">{day.temp}</p>
+                            {React.cloneElement(weatherIcons[day.condition] || <Cloud />, { className: "h-10 w-10"})}
+                            <p className="font-bold text-2xl">{day.temp}°C</p>
                             <p className="text-sm text-muted-foreground">{day.condition}</p>
                         </div>
                     ))}
