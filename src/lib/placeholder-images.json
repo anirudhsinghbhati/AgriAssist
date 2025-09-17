@@ -14,6 +14,12 @@
       "imageHint": "green field"
     },
     {
+      "id": "landing-hero",
+      "description": "A beautiful wide shot of a farm at sunrise",
+      "imageUrl": "https://picsum.photos/seed/landinghero/1920/1080",
+      "imageHint": "farm sunrise"
+    },
+    {
       "id": "avatar",
       "description": "Farmer user avatar",
       "imageUrl": "https://picsum.photos/seed/farmeravatar/100/100",
