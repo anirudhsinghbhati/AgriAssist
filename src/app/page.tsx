@@ -57,6 +57,7 @@ export default function LandingPage() {
                     fill
                     className="object-cover"
                     data-ai-hint={heroImage.imageHint}
+                    priority
                 />
                 <div className="absolute inset-0 bg-black/50" />
              </div>
