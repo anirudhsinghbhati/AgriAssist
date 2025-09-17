@@ -19,6 +19,12 @@ type MarketDataItem = {
     trend: "up" | "down" | "stable";
 }
 
+type CachedMarketData = {
+  date: string;
+  prices: MarketDataItem[];
+};
+
+
 export default function MarketPricesPage() {
   const [marketData, setMarketData] = useState<MarketDataItem[]>([]);
   const [filteredData, setFilteredData] = useState<MarketDataItem[]>([]);
@@ -30,10 +36,26 @@ export default function MarketPricesPage() {
     const fetchMarketData = async () => {
       setIsLoading(true);
       setError(null);
+      const today = new Date().toISOString().split('T')[0];
+
       try {
+        const cachedDataString = localStorage.getItem('marketData');
+        if (cachedDataString) {
+          const cachedData: CachedMarketData = JSON.parse(cachedDataString);
+          if (cachedData.date === today) {
+            setMarketData(cachedData.prices);
+            setFilteredData(cachedData.prices);
+            setIsLoading(false);
+            return;
+          }
+        }
+
         const result = await marketPriceLookup();
         setMarketData(result.prices);
         setFilteredData(result.prices);
+        
+        const newCachedData: CachedMarketData = { date: today, prices: result.prices };
+        localStorage.setItem('marketData', JSON.stringify(newCachedData));
       } catch (err) {
         console.error(err);
         setError('Could not fetch the latest market prices. Please try again later.');
@@ -58,7 +80,7 @@ export default function MarketPricesPage() {
       <CardHeader>
         <CardTitle>Real-Time Market Prices</CardTitle>
         <CardDescription>
-          Up-to-date prices for various crops from your local 'mandi' markets, powered by AI.
+          Up-to-date prices for various crops from your local 'mandi' markets, powered by AI. Data is refreshed once daily.
         </CardDescription>
       </CardHeader>
       <CardContent>
