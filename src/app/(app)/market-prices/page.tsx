@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
 import { ArrowDown, ArrowUp, Loader2, Search, AlertTriangle } from 'lucide-react';
 import { marketPriceLookup, MarketPriceListOutput } from '@/ai/flows/market-price-lookup';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -27,13 +28,13 @@ type CachedMarketData = {
 
 export default function MarketPricesPage() {
   const [marketData, setMarketData] = useState<MarketDataItem[]>([]);
-  const [filteredData, setFilteredData] = useState<MarketDataItem[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMarketData = async () => {
+    const fetchInitialMarketData = async () => {
       setIsLoading(true);
       setError(null);
       const today = new Date().toISOString().split('T')[0];
@@ -44,7 +45,6 @@ export default function MarketPricesPage() {
           const cachedData: CachedMarketData = JSON.parse(cachedDataString);
           if (cachedData.date === today) {
             setMarketData(cachedData.prices);
-            setFilteredData(cachedData.prices);
             setIsLoading(false);
             return;
           }
@@ -52,7 +52,6 @@ export default function MarketPricesPage() {
 
         const result = await marketPriceLookup();
         setMarketData(result.prices);
-        setFilteredData(result.prices);
         
         const newCachedData: CachedMarketData = { date: today, prices: result.prices };
         localStorage.setItem('marketData', JSON.stringify(newCachedData));
@@ -63,41 +62,61 @@ export default function MarketPricesPage() {
         setIsLoading(false);
       }
     };
-    fetchMarketData();
+    fetchInitialMarketData();
   }, []);
+  
+  const handleSearch = async () => {
+    if (!searchQuery) return;
+    
+    setIsSearching(true);
+    setError(null);
+    try {
+        const result = await marketPriceLookup({ cropName: searchQuery });
+        if (result.prices && result.prices.length > 0) {
+            setMarketData(result.prices);
+        } else {
+            setError(`Could not find market price data for "${searchQuery}". Please check the crop name and try again.`);
+            setMarketData([]);
+        }
+    } catch (err) {
+        console.error(err);
+        setError(`An error occurred while searching for "${searchQuery}". Please try again later.`);
+    } finally {
+        setIsSearching(false);
+    }
+  };
 
-  useEffect(() => {
-    const lowercasedQuery = searchQuery.toLowerCase();
-    const filtered = marketData.filter(item =>
-      item.crop.toLowerCase().includes(lowercasedQuery) ||
-      item.variety.toLowerCase().includes(lowercasedQuery)
-    );
-    setFilteredData(filtered);
-  }, [searchQuery, marketData]);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Real-Time Market Prices</CardTitle>
         <CardDescription>
-          Up-to-date prices for various crops from your local 'mandi' markets, powered by AI. Data is refreshed once daily.
+          Search for any crop to get the latest price from local 'mandi' markets, powered by AI.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center gap-2 mb-6">
-          <div className="relative flex-grow max-w-xs">
+        <div className="flex flex-col sm:flex-row items-center gap-2 mb-6">
+          <div className="relative flex-grow w-full sm:max-w-xs">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Filter crops..."
+              placeholder="Search any crop..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSearch();
+              }}
               className="pl-10"
-              disabled={isLoading || !!error}
+              disabled={isLoading || isSearching}
             />
           </div>
+          <Button onClick={handleSearch} disabled={isLoading || isSearching || !searchQuery} className="w-full sm:w-auto">
+            {isSearching ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Search className="mr-2 h-4 w-4" />}
+            Search
+          </Button>
         </div>
         {error && (
-            <Alert variant="destructive">
+            <Alert variant="destructive" className="mb-4">
                 <AlertTriangle className="h-4 w-4" />
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
@@ -115,17 +134,14 @@ export default function MarketPricesPage() {
             </TableHeader>
             <TableBody>
               {isLoading ? (
-                Array.from({ length: 5 }).map((_, i) => (
+                Array.from({ length: 8 }).map((_, i) => (
                   <TableRow key={i}>
-                    <TableCell><Loader2 className="h-4 w-4 animate-spin" /></TableCell>
-                    <TableCell>Loading...</TableCell>
-                    <TableCell className="text-right">...</TableCell>
-                    <TableCell className="text-right">...</TableCell>
+                    <TableCell colSpan={4}><Loader2 className="h-4 w-4 animate-spin" /></TableCell>
                   </TableRow>
                 ))
-              ) : (
-                filteredData.map((item) => (
-                  <TableRow key={item.crop}>
+              ) : marketData.length > 0 ? (
+                marketData.map((item) => (
+                  <TableRow key={item.crop + item.variety}>
                     <TableCell className="font-medium">{item.crop}</TableCell>
                     <TableCell>{item.variety}</TableCell>
                     <TableCell className="text-right whitespace-nowrap">
@@ -152,6 +168,12 @@ export default function MarketPricesPage() {
                     </TableCell>
                   </TableRow>
                 ))
+              ) : !error && (
+                 <TableRow>
+                    <TableCell colSpan={4} className="text-center text-muted-foreground">
+                        No market data available. Try searching for a crop.
+                    </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>
