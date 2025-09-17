@@ -67,44 +67,14 @@
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
   }
-
-  .leaf {
-    position: absolute;
-    top: -50px;
-    animation-name: fall, sway;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-  }
-
-  .grass-container {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 30%; 
-    overflow: hidden;
-  }
-
-  .grass {
-    position: absolute;
-    bottom: 0;
-    width: 80px; 
-    height: 0;
-    background-color: hsl(var(--primary) / 0.5);
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
-    transform-origin: bottom center;
-    animation: grow 4s 1s ease-in-out forwards, wave 3s ease-in-out infinite;
-  }
-
-  .grass:nth-child(1) { left: 5%; animation-delay: 1.2s; animation-duration: 4.2s, 3.2s; }
-  .grass:nth-child(2) { left: 25%; animation-delay: 1.5s; animation-duration: 4.5s, 3.5s; }
-  .grass:nth-child(3) { left: 45%; animation-delay: 1s; animation-duration: 4.0s, 3.0s; }
-  .grass:nth-child(4) { left: 65%; animation-delay: 1.8s; animation-duration: 4.8s, 3.8s; }
-  .grass:nth-child(5) { left: 85%; animation-delay: 1.3s; animation-duration: 4.3s, 3.3s; }
 }
 
 @layer utilities {
   .animate-fade-in-up {
     animation-fill-mode: both;
+  }
+
+  .animate-background-pan {
+    background-size: 200% 200%;
   }
 }

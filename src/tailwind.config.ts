@@ -89,31 +89,34 @@ export default {
             transform: 'translateY(0)',
           },
         },
-        fall: {
-          '0%': { transform: 'translateY(0vh) rotate(0deg)' },
-          '100%': { transform: 'translateY(105vh) rotate(360deg)' },
-        },
-        sway: {
-          '0%': { transform: 'translateX(0)' },
-          '50%': { transform: 'translateX(40px)' },
-          '100%': { transform: 'translateX(0)' },
-        },
-        grow: {
-          '0%': { height: '0', opacity: '0' },
-          '100%': { height: '100%', opacity: '1' },
-        },
-        wave: {
-          '0%': { transform: 'rotate(0deg)' },
-          '50%': { transform: 'rotate(5deg)' },
-          '100%': { transform: 'rotate(0deg)' },
-        },
+        'background-pan': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
+        'background-pan': 'background-pan 15s ease-in-out infinite',
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    function({ addUtilities }: { addUtilities: any }) {
+      addUtilities({
+        '.transform-style-3d': {
+          'transform-style': 'preserve-3d',
+        },
+        '.perspective': {
+          'perspective': '1000px',
+        },
+        '.translate-z-20': {
+          'transform': 'translateZ(20px)',
+        },
+      });
+    },
+  ],
 } satisfies Config;
