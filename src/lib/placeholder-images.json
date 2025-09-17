@@ -237,33 +237,33 @@
     },
     {
       "id": "scheme-pm-kisan",
-      "description": "Illustration for PM-KISAN scheme",
-      "imageUrl": "https://picsum.photos/seed/pmkisan/600/400",
-      "imageHint": "farmer money"
+      "description": "A farmer happily standing in their field",
+      "imageUrl": "https://picsum.photos/seed/happyfarmer/600/400",
+      "imageHint": "happy farmer"
     },
     {
       "id": "scheme-fasal-bima",
-      "description": "Illustration for crop insurance",
-      "imageUrl": "https://picsum.photos/seed/fasalbima/600/400",
-      "imageHint": "crop insurance"
+      "description": "A shield icon protecting a small plant",
+      "imageUrl": "https://picsum.photos/seed/cropinsurance/600/400",
+      "imageHint": "crop protection"
     },
     {
       "id": "scheme-soil-health",
-      "description": "A farmer looking at a soil health card report",
-      "imageUrl": "https://picsum.photos/seed/soilhealth/600/400",
-      "imageHint": "soil report"
+      "description": "A farmer examining the soil in a field",
+      "imageUrl": "https://picsum.photos/seed/examinesoil/600/400",
+      "imageHint": "examining soil"
     },
     {
       "id": "news-monsoon",
-      "description": "Rain clouds over a farm field",
-      "imageUrl": "https://picsum.photos/seed/monsoonnews/600/400",
-      "imageHint": "rain clouds"
+      "description": "A farmer preparing a field before the rain",
+      "imageUrl": "https://picsum.photos/seed/preparingfield/600/400",
+      "imageHint": "farmer field"
     },
     {
       "id": "news-msp-hike",
-      "description": "A graph showing an upward trend for MSP",
-      "imageUrl": "https://picsum.photos/seed/mspnews/600/400",
-      "imageHint": "price graph"
+      "description": "A bountiful harvest of wheat",
+      "imageUrl": "https://picsum.photos/seed/wheatharvest/600/400",
+      "imageHint": "wheat harvest"
     }
   ]
 }
