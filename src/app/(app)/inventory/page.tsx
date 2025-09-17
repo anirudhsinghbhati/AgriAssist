@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { PlusCircle } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { PlusCircle, Trash2 } from 'lucide-react';
 import InventoryForm, { InventoryFormValues } from '@/components/inventory-form';
 
 type InventoryItem = {
@@ -61,6 +62,14 @@ export default function InventoryPage() {
     }));
     setIsModalOpen(false);
   };
+  
+  const handleRemoveItem = (category: InventoryCategory, itemId: string) => {
+    setInventory(prev => ({
+      ...prev,
+      [category]: prev[category].filter(item => item.id !== itemId),
+    }));
+  };
+
 
   const renderTable = (category: InventoryCategory) => (
     <Table>
@@ -69,6 +78,7 @@ export default function InventoryPage() {
           <TableHead>Item Name</TableHead>
           <TableHead>Quantity</TableHead>
           <TableHead>Last Updated</TableHead>
+          <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -77,6 +87,30 @@ export default function InventoryPage() {
             <TableCell className="font-medium">{item.name}</TableCell>
             <TableCell>{item.quantity} {item.unit}</TableCell>
             <TableCell>{item.lastUpdated}</TableCell>
+            <TableCell className="text-right">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                    <span className="sr-only">Remove</span>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete the item "{item.name}" from your inventory.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleRemoveItem(category, item.id)}>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
