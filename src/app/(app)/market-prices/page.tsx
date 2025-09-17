@@ -100,7 +100,7 @@ export default function MarketPricesPage() {
               <TableRow>
                 <TableHead>Crop</TableHead>
                 <TableHead>Variety</TableHead>
-                <TableHead className="text-right">Price ({'\u20B9'} / Unit)</TableHead>
+                <TableHead className="text-right">Price / Unit</TableHead>
                 <TableHead className="text-right">Change</TableHead>
               </TableRow>
             </TableHeader>
@@ -110,7 +110,7 @@ export default function MarketPricesPage() {
                   <TableCell className="font-medium">{item.crop}</TableCell>
                   <TableCell>{item.variety}</TableCell>
                   <TableCell className="text-right whitespace-nowrap">
-                    {'\u20B9'}{item.price.toLocaleString('en-IN')} / {item.unit}
+                    {item.price.toLocaleString('en-IN')} / {item.unit}
                   </TableCell>
                   <TableCell className="text-right">
                     <Badge

@@ -46,7 +46,7 @@ export default function TransactionForm({ type, onSubmit }: TransactionFormProps
           name="amount"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Amount ({'\u20B9'})</FormLabel>
+              <FormLabel>Amount</FormLabel>
               <FormControl>
                 <Input type="number" placeholder="e.g., 5000" {...field} />
               </FormControl>
